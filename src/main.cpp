@@ -1,6 +1,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "../include/colors.hpp"
 
 int main()
 {
@@ -15,7 +16,7 @@ int main()
 	{
 		glfwPollEvents();
 
-		glClearColor(0.4f, 0.4f, 0.8f, 1.0f);
+		glClearColor(LM_COLOR_MDNTBLUE);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(window);
 	}
