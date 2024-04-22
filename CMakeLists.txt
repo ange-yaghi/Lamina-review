@@ -8,11 +8,13 @@ find_package(OpenGL REQUIRED)
 
 add_executable("Lamina" 
 	src/main.cpp
+	src/window.cpp
 	src/glad.c
 
 	include/window.hpp
 	include/colors.hpp
-)
+	include/vec2.hpp
+ "src/window.cpp")
 
 add_subdirectory(dependencies/GLFW)
 target_include_directories("Lamina" PRIVATE dependencies)
