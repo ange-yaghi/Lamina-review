@@ -2,24 +2,27 @@
 
 namespace lm
 {
-	struct vec2
+	template<typename Type>
+	class vec2
 	{
-		double x = 0;
-		double y = 0;
-	};
-	struct vec2f
-	{
-		float x = 0;
-		float y = 0;
-	};
-	struct vec2i
-	{
-		int x = 0;
-		int y = 0;
-	};
-	struct vec2u
-	{
-		unsigned int x = 0;
-		unsigned int y = 0;
+	public:
+		Type x;
+		Type y;
+
+		vec2() : x(NULL), y(NULL) {};
+		vec2(Type xArg, Type yArg) : x(xArg), y(yArg) {};
+
+		vec2 operator+(vec2 other) { return vec2(x + other.x, y + other.y); }
+		vec2 operator-(vec2 other) { return vec2(x - other.x, y - other.y); }
+		vec2 operator*(vec2 other) { return vec2(x * other.x, y * other.y); }
+		vec2 operator/(vec2 other) { return vec2(x / other.x, y / other.y); }
+
+		vec2 operator+(Type scalar) { return vec2(x + scalar, y + scalar); }
+		vec2 operator-(Type scalar) { return vec2(x - scalar, y - scalar); }
+		vec2 operator*(Type scalar) { return vec2(x * scalar, y * scalar); }
+		vec2 operator/(Type scalar) { return vec2(x / scalar, y / scalar); }
+
+		Type GetDotProduct(vec2 other) { return (x * other.x) + (y * other.y); }
+		Type GetFlatCrossProduct(vec2 other) {return (x * other.y) - (y * other.x); }
 	};
 }

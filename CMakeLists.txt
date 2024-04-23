@@ -10,11 +10,13 @@ add_executable("Lamina"
 	src/main.cpp
 	src/window.cpp
 	src/glad.c
+	src/rectangle.cpp
 
 	include/window.hpp
 	include/colors.hpp
 	include/vec2.hpp
- "src/window.cpp")
+	include/rectangle.hpp
+)
 
 add_subdirectory(dependencies/GLFW)
 target_include_directories("Lamina" PRIVATE dependencies)
