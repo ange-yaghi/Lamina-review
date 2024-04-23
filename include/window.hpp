@@ -5,6 +5,9 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include "../include/vec2.hpp"
+#include "../include/colors.hpp"
+#include "../include/Primitives/triangle.hpp"
+#include "../include/Primitives/rectangle.hpp"
 
 //define lamina window types
 #define LM_RESIZABLE_WINDOW			0x0
@@ -18,6 +21,8 @@ namespace lm
 	class Window
 	{
 	public:
+		GLFWwindow* window;
+
 		Window() : window(NULL) {};
 		Window(lm::vec2<int> windowSize, std::string windowName, int windowHint) { CreateWindow(windowSize, windowName, windowHint); }
 
@@ -42,8 +47,11 @@ namespace lm
 		bool IsOpen() { return !glfwWindowShouldClose(window); }
 		void Close() { glfwSetWindowShouldClose(window, true); }
 
+		void Clear(lm::Color color);
+
+		template<typename T>
+		void Draw(T target);
+
 		void Display() { glfwSwapBuffers(window); }
-//	private:
-		GLFWwindow* window;
 	};
 }

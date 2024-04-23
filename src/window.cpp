@@ -59,3 +59,27 @@ bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, 
 	}
 	else return true;
 }
+
+void lm::Window::Clear(lm::Color color)
+{
+	glfwMakeContextCurrent(window);
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
+
+	lm::ColorF floatColor = lm::GetFloatColor(color);
+	glClearColor(floatColor.r, floatColor.g, floatColor.b, floatColor.a);
+	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+template<typename T>
+void lm::Window::Draw(T target)
+{
+	if (std::is_same(T, lm::Rectangle))
+	{
+
+	}
+	else if (std::is_same(T, lm::Triangle))
+	{
+
+	}
+	else std::cout << "Undefined drawing type" << std::endl;
+}

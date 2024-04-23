@@ -9,7 +9,7 @@ namespace lm
 		Type x;
 		Type y;
 
-		vec2() : x(NULL), y(NULL) {};
+		vec2() : x(0), y(0) {};
 		vec2(Type xArg, Type yArg) : x(xArg), y(yArg) {};
 
 		vec2 operator+(vec2 other) { return vec2(x + other.x, y + other.y); }
@@ -24,5 +24,10 @@ namespace lm
 
 		Type GetDotProduct(vec2 other) { return (x * other.x) + (y * other.y); }
 		Type GetFlatCrossProduct(vec2 other) {return (x * other.y) - (y * other.x); }
+	};
+
+	struct vertex
+	{
+		double x, y, z;
 	};
 }

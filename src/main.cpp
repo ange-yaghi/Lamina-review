@@ -8,19 +8,15 @@
 int main()
 {
 	if (!glfwInit()) return -1;
-	lm::Window window(lm::vec2<int>(500, 500), "test window", NULL);
-	//window.CreateWindow(lm::vec2<int>(500, 500), "test window", NULL);
-	glfwMakeContextCurrent(window.window);
-
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) return -1;
+	lm::Window window(lm::vec2<int>(500, 500), "test window", LM_RESIZABLE_WINDOW);
 
 	while (window.IsOpen())
 	{
 		glfwPollEvents();
 
-		glClearColor(LM_COLOR_MDNTBLUE);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glfwSwapBuffers(window.window);
+		window.Clear(lm::Color{ 12, 111, 243, 255 });
+
+		window.Display();
 	}
 	glfwTerminate();
 	return 0;
