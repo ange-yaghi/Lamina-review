@@ -8,7 +8,7 @@
 int main()
 {
 	if (!glfwInit()) return -1;
-	lm::Window window(lm::vec2<int>(500, 500), "test window", LM_RESIZABLE_WINDOW);
+	lm::Window window(lm::vec2<int>(800, 500), "test window", LM_WINDOW_DEFAULT);
 
 	while (window.IsOpen())
 	{
