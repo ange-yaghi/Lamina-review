@@ -1,4 +1,4 @@
-#include "../include/window.hpp"
+#include "../Lamina/include/window.hpp"
 
 bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints)
 {

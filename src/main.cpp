@@ -1,9 +1,9 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "../include/colors.hpp"
-#include "../include/window.hpp"
-#include "../include/vec2.hpp"
+#include <../Lamina/include/colors.hpp>
+#include <../Lamina/include/window.hpp>
+#include <../Lamina/include/Math/vec2.hpp>
 
 int main()
 {

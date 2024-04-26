@@ -1,4 +1,4 @@
-#include "../include/colors.hpp"
+#include "../Lamina/include/colors.hpp"
 
 lm::Color lm::Get8BitColor(lm::ColorF color)
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/vec2.hpp"
+#include "../Lamina/include/Math/vec2.hpp"
 
 namespace lm
 {

@@ -4,10 +4,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include "../include/vec2.hpp"
-#include "../include/colors.hpp"
-#include "../include/Primitives/triangle.hpp"
-#include "../include/Primitives/rectangle.hpp"
+#include "../Lamina/include/Math/vec2.hpp"
+#include "../Lamina/include/colors.hpp"
+#include "../Lamina/include/Primitives/triangle.hpp"
+#include "../Lamina/include/Primitives/rectangle.hpp"
 
 //define lamina window types
 #define LM_WINDOW_RESIZABLE			0b00000001
