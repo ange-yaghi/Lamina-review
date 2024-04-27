@@ -15,8 +15,7 @@ add_library("Lamina"
 	Lamina/src/Primitives/rectangle.cpp
 	Lamina/src/Primitives/triangle.cpp
 	Lamina/src/colors.cpp
-	Lamina/src/Math/matrix.cpp
-	Lamina/src/Math/vec3.cpp
+	
 
 	#header files
 	Lamina/include/window.hpp
@@ -24,9 +23,19 @@ add_library("Lamina"
 	Lamina/include/Math/vec2.hpp
 	Lamina/include/Primitives/rectangle.hpp
 	Lamina/include/Primitives/triangle.hpp
-	Lamina/include/Math/matrix.hpp
-	Lamina/include/Math/vec3.hpp
 )
+add_subdirectory(dependencies/GLFW)
+target_include_directories("Lamina" PRIVATE dependencies)
+target_link_libraries("Lamina" glfw OpenGL::GL)
+
+add_executable("Matrix-test"
+	#source files
+	tests/matrix/src/mat-test-main.cpp
+
+	#header files
+)
+target_include_directories("Matrix-test" PRIVATE dependencies)
+target_link_libraries("Matrix-test" "Lamina")
 
 add_executable("Lamina-main" 
 	#source files
@@ -35,9 +44,7 @@ add_executable("Lamina-main"
 	#header files
 )
 
-add_subdirectory(dependencies/GLFW)
 target_include_directories("Lamina-main" PRIVATE dependencies)
-target_link_libraries("Lamina-main" "Lamina" glfw OpenGL::GL)
 
-target_include_directories("Lamina" PRIVATE dependencies)
-target_link_libraries("Lamina" glfw OpenGL::GL)
+target_link_libraries("Lamina-main" "Lamina")
+#set_source_files_properties(src/main.cpp PROPERTIES COMPILE_OPTIONS "-Wall; -Wextra")

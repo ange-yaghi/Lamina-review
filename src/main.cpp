@@ -4,6 +4,7 @@
 #include <../Lamina/include/colors.hpp>
 #include <../Lamina/include/window.hpp>
 #include <../Lamina/include/Math/vec2.hpp>
+#include <../Lamina/include/Math/matrix.hpp>
 
 int main()
 {
