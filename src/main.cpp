@@ -1,6 +1,6 @@
 #include <iostream>
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <GLFW/include/GLFW/glfw3.h>
 #include <../Lamina/include/colors.hpp>
 #include <../Lamina/include/window.hpp>
 #include <../Lamina/include/Math/vec2.hpp>

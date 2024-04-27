@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include <GLFW/include/GLFW/glfw3.h>
 #include <string>
 #include "../Lamina/include/Math/vec2.hpp"
 #include "../Lamina/include/colors.hpp"
