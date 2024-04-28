@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdint.h>
 
+
 #define LM_ROTATE_X_PLANE 0b001
 #define LM_ROTATE_Y_PLANE 0b010
 #define LM_ROTATE_Z_PLANE 0b100
@@ -20,7 +21,17 @@ namespace lm
 		}
 		~Matrix() {};
 		
-		void CreateMatrix(std::vector<std::vector<double>> _matrix) { matrix = _matrix; }
+		void CreateMatrix(std::vector<std::vector<double>> _matrix) 
+		{
+			bool matrixCompatible = true;
+			if (_matrix.size() != rows) matrixCompatible = false;
+			for (int i = 0; i < _matrix.size(); i++)
+			{
+				if (_matrix[i].size() != columns) matrixCompatible = false;
+			}
+			if (matrixCompatible) matrix = _matrix;
+			else std::cout << "Unable to assign matix. Incompatible size" << std::endl;
+		}
 		void ChangeMatrixValue(uint8_t row, uint8_t column, double value) { matrix[row][column] = value; }
 
 		Matrix operator+ (double scalar)
@@ -102,13 +113,23 @@ namespace lm
 			}
 			else 
 			{
-				std::cout << "Matrixes can not be multiplied. Incompatible size." << std::endl;
+				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
 				return Matrix();
 			}
 		}
 
-		const uint8_t rows;
-		const uint8_t columns;
+		Matrix operator= (Matrix& other)
+		{
+			if (this == &other) return *this;
+
+			this->rows = other.rows;
+			this->columns = other.columns;
+			this->matrix = other.matrix;
+			return *this;
+		}
+
+		uint8_t rows;
+		uint8_t columns;
 
 //		rows ↓		columns ↓
 		std::vector<std::vector<double>> matrix;
@@ -172,7 +193,7 @@ namespace lm
 			}
 			else
 			{
-				std::cout << "Matrixes can not be multiplied. Incompatible size." << std::endl;
+				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
 				return Matrix();
 			}
 		}
@@ -242,7 +263,7 @@ namespace lm
 			}
 			else
 			{
-				std::cout << "Matrixes can not be multiplied. Incompatible size." << std::endl;
+				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
 				return Matrix();
 			}
 		}
@@ -370,7 +391,7 @@ namespace lm
 			}
 			else
 			{
-				std::cout << "Matrixes can not be multiplied. Incompatible size." << std::endl;
+				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
 				return Matrix();
 			}
 		}
