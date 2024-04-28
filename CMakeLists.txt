@@ -19,6 +19,7 @@ add_library("Lamina"
 	Lamina/src/Primitives/triangle.cpp
 	Lamina/src/colors.cpp
 	Lamina/src/Math/vector.cpp
+	Lamina/src/Math/vertex.cpp
 
 	#header files
 	Lamina/include/window.hpp
@@ -27,6 +28,7 @@ add_library("Lamina"
 	Lamina/include/Primitives/rectangle.hpp
 	Lamina/include/Primitives/triangle.hpp
 	Lamina/include/Math/vector.hpp
+	Lamina/include/Math/vertex.hpp
 )
 #add_subdirectory(dependencies/GLFW)
 target_include_directories("Lamina" PRIVATE dependencies)

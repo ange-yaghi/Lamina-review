@@ -3,13 +3,7 @@
 lm::vec4d lm::TranslateVector(vec4d vector, double x, double y, double z)
 {
 	Matrix workingMatrix(4, 1);
-	std::vector<std::vector<double>> values;
-	values.resize(4);
-	values[0].push_back(vector.vector[0]);
-	values[1].push_back(vector.vector[1]);
-	values[2].push_back(vector.vector[2]);
-	values[3].push_back(vector.vector[3]);
-	workingMatrix.CreateMatrix(values);
+	workingMatrix.CreateMatrix({ {vector.vector[0]}, {vector.vector[1]}, {vector.vector[2]}, {vector.vector[3]} });
 	TranslationMatrix translationMatrix(x, y, z);
 	
 	Matrix result = translationMatrix * workingMatrix;
@@ -21,13 +15,7 @@ lm::vec4d lm::TranslateVector(vec4d vector, double x, double y, double z)
 lm::vec4d lm::ScaleVector(vec4d vector, double x, double y, double z)
 {
 	Matrix workingMatrix(4, 1);
-	std::vector<std::vector<double>> values;
-	values.resize(4);
-	values[0].push_back(vector.vector[0]);
-	values[1].push_back(vector.vector[1]);
-	values[2].push_back(vector.vector[2]);
-	values[3].push_back(vector.vector[3]);
-	workingMatrix.CreateMatrix(values);
+	workingMatrix.CreateMatrix({ {vector.vector[0]}, {vector.vector[1]}, {vector.vector[2]}, {vector.vector[3]} });
 	ScaleMatrix scaleMatrix(x, y, z);
 
 	Matrix result = scaleMatrix * workingMatrix;
@@ -39,13 +27,7 @@ lm::vec4d lm::ScaleVector(vec4d vector, double x, double y, double z)
 lm::vec4d lm::RotateVector(vec4d vector, double angle, int plane)
 {
 	Matrix workingMatrix(4, 1);
-	std::vector<std::vector<double>> values;
-	values.resize(4);
-	values[0].push_back(vector.vector[0]);
-	values[1].push_back(vector.vector[1]);
-	values[2].push_back(vector.vector[2]);
-	values[3].push_back(vector.vector[3]);
-	workingMatrix.CreateMatrix(values);
+	workingMatrix.CreateMatrix({ {vector.vector[0]}, {vector.vector[1]}, {vector.vector[2]}, {vector.vector[3]} });
 	RotationMatrix rotationMatrix(angle, plane);
 
 	Matrix result = rotationMatrix * workingMatrix;
