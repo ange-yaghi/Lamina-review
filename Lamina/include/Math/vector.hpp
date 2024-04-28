@@ -16,13 +16,13 @@ namespace lm
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
-		Vector operator+ (const T other)
+		Vector operator+ (const t_vector other)
 		{
-			Vector<T, size> result;
-			for (int i = 0; i < size; i++) result.vector[] += other;
+			Vector<t_vector, size> result;
+			for (int i = 0; i < size; i++) result.vector[i] += other;
 			return result;
 		}
-		Vector operator- (const T other)
+		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < size; i++) vector[i] -= other;
 			return *this;
