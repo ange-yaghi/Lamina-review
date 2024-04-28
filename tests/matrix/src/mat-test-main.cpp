@@ -1,5 +1,8 @@
 #include <iostream>
 #include <../Lamina/include/Math/matrix.hpp>
+#include <../Lamina/include/Math/vector.hpp>
+#include <windows.h>
+#include <chrono>
 
 int main()
 {
@@ -15,6 +18,9 @@ int main()
 		{3},
 		{1}
 	};
+
+	lm::vec4d vector;
+	vector.CreateVector({ 1, 2, 3, 1 });
 
 	lm::Matrix matrix((uint8_t)mat1.size(), (uint8_t)mat1[0].size());
 	matrix.CreateMatrix(mat1);
@@ -32,41 +38,78 @@ int main()
 		}
 		std::cout << std::endl;
 	}
-	std::cout << "\nTranslation matrix:\n\n";
 
-	lm::TranslationMatrix matt(1, 1, 1);
-	lm::Matrix resultt = matt * other;
-	for (int i = 0; i < resultt.rows; i++)
+	bool test = true;
+	const auto start = std::chrono::steady_clock::now();
+	for(int t = 0; t < 10000; t++)
 	{
-		for (int j = 0; j < resultt.columns; j++)
+		std::cout << "\nTranslation matrix:\tVector\n\n";
+		int rand1 = rand();
+		int rand2 = rand();
+		int rand3 = rand();
+		lm::TranslationMatrix matt(t * rand1, t * rand2, t * rand3);
+		lm::Matrix resultt = matt * other;
+
+		lm::vec4d resVT = lm::TranslateVector(vector, t * rand1, t * rand2, t * rand3);
+
+		for (int i = 0; i < resultt.rows; i++)
 		{
-			std::cout << resultt.matrix[i][j] << "\t";
+			for (int j = 0; j < resultt.columns; j++)
+			{
+				std::cout << resultt.matrix[i][j] << "\t\t\t" << resVT.vector[i];
+				if (resultt.matrix[i][j] != resVT.vector[i]) test = false;
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
+		std::cout << "\nScale matris:\t\tVector\n\n";
+
+		lm::ScaleMatrix mats(t * rand1, t * rand2, t * rand3);
+		lm::Matrix results = mats * other;
+
+		lm::vec4d resVS = lm::ScaleVector(vector, t * rand1, t * rand2, t * rand3);
+		for (int i = 0; i < results.rows; i++)
+		{
+			for (int j = 0; j < results.columns; j++)
+			{
+				std::cout << results.matrix[i][j] << "\t\t\t" << resVS.vector[i];
+				if (results.matrix[i][j] != resVS.vector[i]) test = false;
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "\nRotation matrix:\tVector\n\n";
+
+		lm::RotationMatrix matr(t * rand1, LM_ROTATE_Z_PLANE);
+		lm::Matrix resultr = matr * other;
+
+		lm::vec4d resVR = lm::RotateVector(vector, t * rand1, LM_ROTATE_Z_PLANE);
+		for (int i = 0; i < resultr.rows; i++)
+		{
+			for (int j = 0; j < resultr.columns; j++)
+			{
+				double round = resultr.matrix[i][j] * 10000;
+				double roundVec = resVR.vector[i] * 10000;
+				std::cout << std::round(round) / 10000 << "\t\t\t" << std::round(roundVec) / 10000;
+				if (resultr.matrix[i][j] != resVR.vector[i]) test = false;
+			}
+			std::cout << std::endl;
+		}
 	}
-	std::cout << "\nScale matris:\n\n";
+	const auto end = std::chrono::steady_clock::now();
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-	lm::ScaleMatrix mats(2, 4, 8);
-	lm::Matrix results = mats * other;
-	for (int i = 0; i < results.rows; i++)
+	if (test)
 	{
-		for (int j = 0; j < results.columns; j++)
-		{
-			std::cout << results.matrix[i][j] << "\t";
-		}
-		std::cout << std::endl;
+		SetConsoleTextAttribute(hConsole, 10);
+		std::cout << "\n[PASSED]";
+		SetConsoleTextAttribute(hConsole, 7);
+		std::cout << " Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start) << std::endl;
 	}
-	std::cout << "\nRotation matrix:\n\n";
-
-	lm::RotationMatrix matr(20, LM_ROTATE_Z_PLANE);
-	lm::Matrix resultr = matr * other;
-	for (int i = 0; i < resultr.rows; i++)
+	else
 	{
-		for (int j = 0; j < resultr.columns; j++)
-		{
-			std::cout << resultr.matrix[i][j] << "\t";
-		}
-		std::cout << std::endl;
+		SetConsoleTextAttribute(hConsole, 12);
+		std::cout << "\n[FAILED]";
+		SetConsoleTextAttribute(hConsole, 7);
+		std::cout << " Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start) << std::endl;
 	}
 
 	return 0;

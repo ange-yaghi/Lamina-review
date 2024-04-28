@@ -1,6 +1,4 @@
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/include/GLFW/glfw3.h>
 #include <../Lamina/include/colors.hpp>
 #include <../Lamina/include/window.hpp>
 #include <../Lamina/include/Math/vec2.hpp>
@@ -15,7 +13,7 @@ int main()
 	{
 		glfwPollEvents();
 
-		window.Clear(lm::Color{ 12, 111, 243, 255 });
+		window.Clear(lm::Color{ 100, 102, 237, 255 });
 
 		window.Display();
 	}
