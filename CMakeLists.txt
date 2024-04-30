@@ -43,6 +43,15 @@ add_executable("Matrix-test"
 target_include_directories("Matrix-test" PRIVATE dependencies)
 target_link_libraries("Matrix-test" "Lamina")
 
+add_executable("Vertex-test"
+	#source files
+	tests/vertex/src/ver-test-main.cpp
+
+	#header files
+)
+target_include_directories("Vertex-test" PRIVATE dependencies)
+target_link_libraries("Vertex-test" "Lamina")
+
 add_executable("Lamina-main" 
 	#source files
 	src/main.cpp

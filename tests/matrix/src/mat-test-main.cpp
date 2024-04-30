@@ -28,21 +28,21 @@ void Test1()
 	lm::Matrix other((uint8_t)mat2.size(), (uint8_t)mat2[0].size());
 	other.CreateMatrix(mat2);
 
-	lm::Matrix result = matrix * other;
+	//lm::Matrix result = matrix * other;
 
-	for (int i = 0; i < result.rows; i++)
-	{
-		for (int j = 0; j < result.columns; j++)
-		{
-			std::cout << result.matrix[i][j] << "\t";
-		}
-		std::cout << std::endl;
-	}
+	//for (int i = 0; i < result.rows; i++)
+	//{
+	//	for (int j = 0; j < result.columns; j++)
+	//	{
+	//		std::cout << result.matrix[i][j] << "\t";
+	//	}
+	//	std::cout << std::endl;
+	//}
 
 	bool test = true;
 	srand(time(NULL));
 	const auto start = std::chrono::steady_clock::now();
-	for (int t = 0; t < 1000; t++)
+	for (int t = 0; t < 100000; t++)
 	{
 		//std::cout << "\nTranslation matrix:\tVector\n\n";
 		int rand1 = rand() % 10;
@@ -60,7 +60,7 @@ void Test1()
 				//std::cout << resultt.matrix[i][j] << "\t\t\t" << resVT.vector[i];
 				if (resultt.matrix[i][j] != resVT.vector[i]) test = false;
 			}
-			std::cout << std::endl;
+			//std::cout << std::endl;
 		}
 		//std::cout << "\nScale matris:\t\tVector\n\n";
 
@@ -75,7 +75,7 @@ void Test1()
 				//std::cout << results.matrix[i][j] << "\t\t\t" << resVS.vector[i];
 				if (results.matrix[i][j] != resVS.vector[i]) test = false;
 			}
-			std::cout << std::endl;
+			//std::cout << std::endl;
 		}
 		//std::cout << "\nRotation matrix:\tVector\n\n";
 
@@ -92,7 +92,7 @@ void Test1()
 				//std::cout << std::round(round) / 10000 << "\t\t\t" << std::round(roundVec) / 10000;
 				if (resultr.matrix[i][j] != resVR.vector[i]) test = false;
 			}
-			std::cout << std::endl;
+			//std::cout << std::endl;
 		}
 	}
 	const auto end = std::chrono::steady_clock::now();
@@ -116,7 +116,7 @@ void Test1()
 
 void Test2()
 {
-	int numberOfTries = 1000;
+	int numberOfTries = 5000;
 	int numberOfTests = 100;
 
 	std::chrono::milliseconds totalExecutionTimeTranslation(0);
@@ -173,6 +173,7 @@ void Test2()
 int main()
 {
 	Test2();
+	Test1();
 
 	return 0;
 }

@@ -10,7 +10,7 @@ namespace lm
 	class Vector
 	{
 	public:
-		Vector() : size(t_vec_size) { vector = std::vector<double>(size, 0); };
+		Vector() : size(t_vec_size) { vector.resize(size); };
 		void CreateVector(std::vector<t_vector> _vector)
 		{
 			if (_vector.size() == size) vector = _vector;
@@ -43,6 +43,16 @@ namespace lm
 		uint8_t size;
 		std::vector<t_vector> vector;
 	};
+
+	typedef Vector<unsigned int, 2> vec2u;
+	typedef Vector<unsigned int, 3> vec3u;
+	typedef Vector<unsigned int, 4> vec4u;
+
+	typedef Vector<unsigned int, 9> triangle;
+
+	typedef Vector<int, 2> vec2i;
+	typedef Vector<int, 3> vec3i;
+	typedef Vector<int, 4> vec4i;
 
 	typedef Vector<float, 2> vec2f;
 	typedef Vector<float, 3> vec3f;
