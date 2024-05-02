@@ -1,9 +1,9 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <stdint.h>
-#include <glad/glad.h>
 #include "../Lamina/include/Math/matrix.hpp"
+#include <glad/glad.h>
+#include <iostream>
+#include <stdint.h>
+#include <vector>
 
 namespace lm
 {
@@ -12,7 +12,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
-		void CreateVector(std::vector<t_vector> _vector)
+		void CreateVector(const std::vector<t_vector>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), t_vec_size, vector.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
@@ -41,6 +41,11 @@ namespace lm
 		}
 
 		std::array<t_vector, t_vec_size> vector;
+
+		inline t_vector& x() { return vector[0]; }
+		inline t_vector& y() { return vector[1]; }
+		inline t_vector& z() { return vector[2]; }
+		inline t_vector& w() { return vector[3]; }
 	};
 
 	typedef Vector<unsigned int, 2> vec2u;

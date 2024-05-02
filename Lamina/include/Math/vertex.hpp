@@ -1,11 +1,11 @@
 #pragma once
-#include "../Lamina/include/Math/vector.hpp"
 #include "../Lamina/include/Math/matrix.hpp"
-#include <iostream>
+#include "../Lamina/include/Math/vector.hpp"
 #include <fstream>
+#include <iostream>
 #include <sstream>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace lm
 {

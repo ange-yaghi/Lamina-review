@@ -1,6 +1,6 @@
 #include <../Lamina/include/Math/vertex.hpp>
-#include <iostream>
 #include <chrono>
+#include <iostream>
 
 int main()
 {
@@ -16,15 +16,15 @@ int main()
 	for (int i = 0; i < test.textureCoordinates.size(); i++) std::cout << test.textureCoordinates[i].vector[0] << "\t" << test.textureCoordinates[i].vector[1] << "\n";
 	std::cout << "\nfaces:\n\n";
 	for (int i = 0; i < test.faces.size(); i++)
-		std::cout << test.faces[i][0].vector[0] << "/"
-		<< test.faces[i][0].vector[1] << "/"
-		<< test.faces[i][0].vector[2] << "\t"
-		<< test.faces[i][1].vector[0] << "/"
-		<< test.faces[i][1].vector[1] << "/"
-		<< test.faces[i][1].vector[2] << "\t"
-		<< test.faces[i][2].vector[0] << "/"
-		<< test.faces[i][2].vector[1] << "/"
-		<< test.faces[i][2].vector[2] << "\n";
+		std::cout << test.faces[i][0].x() << "/"
+		<< test.faces[i][0].y() << "/"
+		<< test.faces[i][0].z() << "\t"
+		<< test.faces[i][1].x() << "/"
+		<< test.faces[i][1].y() << "/"
+		<< test.faces[i][1].z() << "\t"
+		<< test.faces[i][2].x() << "/"
+		<< test.faces[i][2].y() << "/"
+		<< test.faces[i][2].z() << "\n";
 
 	auto startGL = std::chrono::steady_clock::now();
 	lm::GLObject testObj(&test);
