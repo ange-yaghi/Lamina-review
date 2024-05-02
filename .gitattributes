@@ -3,8 +3,9 @@
 ###############################################################################
 * text=auto
 * linguist-vendored
-*.h linguist-vendored=true
-*.c linguist-vendored=true
+*.cpp linguist-vendored=false
+*.hpp linguist-vendored=false
+*.txt linguist-vendored=false
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
