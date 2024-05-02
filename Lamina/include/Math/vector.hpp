@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <stdint.h>
+#include <glad/glad.h>
 #include "../Lamina/include/Math/matrix.hpp"
 
 namespace lm
@@ -10,22 +11,22 @@ namespace lm
 	class Vector
 	{
 	public:
-		Vector() : size(t_vec_size) { vector.resize(size); };
+		Vector() : vector{} {};
 		void CreateVector(std::vector<t_vector> _vector)
 		{
-			if (_vector.size() == size) vector = _vector;
+			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), t_vec_size, vector.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
 		Vector operator+ (const t_vector other)
 		{
-			Vector<t_vector, size> result;
-			for (int i = 0; i < size; i++) result.vector[i] += other;
+			Vector<t_vector, vector.size()> result;
+			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
 			return result;
 		}
 		Vector operator- (const t_vector other)
 		{
-			for (int i = 0; i < size; i++) vector[i] -= other;
+			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
 		Vector operator = (const Vector &other)
@@ -35,20 +36,16 @@ namespace lm
 				return *this;
 			}
 
-			this->size = other.size;
 			this->vector = other.vector;
 			return *this;
 		}
 
-		uint8_t size;
-		std::vector<t_vector> vector;
+		std::array<t_vector, t_vec_size> vector;
 	};
 
 	typedef Vector<unsigned int, 2> vec2u;
 	typedef Vector<unsigned int, 3> vec3u;
 	typedef Vector<unsigned int, 4> vec4u;
-
-	typedef Vector<unsigned int, 9> triangle;
 
 	typedef Vector<int, 2> vec2i;
 	typedef Vector<int, 3> vec3i;
@@ -61,6 +58,11 @@ namespace lm
 	typedef Vector<double, 2> vec2d;
 	typedef Vector<double, 3> vec3d;
 	typedef Vector<double, 4> vec4d;
+
+	//vert1: xyz, vert2: xyz, vert3: xyz
+	typedef Vector<GLfloat, 4> GLTriangleVert;
+	typedef Vector<GLfloat, 3> GLTriangleNorm;
+	typedef Vector<GLfloat, 2> GLTriangleTextr;
 
 	vec4d TranslateVector(vec4d vector, double x, double y, double z);
 	vec4d ScaleVector(vec4d vector, double x, double y, double z);
