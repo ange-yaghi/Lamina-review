@@ -119,15 +119,15 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 	}
 }
 
-void lm::WavefrontObject::TranslateArray(double x, double y, double z)
+void lm::WavefrontObject::TranslateObject(double x, double y, double z)
 {
 	for(int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
 }
-void lm::WavefrontObject::ScaleArray(double x, double y, double z)
+void lm::WavefrontObject::ScaleObject(double x, double y, double z)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
 }
-void lm::WavefrontObject::RotateArray(double angle, int plane)
+void lm::WavefrontObject::RotateObject(double angle, int plane)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
 }

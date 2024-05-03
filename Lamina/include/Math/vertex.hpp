@@ -17,9 +17,9 @@ namespace lm
 			vertices(_vertices), normals(_normals), textureCoordinates(_textureCoordinates) {};
 		WavefrontObject(std::string path); //load from an .obj file
 
-		void TranslateArray(double x, double y, double z);
-		void ScaleArray(double x, double y, double z);
-		void RotateArray(double angle, int plane);
+		void TranslateObject(double x, double y, double z);
+		void ScaleObject(double x, double y, double z);
+		void RotateObject(double angle, int plane);
 	//private:
 		std::vector<vec4d> vertices;
 		std::vector<vec3d> normals;
