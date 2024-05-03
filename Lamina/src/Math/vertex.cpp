@@ -136,6 +136,10 @@ void lm::GLObject::ParseObject()
 {
 	if (object == nullptr) return;
 
+	vertices.clear();
+	normals.clear();
+	textures.clear();
+
 	vertices.resize(object->faces.size());
 	normals.resize(object->faces.size());
 	textures.resize(object->faces.size());

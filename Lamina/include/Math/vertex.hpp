@@ -33,9 +33,13 @@ namespace lm
 	{
 	public:
 		GLObject() : object(nullptr) {};
-		GLObject(WavefrontObject* _object) : object(_object) {};
+		GLObject(WavefrontObject* _object) : object(_object) { ParseObject(); };
 
 		void ParseObject();
+
+		void TranslateObject(double x, double y, double z) { object->TranslateObject(x, y, z); ParseObject(); }
+		void ScaleObject(double x, double y, double z) { object->ScaleObject(x, y, z); ParseObject(); }
+		void RotateObject(double angle, int plane) { object->RotateObject(angle, plane); ParseObject(); }
 
 		WavefrontObject* object;
 		std::vector<std::array<GLTriangleVert, 3>> vertices;

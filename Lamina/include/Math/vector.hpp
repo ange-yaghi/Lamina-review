@@ -13,6 +13,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
+		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::vector<t_vector>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), t_vec_size, vector.begin());
@@ -50,6 +51,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
+		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::vector<t_vector>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 2, vector.begin());
@@ -90,6 +92,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
+		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::vector<t_vector>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 3, vector.begin());
@@ -131,6 +134,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
+		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::vector<t_vector>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 4, vector.begin());
@@ -184,12 +188,11 @@ namespace lm
 	typedef Vector<double, 3> vec3d;
 	typedef Vector<double, 4> vec4d;
 
-	//vert1: xyz, vert2: xyz, vert3: xyz
 	typedef Vector<GLfloat, 4> GLTriangleVert;
 	typedef Vector<GLfloat, 3> GLTriangleNorm;
 	typedef Vector<GLfloat, 2> GLTriangleTextr;
 
-	vec4d TranslateVector(vec4d vector, double x, double y, double z);
-	vec4d ScaleVector(vec4d vector, double x, double y, double z);
-	vec4d RotateVector(vec4d vector, double angle, int plane);
+	vec4d TranslateVector(vec4d &vector, double x, double y, double z);
+	vec4d ScaleVector(vec4d &vector, double x, double y, double z);
+	vec4d RotateVector(vec4d &vector, double angle, int plane);
 }
