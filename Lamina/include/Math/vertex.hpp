@@ -37,9 +37,9 @@ namespace lm
 
 		void ParseObject();
 
-		void TranslateObject(double x, double y, double z) { object->TranslateObject(x, y, z); ParseObject(); }
-		void ScaleObject(double x, double y, double z) { object->ScaleObject(x, y, z); ParseObject(); }
-		void RotateObject(double angle, int plane) { object->RotateObject(angle, plane); ParseObject(); }
+		inline void TranslateObject(double x, double y, double z) { object->TranslateObject(x, y, z); ParseObject(); }
+		inline void ScaleObject(double x, double y, double z) { object->ScaleObject(x, y, z); ParseObject(); }
+		inline void RotateObject(double angle, int plane) { object->RotateObject(angle, plane); ParseObject(); }
 
 		WavefrontObject* object;
 		std::vector<std::array<GLTriangleVert, 3>> vertices;

@@ -140,9 +140,9 @@ void lm::GLObject::ParseObject()
 	normals.clear();
 	textures.clear();
 
-	vertices.resize(object->faces.size());
-	normals.resize(object->faces.size());
-	textures.resize(object->faces.size());
+	//vertices.resize(object->faces.size());
+	//normals.resize(object->faces.size());
+	//textures.resize(object->faces.size());
 
 	vec3u vertTemp;
 	vec3u normTemp;
@@ -207,8 +207,8 @@ void lm::GLObject::ParseObject()
 			(GLfloat)object->textureCoordinates[textrTemp.vector[2] - 1].vector[0],
 			(GLfloat)object->textureCoordinates[textrTemp.vector[2] - 1].vector[1], });
 
-		vertices[i] = vertBuf;
-		normals[i] = normBuf;
-		textures[i] = textrBuf;
+		vertices.push_back(vertBuf);
+		normals.push_back(normBuf);
+		textures.push_back(textrBuf);
 	}
 }

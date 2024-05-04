@@ -14,7 +14,7 @@ namespace lm
 	public:
 		Vector() : vector{} {};
 		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
-		void CreateVector(const std::vector<t_vector>& _vector)
+		void CreateVector(const std::array<t_vector, t_vec_size>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), t_vec_size, vector.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
@@ -65,7 +65,7 @@ namespace lm
 	public:
 		Vector() : vector{} {};
 		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
-		void CreateVector(const std::vector<t_vector>& _vector)
+		void CreateVector(const std::array<t_vector, 2>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 2, vector.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
@@ -104,6 +104,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (TranslationMatrix& other)
 		{
@@ -116,6 +117,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (ScaleMatrix& other)
 		{
@@ -128,6 +130,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (RotationMatrix& other)
 		{
@@ -140,6 +143,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 
 		Vector operator = (const Vector& other)
@@ -166,7 +170,7 @@ namespace lm
 	public:
 		Vector() : vector{} {};
 		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
-		void CreateVector(const std::vector<t_vector>& _vector)
+		void CreateVector(const std::array<t_vector, 3>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 3, vector.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
@@ -206,6 +210,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (TranslationMatrix& other)
 		{
@@ -219,6 +224,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (ScaleMatrix& other)
 		{
@@ -232,6 +238,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (RotationMatrix& other)
 		{
@@ -245,6 +252,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 
 		Vector operator = (const Vector& other)
@@ -272,7 +280,7 @@ namespace lm
 	public:
 		Vector() : vector{} {};
 		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
-		void CreateVector(const std::vector<t_vector>& _vector)
+		void CreateVector(const std::array<t_vector, 4>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 4, vector.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
@@ -313,6 +321,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (TranslationMatrix& other)
 		{
@@ -327,6 +336,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (ScaleMatrix& other)
 		{
@@ -341,6 +351,7 @@ namespace lm
 
 				return result;
 			}
+			else return *this;
 		}
 		Vector operator* (RotationMatrix& other)
 		{
@@ -355,6 +366,7 @@ namespace lm
 
 				return result;
 			}
+			return *this;
 		}
 
 		Vector operator = (const Vector& other)
