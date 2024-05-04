@@ -63,3 +63,5 @@ target_include_directories("Lamina-main" PRIVATE dependencies)
 
 target_link_libraries("Lamina-main" "Lamina")
 #set_source_files_properties(src/main.cpp PROPERTIES COMPILE_OPTIONS "-Wall; -Wextra")
+
+file(COPY "C:/Users/borbg/Documents/CPP Projects/Lamina/Objects" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")

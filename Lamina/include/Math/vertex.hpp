@@ -33,7 +33,7 @@ namespace lm
 	{
 	public:
 		GLObject() : object(nullptr) {};
-		GLObject(WavefrontObject* _object) : object(_object) { ParseObject(); };
+		GLObject(WavefrontObject& _object) : object(&_object) { ParseObject(); };
 
 		void ParseObject();
 

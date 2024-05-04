@@ -117,7 +117,7 @@ void Test1()
 void Test2()
 {
 	int numberOfTries = 5000;
-	int numberOfTests = 100;
+	int numberOfTests = 10;
 
 	std::chrono::milliseconds totalExecutionTimeTranslation(0);
 	std::chrono::milliseconds totalExecutionTimeScaling(0);
@@ -172,7 +172,7 @@ void Test2()
 
 int main()
 {
-	Test2();
+	//Test2();
 	Test1();
 
 	return 0;

@@ -4,8 +4,11 @@
 
 int main()
 {
+	std::string name;
+	std::getline(std::cin, name);
+
 	auto start = std::chrono::steady_clock::now();
-	lm::WavefrontObject test("C:/Users/borbg/Documents/CPP Projects/Lamina/Objects/163k_triangulated_Mesh_Icosphere.obj");
+	lm::WavefrontObject test("Objects/" + name + ".obj");
 	auto end = std::chrono::steady_clock::now();
 
 	float avVertexLoad = test.vertices.size() / std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)).count() * 1000;
@@ -30,7 +33,7 @@ int main()
 	//	<< test.faces[i][2].z() << "\n";
 
 	auto startGL = std::chrono::steady_clock::now();
-	lm::GLObject testObj(&test);
+	lm::GLObject testObj(test);
 	auto endGL = std::chrono::steady_clock::now();
 
 	float avVertex = test.vertices.size() / std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL)).count() * 1000;
@@ -55,7 +58,21 @@ int main()
 	endGL = std::chrono::steady_clock::now();
 
 	avVertex = test.vertices.size() / std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL)).count() * 1000;
-	std::cout << "\nRotation: " << std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL) << "\t\tvertices per second: " << avVertex << std::endl;
+	std::cout << "\nRotation x: " << std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL) << "\tvertices per second: " << avVertex << std::endl;
+
+	startGL = std::chrono::steady_clock::now();
+	testObj.RotateObject(-0.2, LM_ROTATE_Y_PLANE);
+	endGL = std::chrono::steady_clock::now();
+
+	avVertex = test.vertices.size() / std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL)).count() * 1000;
+	std::cout << "\nRotation y: " << std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL) << "\tvertices per second: " << avVertex << std::endl;
+
+	startGL = std::chrono::steady_clock::now();
+	testObj.RotateObject(1, LM_ROTATE_Z_PLANE);
+	endGL = std::chrono::steady_clock::now();
+
+	avVertex = test.vertices.size() / std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL)).count() * 1000;
+	std::cout << "\nRotation z: " << std::chrono::duration_cast<std::chrono::milliseconds>(endGL - startGL) << "\tvertices per second: " << avVertex << std::endl;
 
 	//for (int i = 0; i < testObj.vertices.size(); i++) std::cout <<
 	//	testObj.vertices[i][0].vector[0] << "\t" <<
@@ -86,4 +103,7 @@ int main()
 	//	testObj.textures[i][1].vector[1] << "\t|\t" <<
 	//	testObj.textures[i][2].vector[0] << "\t" <<
 	//	testObj.textures[i][2].vector[1] << "\n";
+
+	std::string str;
+	std::getline(std::cin, str);
 }
