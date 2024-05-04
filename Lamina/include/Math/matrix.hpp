@@ -1,4 +1,5 @@
 ﻿#pragma once
+//#include "../Lamina/include/Math/vector.hpp"
 #include <iostream>
 #include <array>
 #include <vector>
@@ -21,7 +22,7 @@ namespace lm
 		}
 		~Matrix() {};
 		
-		void CreateMatrix(std::vector<std::vector<double>> _matrix) 
+		void CreateMatrix(const std::vector<std::vector<double>> &_matrix) 
 		{
 			bool matrixCompatible = true;
 			if (_matrix.size() != rows) matrixCompatible = false;
@@ -34,7 +35,7 @@ namespace lm
 		}
 		void ChangeMatrixValue(uint8_t row, uint8_t column, double value) { matrix[row][column] = value; }
 
-		Matrix operator+ (double scalar)
+		Matrix operator+ (double &scalar)
 		{
 			Matrix result(rows, columns);
 			result.CreateMatrix(matrix);
@@ -48,7 +49,7 @@ namespace lm
 			return result;
 		}
 
-		Matrix operator+ (Matrix other)
+		Matrix operator+ (Matrix &other)
 		{
 			Matrix result(rows, columns);
 			result.CreateMatrix(matrix);
@@ -62,7 +63,7 @@ namespace lm
 			return result;
 		}
 
-		Matrix operator- (double scalar)
+		Matrix operator- (double &scalar)
 		{
 			Matrix result(rows, columns);
 			result.CreateMatrix(matrix);
@@ -76,7 +77,7 @@ namespace lm
 			return result;
 		}
 
-		Matrix operator- (Matrix other)
+		Matrix operator- (Matrix &other)
 		{
 			Matrix result(rows, columns);
 			result.CreateMatrix(matrix);
@@ -90,7 +91,7 @@ namespace lm
 			return result;
 		}
 
-		Matrix operator* (Matrix other)
+		Matrix operator* (Matrix &other)
 		{
 			if (columns == other.rows)
 			{
@@ -140,34 +141,34 @@ namespace lm
 	public:
 		TranslationMatrix() : rows(4), columns(4) 
 		{ 
-			matrix = {
+			matrix = { {
 				{1, 0, 0, 0},
 				{0, 1, 0, 0},
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 
 		TranslationMatrix(double x, double y, double z) : rows(4), columns(4)
 		{
-			matrix = {
+			matrix = { {
 				{1, 0, 0, x},
 				{0, 1, 0, y},
 				{0, 0, 1, z},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 
 		~TranslationMatrix() {};
 
 		void ChangeTranlationValues(double x, double y, double z)
 		{
-			matrix = {
+			matrix = { {
 				{1, 0, 0, x},
 				{0, 1, 0, y},
 				{0, 0, 1, z},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 
 		Matrix operator* (Matrix other)
@@ -198,12 +199,11 @@ namespace lm
 			}
 		}
 
-	private:
 		const uint8_t rows;
 		const uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::vector<std::vector<double>> matrix;
+		std::array<std::array<double, 4>, 4> matrix;
 	};
 
 	class ScaleMatrix
@@ -211,33 +211,33 @@ namespace lm
 	public:
 		ScaleMatrix() : rows(4), columns(4)
 		{
-			matrix = {
+			matrix = { {
 				{1, 0, 0, 0},
 				{0, 1, 0, 0},
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 		ScaleMatrix(double x, double y, double z) : rows(4), columns(4)
 		{
-			matrix = {
+			matrix = { {
 				{x, 0, 0, 0},
 				{0, y, 0, 0},
 				{0, 0, z, 0},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 
 		~ScaleMatrix() {};
 
 		void ChangeScaleValues(double x, double y, double z)
 		{
-			matrix = {
+			matrix = { {
 				{x, 0, 0, 0},
 				{0, y, 0, 0},
 				{0, 0, z, 0},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 
 		Matrix operator* (Matrix other)
@@ -268,12 +268,11 @@ namespace lm
 			}
 		}
 
-	private:
 		const uint8_t rows;
 		const uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::vector<std::vector<double>> matrix;
+		std::array<std::array<double, 4>, 4> matrix;
 	};
 
 	class RotationMatrix
@@ -281,48 +280,48 @@ namespace lm
 	public:
 		RotationMatrix() : rows(4), columns(4)
 		{
-			matrix = {
+			matrix = { {
 				{1, 0, 0, 0},
 				{0, 1, 0, 0},
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}
-			};
+			} };
 		}
 		RotationMatrix(double angle, int plane) : rows(4), columns(4)
 		{
 			switch (plane)
 			{
 			case LM_ROTATE_X_PLANE:
-				matrix = {
+				matrix = { {
 					{1, 0, 0, 0},
 					{0, std::cos(angle), -std::sin(angle), 0},
 					{0, std::sin(angle), std::cos(angle), 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			case LM_ROTATE_Y_PLANE:
-				matrix = {
+				matrix = { {
 					{std::cos(angle), 0, std::sin(angle), 0},
 					{0, 1, 0, 0},
 					{-std::sin(angle), 0, std::cos(angle), 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			case LM_ROTATE_Z_PLANE:
-				matrix = {
+				matrix = { {
 					{std::cos(angle), -std::sin(angle), 0, 0},
 					{std::sin(angle), std::cos(angle), 0, 0},
 					{0, 0, 1, 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			default:
-				matrix = {
+				matrix = { {
 					{1, 0, 0, 0},
 					{0, 1, 0, 0},
 					{0, 0, 1, 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			}
 		}
@@ -334,43 +333,43 @@ namespace lm
 			switch (plane)
 			{
 			case LM_ROTATE_X_PLANE:
-				matrix = {
+				matrix = { {
 					{1, 0, 0, 0},
 					{0, std::cos(angle), -std::sin(angle), 0},
 					{0, std::sin(angle), std::cos(angle), 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			case LM_ROTATE_Y_PLANE:
-				matrix = {
+				matrix = { {
 					{std::cos(angle), 0, std::sin(angle), 0},
 					{0, 1, 0, 0},
 					{-std::sin(angle), 0, std::cos(angle), 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			case LM_ROTATE_Z_PLANE:
-				matrix = {
+				matrix = { {
 					{std::cos(angle), -std::sin(angle), 0, 0},
 					{std::sin(angle), std::cos(angle), 0, 0},
 					{0, 0, 1, 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			default:
-				matrix = {
+				matrix = { {
 					{1, 0, 0, 0},
 					{0, 1, 0, 0},
 					{0, 0, 1, 0},
 					{0, 0, 0, 1}
-				};
+				} };
 				break;
 			}
 		}
 
 		Matrix operator* (Matrix other)
 		{
-			if (columns == other.rows)
+			if (!(columns == other.rows))
 			{
 				std::vector<std::vector<double>> result(rows, std::vector<double>(other.columns, 0));
 
@@ -396,11 +395,10 @@ namespace lm
 			}
 		}
 
-	private:
 		const uint8_t rows;
 		const uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::vector<std::vector<double>> matrix;
+		std::array<std::array<double, 4>, 4> matrix;
 	};
 }

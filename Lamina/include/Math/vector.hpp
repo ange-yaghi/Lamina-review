@@ -20,17 +20,30 @@ namespace lm
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
-		Vector operator+ (const t_vector other)
+		Vector operator+ (const t_vector &other)
 		{
 			Vector<t_vector, vector.size()> result;
 			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
 			return result;
 		}
-		Vector operator- (const t_vector other)
+
+		Vector operator+ (Vector& other)
+		{
+			if (this->vector.size() == other.vector.size())
+			{
+				Vector<t_vector, vector.size()> result;
+				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
+		}
+
+		Vector operator- (const t_vector &other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
+
 		Vector operator = (const Vector &other)
 		{
 			if (this == &other)
@@ -64,11 +77,71 @@ namespace lm
 			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
 			return result;
 		}
+		Vector operator+ (Vector& other)
+		{
+			if (other.vector.size() == 2)
+			{
+				Vector<t_vector, 2> result;
+				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
+		}
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
+
+		Vector operator* (Matrix& other)
+		{
+			if (other.columns == 2)
+			{
+				Vector<t_vector, 2> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector.vector[0] + other.matrix[0][1] * this->vector.vector[1];
+				result.vector[1] = other.matrix[1][0] * this->vector.vector[0] + other.matrix[1][1] * this->vector.vector[1];
+
+				return result;
+			}
+		}
+		Vector operator* (TranslationMatrix& other)
+		{
+			if (other.columns == 2)
+			{
+				Vector<t_vector, 2> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1];
+
+				return result;
+			}
+		}
+		Vector operator* (ScaleMatrix& other)
+		{
+			if (other.columns == 2)
+			{
+				Vector<t_vector, 2> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1];
+
+				return result;
+			}
+		}
+		Vector operator* (RotationMatrix& other)
+		{
+			if (other.columns == 2)
+			{
+				Vector<t_vector, 2> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1];
+
+				return result;
+			}
+		}
+
 		Vector operator = (const Vector& other)
 		{
 			if (this == &other)
@@ -105,11 +178,75 @@ namespace lm
 			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
 			return result;
 		}
+		Vector operator+ (Vector& other)
+		{
+			if (other.vector.size() == 3)
+			{
+				Vector<t_vector, 3> result;
+				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
+		}
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
+
+		Vector operator* (Matrix& other)
+		{
+			if (other.columns == 3)
+			{
+				Vector<t_vector, 3> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
+
+				return result;
+			}
+		}
+		Vector operator* (TranslationMatrix& other)
+		{
+			if (other.columns == 3)
+			{
+				Vector<t_vector, 3> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
+
+				return result;
+			}
+		}
+		Vector operator* (ScaleMatrix& other)
+		{
+			if (other.columns == 3)
+			{
+				Vector<t_vector, 3> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
+
+				return result;
+			}
+		}
+		Vector operator* (RotationMatrix& other)
+		{
+			if (other.columns == 3)
+			{
+				Vector<t_vector, 3> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
+
+				return result;
+			}
+		}
+
 		Vector operator = (const Vector& other)
 		{
 			if (this == &other)
@@ -147,11 +284,79 @@ namespace lm
 			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
 			return result;
 		}
+		Vector operator+ (Vector& other)
+		{
+			if (other.vector.size() == 4)
+			{
+				Vector<t_vector, 4> result;
+				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
+		}
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
+
+		Vector operator* (Matrix& other)
+		{
+			if (other.columns == 4)
+			{
+				Vector<t_vector, 4> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
+				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
+
+				return result;
+			}
+		}
+		Vector operator* (TranslationMatrix& other)
+		{
+			if (other.columns == 4)
+			{
+				Vector<t_vector, 4> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
+				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
+
+				return result;
+			}
+		}
+		Vector operator* (ScaleMatrix& other)
+		{
+			if (other.columns == 4)
+			{
+				Vector<t_vector, 4> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
+				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
+
+				return result;
+			}
+		}
+		Vector operator* (RotationMatrix& other)
+		{
+			if (other.columns == 4)
+			{
+				Vector<t_vector, 4> result;
+
+				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
+				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
+				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
+				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
+
+				return result;
+			}
+		}
+
 		Vector operator = (const Vector& other)
 		{
 			if (this == &other)
