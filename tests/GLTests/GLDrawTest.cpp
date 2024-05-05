@@ -19,26 +19,19 @@ int main()
 		float time = std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - epoch)).count();
 
 
-		window.Clear(lm::Color{ 100, 102, 237, 255 });
+		window.Clear(lm::Color{ 50, 50, 50, 255 });
 
-		const GLfloat vertices[] = {
-			0.5, -0.5, 0.0,
-			-0.5, -0.5, 0.0,
-			-0.5, 0.5, 0.0,
-			0.5, 0.5, 0.0
+		std::vector<GLfloat> vertices = {
+			0.5, -0.5, 0.0, 1, 0, 0, 1,
+			-0.5, -0.5, 0.0, 0, 1, 0, 1,
+			-0.5, 0.5, 0.0, 0, 1, 1, 1,
+			0.5, 0.5, 0.0, 1, 0, 1, 1
 		};
 
 		const GLuint indices[] =
 		{
 			0, 1, 2,
 			2, 3, 0
-		};
-
-		const GLfloat colors[] = {
-			1, 0, 0.2, 1,
-			0, 1, 0.2, 1,
-			0, 1, 0.2, 1,
-			1, 0, 0.2, 1
 		};
 
 		glfwMakeContextCurrent(window.window);
@@ -62,20 +55,14 @@ int main()
 		GLuint vertexBuffer;
 		glGenBuffers(1, &vertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
 
-		GLuint colorBuffer;
-		glGenBuffers(1, &colorBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, colorBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
-		//glEnableVertexAttribArray(1);
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

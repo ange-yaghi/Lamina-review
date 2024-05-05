@@ -6,13 +6,13 @@ project("${ProjectName}" VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 20)
 
-#set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-#set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-#set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 find_package(OpenGL REQUIRED)
 
-add_library(GLFW STATIC IMPORTED)
-set_target_properties(GLFW PROPERTIES IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib/glfw3.lib")
+#add_library(GLFW STATIC IMPORTED)
+#set_target_properties(GLFW PROPERTIES IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib/glfw3.lib")
 
 add_library("${ProjectName}"
 	#source files
@@ -35,9 +35,9 @@ add_library("${ProjectName}"
 	Lamina/include/Math/vertex.hpp
 	Lamina/include/GL/opengl.hpp
 )
-#add_subdirectory(dependencies/GLFW)
+add_subdirectory(dependencies/GLFW)
 target_include_directories("${ProjectName}" PRIVATE dependencies)
-target_link_libraries("${ProjectName}" GLFW OpenGL::GL)
+target_link_libraries("${ProjectName}" glfw OpenGL::GL)
 
 add_executable("${ProjectName}-Vertex-test"
 	#source files
