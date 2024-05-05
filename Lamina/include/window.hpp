@@ -24,6 +24,11 @@
 
 namespace lm
 {
+	struct WindowSettings
+	{
+		int aliasingLevel = 0;
+	};
+
 	//main window class
 	class Window
 	{
@@ -31,9 +36,9 @@ namespace lm
 		GLFWwindow* window;
 
 		Window() : window(NULL) {};
-		Window(lm::vec2<int> windowSize, std::string windowName, int windowHint) { CreateWindow(windowSize, windowName, windowHint); }
+		Window(lm::vec2<int> windowSize, std::string windowName, int windowHint, int multisamplingLevel = 0) { CreateWindow(windowSize, windowName, windowHint, multisamplingLevel); }
 
-		bool CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints);
+		bool CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints, int multisamplingLevel = 0);
 
 		lm::vec2<int> GetSize()
 		{

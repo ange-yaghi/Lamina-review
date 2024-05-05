@@ -4,11 +4,9 @@
 
 int main()
 {
-	std::string name;
-	std::getline(std::cin, name);
 
 	auto start = std::chrono::steady_clock::now();
-	lm::WavefrontObject test("Objects/" + name + ".obj");
+	lm::WavefrontObject test("Objects/163k_triangulated_Mesh_Icosphere.obj");
 	auto end = std::chrono::steady_clock::now();
 
 	float avVertexLoad = test.vertices.size() / std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)).count() * 1000;

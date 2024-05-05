@@ -1,11 +1,12 @@
 #include "../Lamina/include/window.hpp"
 
-bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints)
+bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints, int multisamplingLevel)
 {
 	bool fullScreen = false;
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, multisamplingLevel);
 
 	if (windowHints == NULL) glfwDefaultWindowHints();
 	else
@@ -28,6 +29,7 @@ bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, 
 		else											glfwWindowHint(GLFW_SCALE_TO_MONITOR, false);
 	}
 
+
 	if(fullScreen) window = glfwCreateWindow(windowSize.x, windowSize.y, windowName.c_str(), glfwGetPrimaryMonitor(), NULL);
 	else window = glfwCreateWindow(windowSize.x, windowSize.y, windowName.c_str(), NULL, NULL);
 	if (window == NULL)
@@ -45,7 +47,7 @@ void lm::Window::Clear(lm::Color color)
 
 	lm::ColorF floatColor = lm::GetFloatColor(color);
 	glClearColor(floatColor.r, floatColor.g, floatColor.b, floatColor.a);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 template<typename T>
