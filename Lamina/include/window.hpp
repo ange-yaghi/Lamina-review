@@ -60,6 +60,11 @@ namespace lm
 		void Close() { glfwSetWindowShouldClose(window, true); }
 
 		void Clear(lm::Color color);
+		void MakeContextCurrent()
+		{
+			glfwMakeContextCurrent(window);
+			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
+		}
 
 		template<typename T>
 		void Draw(T target);

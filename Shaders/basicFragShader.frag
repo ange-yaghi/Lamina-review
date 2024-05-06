@@ -1,7 +1,12 @@
 #version 460 core
 in vec4 fragColour;
-out vec4 idiot;
-in float fragTime;
+in vec2 textureCoordinates;
+
+out vec4 color;
+
+uniform sampler2D inTexture;
+uniform sampler2D inTexture2;
+
 void main(){
-	idiot = fragColour;
+	color = mix(texture(inTexture, textureCoordinates), texture(inTexture2, textureCoordinates), 0.2) * fragColour;
 }

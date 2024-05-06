@@ -32,6 +32,10 @@ bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, 
 
 	if(fullScreen) window = glfwCreateWindow(windowSize.x, windowSize.y, windowName.c_str(), glfwGetPrimaryMonitor(), NULL);
 	else window = glfwCreateWindow(windowSize.x, windowSize.y, windowName.c_str(), NULL, NULL);
+
+	glfwMakeContextCurrent(window);
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
+
 	if (window == NULL)
 	{
 		std::cout << "Failed to create window - window is NULL" << std::endl;
@@ -42,8 +46,7 @@ bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, 
 
 void lm::Window::Clear(lm::Color color)
 {
-	glfwMakeContextCurrent(window);
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
+	glViewport(0, 0, GetSize().x, GetSize().y);
 
 	lm::ColorF floatColor = lm::GetFloatColor(color);
 	glClearColor(floatColor.r, floatColor.g, floatColor.b, floatColor.a);
@@ -53,9 +56,6 @@ void lm::Window::Clear(lm::Color color)
 template<typename T>
 void lm::Window::Draw(T target)
 {
-	glfwMakeContextCurrent(window);
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
-
 	if (std::is_same(T, lm::Rectangle))
 	{
 

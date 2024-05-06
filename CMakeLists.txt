@@ -34,6 +34,8 @@ add_library("${ProjectName}"
 	Lamina/include/Math/vector.hpp
 	Lamina/include/Math/vertex.hpp
 	Lamina/include/GL/opengl.hpp
+	Lamina/include/GL/image_loader.hpp
+	Lamina/include/GL/stb_image.h
 )
 add_subdirectory(dependencies/GLFW)
 target_include_directories("${ProjectName}" PRIVATE dependencies)
@@ -51,9 +53,6 @@ add_custom_command(TARGET ${ProjectName}-Vertex-test POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 			${PROJECT_SOURCE_DIR}/Objects
 			${CMAKE_CURRENT_BINARY_DIR}/Objects
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${PROJECT_SOURCE_DIR}/Shaders
-			${CMAKE_CURRENT_BINARY_DIR}/Shaders
 )
 
 add_executable("${ProjectName}-GL-test"
@@ -71,6 +70,9 @@ add_custom_command(TARGET ${ProjectName}-GL-test POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 			${PROJECT_SOURCE_DIR}/Shaders
 			${CMAKE_CURRENT_BINARY_DIR}/Shaders
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${PROJECT_SOURCE_DIR}/Textures
+			${CMAKE_CURRENT_BINARY_DIR}/Textures
 )
 
 add_executable("${ProjectName}-main" 
