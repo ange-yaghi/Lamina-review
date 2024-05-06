@@ -8,6 +8,7 @@
 #include "../Lamina/include/colors.hpp"
 #include "../Lamina/include/Primitives/triangle.hpp"
 #include "../Lamina/include/Primitives/rectangle.hpp"
+#include "../Lamina/include/Math/vertex.hpp"
 
 //define lamina window types
 #define LM_WINDOW_RESIZABLE			0b00000001
@@ -66,8 +67,7 @@ namespace lm
 			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
 		}
 
-		template<typename T>
-		void Draw(T target);
+		void DrawVertexArray(lm::GLObject& vertexArray);
 
 		void Display() { glfwSwapBuffers(window); }
 	};

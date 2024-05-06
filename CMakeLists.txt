@@ -24,6 +24,8 @@ add_library("${ProjectName}"
 	Lamina/src/Math/vector.cpp
 	Lamina/src/Math/vertex.cpp
 	Lamina/src/GL/opengl.cpp
+	Lamina/src/GL/texture.cpp
+	Lamina/src/GL/vertex_array.cpp
 
 	#header files
 	Lamina/include/window.hpp
@@ -36,24 +38,12 @@ add_library("${ProjectName}"
 	Lamina/include/GL/opengl.hpp
 	Lamina/include/GL/image_loader.hpp
 	Lamina/include/GL/stb_image.h
+	Lamina/include/GL/texture.hpp
+	Lamina/include/GL/vertex_array.hpp
 )
 add_subdirectory(dependencies/GLFW)
 target_include_directories("${ProjectName}" PRIVATE dependencies)
 target_link_libraries("${ProjectName}" glfw OpenGL::GL)
-
-add_executable("${ProjectName}-Vertex-test"
-	#source files
-	tests/vertex/src/ver-test-main.cpp
-
-	#header files
-)
-target_include_directories("${ProjectName}-Vertex-test" PRIVATE dependencies)
-target_link_libraries("${ProjectName}-Vertex-test" "${ProjectName}")
-add_custom_command(TARGET ${ProjectName}-Vertex-test POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${PROJECT_SOURCE_DIR}/Objects
-			${CMAKE_CURRENT_BINARY_DIR}/Objects
-)
 
 add_executable("${ProjectName}-GL-test"
 	#source files

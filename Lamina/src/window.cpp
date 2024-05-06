@@ -53,16 +53,7 @@ void lm::Window::Clear(lm::Color color)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-template<typename T>
-void lm::Window::Draw(T target)
+void lm::Window::DrawVertexArray(lm::GLObject& vertexArray)
 {
-	if (std::is_same(T, lm::Rectangle))
-	{
 
-	}
-	else if (std::is_same(T, lm::Triangle))
-	{
-
-	}
-	else std::cout << "Undefined drawing type" << std::endl;
 }

@@ -136,79 +136,39 @@ void lm::GLObject::ParseObject()
 {
 	if (object == nullptr) return;
 
-	vertices.clear();
-	normals.clear();
-	textures.clear();
+	std::array<GLuint, 3> vertexArrayBuffer;
+	std::array<GLuint, 3> normalArrayBuffer;
+	std::array<GLuint, 3> textureArrayBuffer;
 
-	//vertices.resize(object->faces.size());
-	//normals.resize(object->faces.size());
-	//textures.resize(object->faces.size());
-
-	vec3u vertTemp;
-	vec3u normTemp;
-	vec3u textrTemp;
-
-	std::array<GLTriangleVert, 3> vertBuf;
-	std::array<GLTriangleNorm, 3> normBuf;
-	std::array<GLTriangleTextr, 3> textrBuf;
 	for (int i = 0; i < object->faces.size(); i++)
 	{
-		vertTemp.CreateVector({ 
-			object->faces[i][0].vector[0], 
-			object->faces[i][1].vector[0], 
-			object->faces[i][2].vector[0] });
+		vertexArrayBuffer[0] = object->faces[i][0].x();
+		vertexArrayBuffer[1] = object->faces[i][0].y();
+		vertexArrayBuffer[2] = object->faces[i][0].z();
 
-		textrTemp.CreateVector({
-			object->faces[i][0].vector[1], 
-			object->faces[i][1].vector[1], 
-			object->faces[i][2].vector[1] });
+		normalArrayBuffer[0] = object->faces[i][1].x();
+		normalArrayBuffer[1] = object->faces[i][1].y();
+		normalArrayBuffer[2] = object->faces[i][1].z();
 
-		normTemp.CreateVector({
-			object->faces[i][0].vector[2], 
-			object->faces[i][1].vector[2], 
-			object->faces[i][2].vector[2] });
+		textureArrayBuffer[0] = object->faces[i][2].x();
+		textureArrayBuffer[1] = object->faces[i][2].y();
+		textureArrayBuffer[2] = object->faces[i][2].z();
 
-		//load vertices
-		vertBuf[0].CreateVector({
-			(GLfloat)object->vertices[vertTemp.vector[0] - 1].vector[0],
-			(GLfloat)object->vertices[vertTemp.vector[0] - 1].vector[1],
-			(GLfloat)object->vertices[vertTemp.vector[0] - 1].vector[2], 0 });
-		vertBuf[1].CreateVector({
-			(GLfloat)object->vertices[vertTemp.vector[1] - 1].vector[0],
-			(GLfloat)object->vertices[vertTemp.vector[1] - 1].vector[1],
-			(GLfloat)object->vertices[vertTemp.vector[1] - 1].vector[2], 0 });
-		vertBuf[2].CreateVector({
-			(GLfloat)object->vertices[vertTemp.vector[2] - 1].vector[0],
-			(GLfloat)object->vertices[vertTemp.vector[2] - 1].vector[1],
-			(GLfloat)object->vertices[vertTemp.vector[2] - 1].vector[2], 0 });
-
-		//load normals
-		normBuf[0].CreateVector({
-			(GLfloat)object->normals[normTemp.vector[0] - 1].vector[0],
-			(GLfloat)object->normals[normTemp.vector[0] - 1].vector[1],
-			(GLfloat)object->normals[normTemp.vector[0] - 1].vector[2] });
-		normBuf[1].CreateVector({
-			(GLfloat)object->normals[normTemp.vector[1] - 1].vector[0],
-			(GLfloat)object->normals[normTemp.vector[1] - 1].vector[1],
-			(GLfloat)object->normals[normTemp.vector[1] - 1].vector[2] });
-		normBuf[2].CreateVector({
-			(GLfloat)object->normals[normTemp.vector[2] - 1].vector[0],
-			(GLfloat)object->normals[normTemp.vector[2] - 1].vector[1],
-			(GLfloat)object->normals[normTemp.vector[2] - 1].vector[2] });
-
-		//load textures
-		textrBuf[0].CreateVector({
-			(GLfloat)object->textureCoordinates[textrTemp.vector[0] - 1].vector[0],
-			(GLfloat)object->textureCoordinates[textrTemp.vector[0] - 1].vector[1], });
-		textrBuf[1].CreateVector({
-			(GLfloat)object->textureCoordinates[textrTemp.vector[1] - 1].vector[0],
-			(GLfloat)object->textureCoordinates[textrTemp.vector[1] - 1].vector[1], });
-		textrBuf[2].CreateVector({
-			(GLfloat)object->textureCoordinates[textrTemp.vector[2] - 1].vector[0],
-			(GLfloat)object->textureCoordinates[textrTemp.vector[2] - 1].vector[1], });
-
-		vertices.push_back(vertBuf);
-		normals.push_back(normBuf);
-		textures.push_back(textrBuf);
+		vertexIndeces.push_back(vertexArrayBuffer);
+		normalIndeces.push_back(normalArrayBuffer);
+		textureIndeces.push_back(textureArrayBuffer);
 	}
+}
+
+void lm::GLObject::TranslateObject(double x, double y, double z)
+{
+	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
+}
+void lm::GLObject::ScaleObject(double x, double y, double z)
+{
+	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
+}
+void lm::GLObject::RotateObject(double angle, int plane)
+{
+	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
 }

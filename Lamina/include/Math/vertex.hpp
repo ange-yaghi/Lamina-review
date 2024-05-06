@@ -33,17 +33,39 @@ namespace lm
 	{
 	public:
 		GLObject() : object(nullptr) {};
-		GLObject(WavefrontObject& _object) : object(&_object) { ParseObject(); };
+		GLObject(WavefrontObject& _object) : object(&_object), vertices(_object.vertices), normals(_object.normals), textureCoordinates(_object.textureCoordinates) { ParseObject(); };
 
 		void ParseObject();
 
-		inline void TranslateObject(double x, double y, double z) { object->TranslateObject(x, y, z); ParseObject(); }
-		inline void ScaleObject(double x, double y, double z) { object->ScaleObject(x, y, z); ParseObject(); }
-		inline void RotateObject(double angle, int plane) { object->RotateObject(angle, plane); ParseObject(); }
+		void TranslateObject(double x, double y, double z);
+		void ScaleObject(double x, double y, double z);
+		void RotateObject(double angle, int plane);
+
+		//inline void TranslateGLObject(double x, double y, double z) { TranslateObject(x, y, z); ParseObject(); }
+		//inline void ScaleGLObject(double x, double y, double z) { ScaleObject(x, y, z); ParseObject(); }
+		//inline void RotateGLObject(double angle, int plane) { RotateObject(angle, plane); ParseObject(); }
+
+		void ReloadObject()
+		{
+			vertices = object->vertices;
+			normals = object->normals;
+			textureCoordinates = object->textureCoordinates;
+			ParseObject();
+		}
+
+		void ChangeMesh(WavefrontObject& _object)
+		{
+			object = &_object;
+			ReloadObject();
+		}
 
 		WavefrontObject* object;
-		std::vector<std::array<GLTriangleVert, 3>> vertices;
-		std::vector< std::array<GLTriangleNorm, 3>> normals;
-		std::vector< std::array<GLTriangleTextr, 3>> textures;
+		std::vector<std::array<GLuint, 3>> vertexIndeces;
+		std::vector<std::array<GLuint, 3>> normalIndeces;
+		std::vector<std::array<GLuint, 3>> textureIndeces;
+
+		std::vector<vec4d> vertices;
+		std::vector<vec3d> normals;
+		std::vector<vec2d> textureCoordinates;
 	};
 }
