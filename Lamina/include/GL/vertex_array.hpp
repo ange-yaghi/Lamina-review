@@ -22,8 +22,6 @@ namespace lm
 			position.CreateVector({ 0, 0, 0 });
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
-			deltaPosition.CreateVector({ 0, 0, 0 });
-			deltaRotation.CreateVector({ 0, 0, 0 });
 		};
 		VertexArray(GLObject* object) : mesh(object), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"), 
 			texture(nullptr), color({ 255, 255, 255, 255 })
@@ -34,8 +32,6 @@ namespace lm
 			position.CreateVector({ 0, 0, 0 });
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
-			deltaPosition.CreateVector({ 0, 0, 0 });
-			deltaRotation.CreateVector({ 0, 0, 0 });
 		};
 
 		void DrawArray(/*lm::vec3f positionChange = lm::vec3f({ 0, 0, 0 }), lm::vec3f rotationChange = lm::vec3f({0, 0, 0}), lm::vec3f scaleChange = lm::vec3f({ 0, 0, 0 })*/);
@@ -43,6 +39,11 @@ namespace lm
 		void SetRotation(float x, float y, float z);
 		void SetPosition(float x, float y, float z);
 		void SetTexture(Texture2D& _texture) { texture = &_texture; };
+		void SetColor(lm::Color _color) { color = _color; }
+
+		lm::vec3f GetRotation(){ return rotation; }
+		lm::vec3f GetPosition() { return position; }
+		lm::vec3f GetScale() { return scale; }
  	private:
 		GLObject* mesh;
 		GLuint program;
@@ -58,9 +59,6 @@ namespace lm
 		lm::vec3f position;
 		lm::vec3f scale;
 		lm::vec3f rotation;
-
-		lm::vec3f deltaPosition;
-		lm::vec3f deltaRotation;
 
 		lm::WavefrontObject object;
 		lm::GLObject _object;

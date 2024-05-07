@@ -11,6 +11,6 @@ uniform bool textured;
 
 void main()
 {
-	if(textured) color = texture(inTexture, texturesToFrag);
+	if(textured) color = texture(inTexture, texturesToFrag) * colorToFrag;
 	else color = colorToFrag;
 }

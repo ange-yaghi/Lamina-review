@@ -2,14 +2,11 @@
 
 void lm::VertexArray::DrawArray()
 {
-	lm::TranslationMatrix tranlationMatrix ({ deltaPosition.x(), deltaPosition.y(), deltaPosition.z()});
+	//lm::TranslationMatrix tranlationMatrix ({ position.x(), position.y(), position.z()});
 	lm::ScaleMatrix scaleMatrix({ scale.x(), scale.y(), scale.z() });
-	lm::RotationMatrix rotationMatrix_x(deltaRotation.x(), LM_ROTATE_X_PLANE);
-	lm::RotationMatrix rotationMatrix_y(deltaRotation.y(), LM_ROTATE_Y_PLANE);
-	lm::RotationMatrix rotationMatrix_z(deltaRotation.z(), LM_ROTATE_Z_PLANE);
-
-	deltaPosition.CreateVector({ 0, 0, 0 });
-	deltaRotation.CreateVector({ 0, 0, 0 });
+	lm::RotationMatrix rotationMatrix_x(rotation.x(), LM_ROTATE_X_PLANE);
+	lm::RotationMatrix rotationMatrix_y(rotation.y(), LM_ROTATE_Y_PLANE);
+	lm::RotationMatrix rotationMatrix_z(rotation.z(), LM_ROTATE_Z_PLANE);
 	
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -19,7 +16,7 @@ void lm::VertexArray::DrawArray()
 	lm::ColorF glColor = lm::GetFloatColor(color);
 	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
 
-	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_FALSE, &tranlationMatrix.matrix[0][0]);
+	glUniform3f(glGetUniformLocation(program, "deltaTranslationVector"), position.x(), position.y(), position.z());
 	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_FALSE, &scaleMatrix.matrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix_x"), 1, GL_FALSE, &rotationMatrix_x.matrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix_y"), 1, GL_FALSE, &rotationMatrix_y.matrix[0][0]);
@@ -52,12 +49,10 @@ void lm::VertexArray::DrawArray()
 
 void lm::VertexArray::SetPosition(float x, float y, float z)
 {
-	position.CreateVector({ position.x() + x, position.y() + y, position.z() + z });
-	deltaPosition.CreateVector({ x, y, z });
+	position.CreateVector({ x, y, z });
 }
 
 void lm::VertexArray::SetRotation(float x, float y, float z)
 {
-	rotation.CreateVector({ position.x() + x, position.y() + y, position.z() + z });
-	deltaRotation.CreateVector({ x, y, z });
+	rotation.CreateVector({ x, y, z });
 }
