@@ -1,25 +1,26 @@
 #include "../Lamina/include/GL/texture.hpp"
 
-lm::Texture2D::Texture2D(std::string path)
+lm::Texture2D::Texture2D(std::string path, GLint format)
 {
-	LoadFromFile(&path[0]);
+	LoadFromFile(&path[0], format);
 }
 
-int lm::Texture2D::LoadFromFile(const char* path)
+int lm::Texture2D::LoadFromFile(const char* path, GLint format)
 {
-	textureData = stbi_load(path, &height, &width, &channels, 0);
+	textureData = stbi_load(path, &width, &height, &channels, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	if (textureData)
 	{
-		glTexImage2D(texture, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
-		stbi_image_free(textureData);
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, textureData);
+		stbi_image_free(textureData);
+
 		return 1;
 	}
 	else

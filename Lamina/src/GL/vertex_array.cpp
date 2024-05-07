@@ -17,7 +17,7 @@ void lm::VertexArray::DrawArray()
 	glUseProgram(program);
 
 	lm::ColorF glColor = lm::GetFloatColor(color);
-	glUniform4f(glGetUniformLocation(program, "color"), color.r, color.g, color.b, color.a);
+	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
 
 	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_FALSE, &tranlationMatrix.matrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_FALSE, &scaleMatrix.matrix[0][0]);
@@ -30,7 +30,7 @@ void lm::VertexArray::DrawArray()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture->texture);
 		glUniform1i(glGetUniformLocation(program, "textured"), GL_TRUE);
-		glUniform1i(glGetUniformLocation(program, "inTexture"), GL_TEXTURE0);
+		glUniform1i(glGetUniformLocation(program, "inTexture"), 0);
 	}
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)0);
