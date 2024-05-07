@@ -20,8 +20,8 @@ int main()
 	lm::WavefrontObject object("Objects/testmesh.obj");
 	lm::GLObject _object(object);
 	lm::VertexArray array(&_object);
-	lm::Texture2D texture("Textures/test_texture.png", LM_RGB);
-	array.SetTexture(texture);
+	//lm::Texture2D texture("Textures/test_texture.png", LM_RGB);
+	//array.SetTexture(texture);
 	//array.LoadTextureFromFile("Textures/test_texture.png");
 
 	while (window.IsOpen())
@@ -31,7 +31,7 @@ int main()
 		/*float time = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now() - epoch)).count();*/
 		time++;
 		array.SetScale(0.5, 0.5, 0.5);
-		array.SetRotation(time * 0.005f, 3.1415, time * 0.005f);
+		array.SetRotation((float)time * 0.005f, 3.1415f, (float) time * 0.005f);
 		array.DrawArray();
 		window.Display();
 	}

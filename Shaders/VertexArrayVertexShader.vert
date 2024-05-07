@@ -25,7 +25,7 @@ void main()
 	positionBuffer = rotationMatrix_z * positionBuffer;
 	gl_Position = positionBuffer;
 
-	colorToFrag = color;
+	colorToFrag = vec4(normals, 1);
 	normalToFrag = normals;
 	texturesToFrag = textureCoordinates;
 }

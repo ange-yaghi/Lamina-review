@@ -27,7 +27,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 	if (buffer == "v")
 	{
 		buffer.clear();
-		std::array<double, 3> coordinates;
+		std::array<float, 3> coordinates;
 		for(int i = 0; i < coordinates.size(); i++)
 		{
 			while (!isspace(objContent[pos]) && pos < objContent.size())
@@ -35,7 +35,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 				buffer += objContent[pos];
 				pos++;
 			}
-			coordinates[i] = std::stod(buffer);
+			coordinates[i] = std::stof(buffer);
 			buffer.clear();
 			pos++;
 		}
@@ -47,7 +47,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 	else if (buffer == "vn")
 	{
 		buffer.clear();
-		std::array<double, 3> coordinates;
+		std::array<float, 3> coordinates;
 		for (int i = 0; i < coordinates.size(); i++)
 		{
 			while (!isspace(objContent[pos]) && pos < objContent.size())
@@ -55,7 +55,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 				buffer += objContent[pos];
 				pos++;
 			}
-			coordinates[i] = std::stod(buffer);
+			coordinates[i] = std::stof(buffer);
 			buffer.clear();
 			pos++;
 		}
@@ -67,7 +67,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 	else if (buffer == "vt")
 	{
 		buffer.clear();
-		std::array<double, 2> coordinates;
+		std::array<float, 2> coordinates;
 		for (int i = 0; i < coordinates.size(); i++)
 		{
 			while (!isspace(objContent[pos]) && pos < objContent.size())
@@ -75,7 +75,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 				buffer += objContent[pos];
 				pos++;
 			}
-			coordinates[i] = std::stod(buffer);
+			coordinates[i] = std::stof(buffer);
 			buffer.clear();
 			pos++;
 		}
@@ -119,15 +119,15 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 	}
 }
 
-void lm::WavefrontObject::TranslateObject(double x, double y, double z)
+void lm::WavefrontObject::TranslateObject(float x, float y, float z)
 {
 	for(int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
 }
-void lm::WavefrontObject::ScaleObject(double x, double y, double z)
+void lm::WavefrontObject::ScaleObject(float x, float y, float z)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
 }
-void lm::WavefrontObject::RotateObject(double angle, int plane)
+void lm::WavefrontObject::RotateObject(float angle, int plane)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
 }
@@ -145,20 +145,20 @@ void lm::GLObject::ParseObject()
 		for (int j = 0; j < object->faces[i].size(); j++)
 			for (int k = 0; k < object->faces[i][j].vector.size(); k++) indeces.push_back(object->faces[i][j].vector[k]);
 
-	unsigned int numberOfObjects = indeces.size();
-	for (int i = 0; i < numberOfObjects; i += 3)
+	unsigned int numberOfObjects = (unsigned int) indeces.size();
+	for (unsigned int i = 0; i < numberOfObjects; i += 3)
 	{
-		meshData.push_back(vertices[indeces[i] - 1].x());
-		meshData.push_back(vertices[indeces[i] - 1].y());
-		meshData.push_back(vertices[indeces[i] - 1].z());
-		meshData.push_back(vertices[indeces[i] - 1].w());
+		meshData.push_back((GLfloat)vertices[indeces[i] - 1].x());
+		meshData.push_back((GLfloat)vertices[indeces[i] - 1].y());
+		meshData.push_back((GLfloat)vertices[indeces[i] - 1].z());
+		meshData.push_back((GLfloat)vertices[indeces[i] - 1].w());
 
-		meshData.push_back(textureCoordinates[indeces[i + 1] - 1].x());
-		meshData.push_back(textureCoordinates[indeces[i + 1] - 1].y());
+		meshData.push_back((GLfloat)textureCoordinates[indeces[i + 1] - 1].x());
+		meshData.push_back((GLfloat)textureCoordinates[indeces[i + 1] - 1].y());
 
-		meshData.push_back(normals[indeces[i + 2] -1].x());
-		meshData.push_back(normals[indeces[i + 2] -1].y());
-		meshData.push_back(normals[indeces[i + 2] -1].z());
+		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].x());
+		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].y());
+		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].z());
 	}
 }
 
@@ -181,17 +181,17 @@ void lm::GLObject::ParseObject()
 //	}
 //}
 
-void lm::GLObject::TranslateObject(double x, double y, double z)
+void lm::GLObject::TranslateObject(float x, float y, float z)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
 	ParseObject();
 }
-void lm::GLObject::ScaleObject(double x, double y, double z)
+void lm::GLObject::ScaleObject(float x, float y, float z)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
 	ParseObject();
 }
-void lm::GLObject::RotateObject(double angle, int plane)
+void lm::GLObject::RotateObject(float angle, int plane)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
 	ParseObject();

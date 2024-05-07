@@ -401,15 +401,15 @@ namespace lm
 	typedef Vector<float, 3> vec3f;
 	typedef Vector<float, 4> vec4f;
 
-	typedef Vector<double, 2> vec2d;
-	typedef Vector<double, 3> vec3d;
-	typedef Vector<double, 4> vec4d;
+	typedef Vector<float, 2> vec2d;
+	typedef Vector<float, 3> vec3d;
+	typedef Vector<float, 4> vec4d;
 
 	typedef Vector<GLfloat, 4> GLTriangleVert;
 	typedef Vector<GLfloat, 3> GLTriangleNorm;
 	typedef Vector<GLfloat, 2> GLTriangleTextr;
 
-	vec4d TranslateVector(vec4d &vector, double x, double y, double z);
-	vec4d ScaleVector(vec4d &vector, double x, double y, double z);
-	vec4d RotateVector(vec4d &vector, double angle, int plane);
+	vec4d TranslateVector(vec4d &vector, float x, float y, float z);
+	vec4d ScaleVector(vec4d &vector, float x, float y, float z);
+	vec4d RotateVector(vec4d &vector, float angle, int plane);
 }

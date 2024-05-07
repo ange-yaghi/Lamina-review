@@ -17,9 +17,9 @@ namespace lm
 			vertices(_vertices), normals(_normals), textureCoordinates(_textureCoordinates) {};
 		WavefrontObject(std::string path); //load from an .obj file
 
-		void TranslateObject(double x, double y, double z);
-		void ScaleObject(double x, double y, double z);
-		void RotateObject(double angle, int plane);
+		void TranslateObject(float x, float y, float z);
+		void ScaleObject(float x, float y, float z);
+		void RotateObject(float angle, int plane);
 	//private:
 		std::vector<vec4d> vertices;
 		std::vector<vec3d> normals;
@@ -38,13 +38,13 @@ namespace lm
 		void ParseObject();
 		//void RuntimeParse();
 
-		void TranslateObject(double x, double y, double z);
-		void ScaleObject(double x, double y, double z);
-		void RotateObject(double angle, int plane);
+		void TranslateObject(float x, float y, float z);
+		void ScaleObject(float x, float y, float z);
+		void RotateObject(float angle, int plane);
 
-		//inline void TranslateGLObject(double x, double y, double z) { TranslateObject(x, y, z); ParseObject(); }
-		//inline void ScaleGLObject(double x, double y, double z) { ScaleObject(x, y, z); ParseObject(); }
-		//inline void RotateGLObject(double angle, int plane) { RotateObject(angle, plane); ParseObject(); }
+		//inline void TranslateGLObject(float x, float y, float z) { TranslateObject(x, y, z); ParseObject(); }
+		//inline void ScaleGLObject(float x, float y, float z) { ScaleObject(x, y, z); ParseObject(); }
+		//inline void RotateGLObject(float angle, int plane) { RotateObject(angle, plane); ParseObject(); }
 
 		void ReloadObject()
 		{

@@ -43,7 +43,7 @@ void lm::VertexArray::DrawArray()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	glDrawArrays(GL_TRIANGLES, 0, mesh->meshData.size() / 9);
+	glDrawArrays(GL_TRIANGLES, 0, (GLsizei)mesh->meshData.size() / 9);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
