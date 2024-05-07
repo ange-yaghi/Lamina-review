@@ -134,41 +134,65 @@ void lm::WavefrontObject::RotateObject(double angle, int plane)
 
 void lm::GLObject::ParseObject()
 {
+	meshData.clear();
 	if (object == nullptr) return;
 
-	std::array<GLuint, 3> vertexArrayBuffer;
-	std::array<GLuint, 3> normalArrayBuffer;
-	std::array<GLuint, 3> textureArrayBuffer;
+	//std::array<GLuint, 3> vertexArrayBuffer;
+	//std::array<GLuint, 3> normalArrayBuffer;
+	//std::array<GLuint, 3> textureArrayBuffer;
 
 	for (int i = 0; i < object->faces.size(); i++)
+		for (int j = 0; j < object->faces[i].size(); j++)
+			for (int k = 0; k < object->faces[i][j].vector.size(); k++) indeces.push_back(object->faces[i][j].vector[k]);
+
+	unsigned int numberOfObjects = indeces.size();
+	for (int i = 0; i < numberOfObjects; i += 3)
 	{
-		vertexArrayBuffer[0] = object->faces[i][0].x();
-		vertexArrayBuffer[1] = object->faces[i][0].y();
-		vertexArrayBuffer[2] = object->faces[i][0].z();
+		meshData.push_back(vertices[indeces[i] - 1].x());
+		meshData.push_back(vertices[indeces[i] - 1].y());
+		meshData.push_back(vertices[indeces[i] - 1].z());
+		meshData.push_back(vertices[indeces[i] - 1].w());
 
-		normalArrayBuffer[0] = object->faces[i][1].x();
-		normalArrayBuffer[1] = object->faces[i][1].y();
-		normalArrayBuffer[2] = object->faces[i][1].z();
+		meshData.push_back(textureCoordinates[indeces[i + 1] - 1].x());
+		meshData.push_back(textureCoordinates[indeces[i + 1] - 1].y());
 
-		textureArrayBuffer[0] = object->faces[i][2].x();
-		textureArrayBuffer[1] = object->faces[i][2].y();
-		textureArrayBuffer[2] = object->faces[i][2].z();
-
-		vertexIndeces.push_back(vertexArrayBuffer);
-		normalIndeces.push_back(normalArrayBuffer);
-		textureIndeces.push_back(textureArrayBuffer);
+		meshData.push_back(normals[indeces[i + 2] -1].x());
+		meshData.push_back(normals[indeces[i + 2] -1].y());
+		meshData.push_back(normals[indeces[i + 2] -1].z());
 	}
 }
+
+//void lm::GLObject::RuntimeParse()
+//{
+//	unsigned int numberOfObjects = object->faces.size();
+//	for (int i = 0; i < numberOfObjects; i += 9)
+//	{
+//		meshData.push_back(vertices[indeces[i] - 1].x());
+//		meshData.push_back(vertices[indeces[i + 1] - 1].y());
+//		meshData.push_back(vertices[indeces[i + 2] - 1].z());
+//		meshData.push_back(vertices[indeces[i + 3] - 1].w());
+//
+//		meshData.push_back(vertices[indeces[i + 4] - 1].x());
+//		meshData.push_back(vertices[indeces[i + 5] - 1].y());
+//		meshData.push_back(vertices[indeces[i + 6] - 1].z());
+//
+//		meshData.push_back(vertices[indeces[i + 7] - 1].x());
+//		meshData.push_back(vertices[indeces[i + 8] - 1].y());
+//	}
+//}
 
 void lm::GLObject::TranslateObject(double x, double y, double z)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
+	ParseObject();
 }
 void lm::GLObject::ScaleObject(double x, double y, double z)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
+	ParseObject();
 }
 void lm::GLObject::RotateObject(double angle, int plane)
 {
 	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
+	ParseObject();
 }

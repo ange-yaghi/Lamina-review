@@ -36,6 +36,7 @@ namespace lm
 		GLObject(WavefrontObject& _object) : object(&_object), vertices(_object.vertices), normals(_object.normals), textureCoordinates(_object.textureCoordinates) { ParseObject(); };
 
 		void ParseObject();
+		//void RuntimeParse();
 
 		void TranslateObject(double x, double y, double z);
 		void ScaleObject(double x, double y, double z);
@@ -51,21 +52,24 @@ namespace lm
 			normals = object->normals;
 			textureCoordinates = object->textureCoordinates;
 			ParseObject();
+			//RuntimeParse();
 		}
 
 		void ChangeMesh(WavefrontObject& _object)
 		{
 			object = &_object;
 			ReloadObject();
+			ParseObject();
+			//ReloadObject();
 		}
 
 		WavefrontObject* object;
-		std::vector<std::array<GLuint, 3>> vertexIndeces;
-		std::vector<std::array<GLuint, 3>> normalIndeces;
-		std::vector<std::array<GLuint, 3>> textureIndeces;
+		std::vector<GLuint> indeces;
 
 		std::vector<vec4d> vertices;
 		std::vector<vec3d> normals;
 		std::vector<vec2d> textureCoordinates;
+
+		std::vector<GLfloat> meshData;
 	};
 }

@@ -36,10 +36,10 @@ add_library("${ProjectName}"
 	Lamina/include/Math/vector.hpp
 	Lamina/include/Math/vertex.hpp
 	Lamina/include/GL/opengl.hpp
-	Lamina/include/GL/image_loader.hpp
 	Lamina/include/GL/stb_image.h
 	Lamina/include/GL/texture.hpp
 	Lamina/include/GL/vertex_array.hpp
+	Lamina/include/GL/imageLoader.h
 )
 add_subdirectory(dependencies/GLFW)
 target_include_directories("${ProjectName}" PRIVATE dependencies)

@@ -18,11 +18,11 @@ namespace lm
 		Matrix() : rows(NULL), columns(NULL) {};
 		Matrix(uint8_t _rows, uint8_t _columns) : rows(_rows), columns(_columns)
 		{
-			matrix = std::vector<std::vector<double>>(rows, std::vector<double>(columns, 0));
+			matrix = std::vector<std::vector<float>>(rows, std::vector<float>(columns, 0));
 		}
 		~Matrix() {};
 		
-		void CreateMatrix(const std::vector<std::vector<double>> &_matrix) 
+		void CreateMatrix(const std::vector<std::vector<float>> &_matrix) 
 		{
 			bool matrixCompatible = true;
 			if (_matrix.size() != rows) matrixCompatible = false;
@@ -33,9 +33,9 @@ namespace lm
 			if (matrixCompatible) matrix = _matrix;
 			else std::cout << "Unable to assign matix. Incompatible size" << std::endl;
 		}
-		void ChangeMatrixValue(uint8_t row, uint8_t column, double value) { matrix[row][column] = value; }
+		void ChangeMatrixValue(uint8_t row, uint8_t column, float value) { matrix[row][column] = value; }
 
-		Matrix operator+ (double &scalar)
+		Matrix operator+ (float &scalar)
 		{
 			Matrix result(rows, columns);
 			result.CreateMatrix(matrix);
@@ -63,7 +63,7 @@ namespace lm
 			return result;
 		}
 
-		Matrix operator- (double &scalar)
+		Matrix operator- (float &scalar)
 		{
 			Matrix result(rows, columns);
 			result.CreateMatrix(matrix);
@@ -95,7 +95,7 @@ namespace lm
 		{
 			if (columns == other.rows)
 			{
-				std::vector<std::vector<double>> result(rows, std::vector<double>(other.columns, 0));
+				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
 
 				for (int i = 0; i < rows; i++)
 				{
@@ -133,7 +133,7 @@ namespace lm
 		uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::vector<std::vector<double>> matrix;
+		std::vector<std::vector<float>> matrix;
 	};
 
 	class TranslationMatrix
@@ -149,7 +149,7 @@ namespace lm
 			} };
 		}
 
-		TranslationMatrix(double x, double y, double z) : rows(4), columns(4)
+		TranslationMatrix(float x, float y, float z) : rows(4), columns(4)
 		{
 			matrix = { {
 				{1, 0, 0, x},
@@ -161,7 +161,7 @@ namespace lm
 
 		~TranslationMatrix() {};
 
-		void ChangeTranlationValues(double x, double y, double z)
+		void ChangeTranlationValues(float x, float y, float z)
 		{
 			matrix = { {
 				{1, 0, 0, x},
@@ -175,7 +175,7 @@ namespace lm
 		{
 			if (columns == other.rows)
 			{
-				std::vector<std::vector<double>> result(rows, std::vector<double>(other.columns, 0));
+				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
 
 				for (int i = 0; i < rows; i++)
 				{
@@ -203,7 +203,7 @@ namespace lm
 		const uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::array<std::array<double, 4>, 4> matrix;
+		std::array<std::array<float, 4>, 4> matrix;
 	};
 
 	class ScaleMatrix
@@ -218,7 +218,7 @@ namespace lm
 				{0, 0, 0, 1}
 			} };
 		}
-		ScaleMatrix(double x, double y, double z) : rows(4), columns(4)
+		ScaleMatrix(float x, float y, float z) : rows(4), columns(4)
 		{
 			matrix = { {
 				{x, 0, 0, 0},
@@ -230,7 +230,7 @@ namespace lm
 
 		~ScaleMatrix() {};
 
-		void ChangeScaleValues(double x, double y, double z)
+		void ChangeScaleValues(float x, float y, float z)
 		{
 			matrix = { {
 				{x, 0, 0, 0},
@@ -244,7 +244,7 @@ namespace lm
 		{
 			if (columns == other.rows)
 			{
-				std::vector<std::vector<double>> result(rows, std::vector<double>(other.columns, 0));
+				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
 
 				for (int i = 0; i < rows; i++)
 				{
@@ -272,7 +272,7 @@ namespace lm
 		const uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::array<std::array<double, 4>, 4> matrix;
+		std::array<std::array<float, 4>, 4> matrix;
 	};
 
 	class RotationMatrix
@@ -287,7 +287,7 @@ namespace lm
 				{0, 0, 0, 1}
 			} };
 		}
-		RotationMatrix(double angle, int plane) : rows(4), columns(4)
+		RotationMatrix(float angle, int plane) : rows(4), columns(4)
 		{
 			switch (plane)
 			{
@@ -328,7 +328,7 @@ namespace lm
 
 		~RotationMatrix() {};
 
-		void ChangeRotationAngle(double angle, int plane)
+		void ChangeRotationAngle(float angle, int plane)
 		{
 			switch (plane)
 			{
@@ -371,7 +371,7 @@ namespace lm
 		{
 			if (!(columns == other.rows))
 			{
-				std::vector<std::vector<double>> result(rows, std::vector<double>(other.columns, 0));
+				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
 
 				for (int i = 0; i < rows; i++)
 				{
@@ -399,6 +399,6 @@ namespace lm
 		const uint8_t columns;
 
 //		rows ↓		columns ↓
-		std::array<std::array<double, 4>, 4> matrix;
+		std::array<std::array<float, 4>, 4> matrix;
 	};
 }

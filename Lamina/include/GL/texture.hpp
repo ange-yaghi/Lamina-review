@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Lamina/include/GL/image_loader.hpp"
+#include "../Lamina/include/GL/imageLoader.h"
 #include "glad/glad.h"
 #include <iostream>
 #include <string>
@@ -20,10 +20,11 @@ namespace lm
 {
 	class Texture2D
 	{
-		Texture2D() {};
+	public:
+		Texture2D() : height(0), width(0), channels(0), texture(0), textureData(nullptr) {};
 		Texture2D(std::string path);
 
-		int LoadFromFile(std::string path);
+		int LoadFromFile(const char* path);
 
 		void SetWrappingMethod(GLint method)
 		{
