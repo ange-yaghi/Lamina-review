@@ -5,11 +5,11 @@
 #include <../Lamina/include/window.hpp>
 #include <../Lamina/include/GL/vertex_array.hpp>
 #include <../Lamina/include/GL/imageLoader.h>
+#include <../Lamina/include/Math/constants.hpp>
+#include <../Lamina/include/Math/timer.hpp>
 #include <chrono>
 #include <iostream>
 #include <Windows.h>
-#include <../Lamina/include/Math/constants.hpp>
-#include <../Lamina/include/Math/timer.hpp>
 
 void set_cursor(int x = 0, int y = 0)
 {
