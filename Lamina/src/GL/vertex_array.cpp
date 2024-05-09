@@ -55,4 +55,13 @@ void lm::VertexArray::SetPosition(float x, float y, float z)
 void lm::VertexArray::SetRotation(float x, float y, float z)
 {
 	rotation.CreateVector({ x, y, z });
+	//rotation.x() = (float)((int)rotation.x() % 360);
+	//rotation.y() = (float)((int)rotation.y() % 360);
+	//rotation.z() = (float)((int)rotation.z() % 360);
+	if (rotation.x() > 2 * PI) rotation.x() -= 2 * (float)PI;
+	if (rotation.y() > 2 * PI) rotation.y() -= 2 * (float)PI;
+	if (rotation.z() > 2 * PI) rotation.z() -= 2 * (float)PI;
+	if (rotation.x() < 0) rotation.x() += 2 * (float)PI;
+	if (rotation.y() < 0) rotation.y() += 2 * (float)PI;
+	if (rotation.z() < 0) rotation.z() += 2 * (float)PI;
 }

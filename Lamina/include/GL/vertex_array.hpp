@@ -6,6 +6,7 @@
 #include "../Lamina/include/GL/opengl.hpp"
 #include "../Lamina/include/GL/texture.hpp"
 #include "../Lamina/include/Math/matrix.hpp"
+#include "../Lamina/include/Math/constants.hpp"
 #include <iostream>
 
 namespace lm
@@ -35,13 +36,13 @@ namespace lm
 		};
 
 		void DrawArray(/*lm::vec3f positionChange = lm::vec3f({ 0, 0, 0 }), lm::vec3f rotationChange = lm::vec3f({0, 0, 0}), lm::vec3f scaleChange = lm::vec3f({ 0, 0, 0 })*/);
-		void SetScale(float x, float y, float z) { scale.CreateVector({ x, y, z }); }
+		void SetScale(float x, float y, float z) { scale.CreateVector({ std::clamp(x, 0.f, (float) INT_MAX), std::clamp(y, 0.f, (float)INT_MAX), std::clamp(z, 0.f, (float)INT_MAX) }); }
 		void SetRotation(float x, float y, float z);
 		void SetPosition(float x, float y, float z);
 		void SetTexture(Texture2D& _texture) { texture = &_texture; };
 		void SetColor(lm::Color _color) { color = _color; }
 
-		lm::vec3f GetRotation(){ return rotation; }
+		lm::vec3f GetRotation() { return rotation; }
 		lm::vec3f GetPosition() { return position; }
 		lm::vec3f GetScale() { return scale; }
  	private:
