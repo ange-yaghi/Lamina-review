@@ -17,10 +17,10 @@ find_package(OpenGL REQUIRED)
 add_library("${ProjectName}"
 	#source files
 	Lamina/src/glad.c
-	Lamina/src/window.cpp
+	Lamina/src/GL/window.cpp
 	Lamina/src/Primitives/rectangle.cpp
 	Lamina/src/Primitives/triangle.cpp
-	Lamina/src/colors.cpp
+	Lamina/src/GL/colors.cpp
 	Lamina/src/Math/vector.cpp
 	Lamina/src/Math/vertex.cpp
 	Lamina/src/GL/opengl.cpp
@@ -28,8 +28,8 @@ add_library("${ProjectName}"
 	Lamina/src/GL/vertex_array.cpp
 
 	#header files
-	Lamina/include/window.hpp
-	Lamina/include/colors.hpp
+	Lamina/include/GL/window.hpp
+	Lamina/include/GL/colors.hpp
 	Lamina/include/Math/vec2.hpp
 	Lamina/include/Primitives/rectangle.hpp
 	Lamina/include/Primitives/triangle.hpp

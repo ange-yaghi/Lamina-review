@@ -1,8 +1,8 @@
-#include <../Lamina/include/colors.hpp>
+#include <../Lamina/include/GL/colors.hpp>
 #include <../Lamina/include/GL/opengl.hpp>
 #include <../Lamina/include/Math/matrix.hpp>
 #include <../Lamina/include/Math/vec2.hpp>
-#include <../Lamina/include/window.hpp>
+#include <../Lamina/include/GL/window.hpp>
 #include <../Lamina/include/GL/vertex_array.hpp>
 #include <../Lamina/include/GL/imageLoader.h>
 #include <../Lamina/include/Math/constants.hpp>

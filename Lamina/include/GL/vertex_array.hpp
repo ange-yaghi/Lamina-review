@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Lamina/include/Math/vertex.hpp"
-#include "../Lamina/include/colors.hpp"
+#include "../Lamina/include/GL/colors.hpp"
 #include "../Lamina/include/GL/stb_image.h"
 #include "../Lamina/include/GL/opengl.hpp"
 #include "../Lamina/include/GL/texture.hpp"
