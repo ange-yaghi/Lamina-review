@@ -39,6 +39,8 @@ void lm::VertexArray::DrawArray()
 	glEnableVertexAttribArray(2);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDrawArrays(GL_TRIANGLES, 0, (GLsizei)mesh->meshData.size() / 9);
 
@@ -58,10 +60,10 @@ void lm::VertexArray::SetRotation(float x, float y, float z)
 	//rotation.x() = (float)((int)rotation.x() % 360);
 	//rotation.y() = (float)((int)rotation.y() % 360);
 	//rotation.z() = (float)((int)rotation.z() % 360);
-	if (rotation.x() > 2 * PI) rotation.x() -= 2 * (float)PI;
-	if (rotation.y() > 2 * PI) rotation.y() -= 2 * (float)PI;
-	if (rotation.z() > 2 * PI) rotation.z() -= 2 * (float)PI;
-	if (rotation.x() < 0) rotation.x() += 2 * (float)PI;
-	if (rotation.y() < 0) rotation.y() += 2 * (float)PI;
-	if (rotation.z() < 0) rotation.z() += 2 * (float)PI;
+	if (rotation.x() > 2 * PI) rotation.x() -= (float)TAU;
+	if (rotation.y() > 2 * PI) rotation.y() -= (float)TAU;
+	if (rotation.z() > 2 * PI) rotation.z() -= (float)TAU;
+	if (rotation.x() < 0) rotation.x() += (float)TAU;
+	if (rotation.y() < 0) rotation.y() += (float)TAU;
+	if (rotation.z() < 0) rotation.z() += (float)TAU;
 }

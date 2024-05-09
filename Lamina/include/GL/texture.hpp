@@ -15,8 +15,8 @@
 #define LM_LINEAR_MIPMAP			GL_LINEAR_MIPMAP_LINEAR
 #define LM_LINEAR_NEAREST_MIPMAP	GL_LINEAR_MIPMAP_NEAREST
 #define LM_NEAREST_LINEAR_MIPMAP	GL_NEAREST_MIPMAP_LINEAR
-#define LM_RGB						GL_RGB
-#define LM_RGBA						GL_RGBA
+//#define LM_RGB						GL_RGB
+//#define LM_RGBA						GL_RGBA
 
 namespace lm
 {
@@ -24,9 +24,9 @@ namespace lm
 	{
 	public:
 		Texture2D() : height(0), width(0), channels(0), texture(0), textureData(nullptr) {};
-		Texture2D(std::string path, GLint format);
+		Texture2D(std::string path);
 
-		int LoadFromFile(const char* path, GLint format);
+		int LoadFromFile(const char* path);
 
 		void SetWrappingMethod(GLint method)
 		{

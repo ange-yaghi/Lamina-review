@@ -1,11 +1,11 @@
 #include "../Lamina/include/GL/texture.hpp"
 
-lm::Texture2D::Texture2D(std::string path, GLint format)
+lm::Texture2D::Texture2D(std::string path)
 {
-	LoadFromFile(&path[0], format);
+	LoadFromFile(&path[0]);
 }
 
-int lm::Texture2D::LoadFromFile(const char* path, GLint format)
+int lm::Texture2D::LoadFromFile(const char* path)
 {
 	textureData = stbi_load(path, &width, &height, &channels, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -18,7 +18,11 @@ int lm::Texture2D::LoadFromFile(const char* path, GLint format)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, textureData);
+		if (channels == STBI_grey) glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, textureData);
+		else if (channels == STBI_grey_alpha) glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, width, height, 0, GL_RG, GL_UNSIGNED_BYTE, textureData);
+		else if(channels == STBI_rgb) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+		else if (channels == STBI_rgb_alpha) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+		else return 0;
 		stbi_image_free(textureData);
 
 		return 1;

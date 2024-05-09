@@ -9,6 +9,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <../Lamina/include/Math/constants.hpp>
+#include <../Lamina/include/Math/timer.hpp>
 
 void set_cursor(int x = 0, int y = 0)
 {
@@ -25,8 +26,9 @@ int main()
 	if (!glfwInit()) return -1;
 	lm::Window window(lm::vec2<int>(800, 800), "test window", LM_WINDOW_DEFAULT, 8);
 	window.MakeContextCurrent();
-	int time = 0;
+	int frameCounter = 0;
 	glfwSwapInterval(1);
+	lm::Timer timer;
 
 	lm::WavefrontObject object("Objects/testobj.obj");
 	lm::GLObject _object(object);
@@ -34,12 +36,15 @@ int main()
 	array.SetScale(0.5, 0.5, 0.5);
 	array.SetRotation(lm::constants::DegToRad(45.f), lm::constants::DegToRad(45.f), lm::constants::DegToRad(0.f));
 	array.SetPosition(0, 0, 0);
-	lm::Texture2D texture("Textures/test_texture.png", LM_RGB);
+	lm::Texture2D texture("Textures/test_texture.png");
 	array.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
 
+	float averateFrameTime = 0;
+
 	while (window.IsOpen())
 	{
+		timer.Restart();
 		glfwPollEvents();
 
 		int state_w = glfwGetKey(window.window, GLFW_KEY_W);
@@ -71,11 +76,21 @@ int main()
 		if (state_g == GLFW_PRESS) array.SetScale(array.GetScale().x() + 0.01f, array.GetScale().y() + 0.01f, array.GetScale().z() + 0.01f);
 
 		window.Clear(lm::Color{ 50, 50, 50, 255 });
-		time++;
 		lm::ColorF color = { 0.0f, 1.0f, 1.0f, 1.0f };
 		array.SetColor(lm::Get8BitColor(color)); 
 		array.DrawArray();
 		window.Display();
+
+		averateFrameTime += timer.GetTime(LM_MILISECONDS);
+
+		if(frameCounter >= 10)
+		{
+			set_cursor(0, 0);
+			std::cout << averateFrameTime / frameCounter << " ms " << 1000 / (averateFrameTime / frameCounter) << " FPS " << "      " << std::endl;
+			averateFrameTime = 0;
+			frameCounter = 0;
+		}
+		frameCounter++;
 	}
 	glfwTerminate();
 	return 0;
