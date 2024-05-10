@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Lamina/include/GL/imageLoader.h"
+#include "../dependencies/STB/stb_image.h"
 #include "glad/glad.h"
 #include <iostream>
 #include <string>

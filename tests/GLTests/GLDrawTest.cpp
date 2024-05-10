@@ -4,7 +4,6 @@
 #include <../Lamina/include/Math/vec2.hpp>
 #include <../Lamina/include/GL/window.hpp>
 #include <../Lamina/include/GL/vertex_array.hpp>
-#include <../Lamina/include/GL/imageLoader.h>
 #include <../Lamina/include/Math/constants.hpp>
 #include <../Lamina/include/Math/timer.hpp>
 #include <chrono>

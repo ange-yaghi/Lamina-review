@@ -16,7 +16,7 @@ find_package(OpenGL REQUIRED)
 
 add_library("${ProjectName}"
 	#source files
-	Lamina/src/glad.c
+	dependencies/glad/glad.c
 	Lamina/src/GL/window.cpp
 	Lamina/src/Primitives/rectangle.cpp
 	Lamina/src/Primitives/triangle.cpp
@@ -26,6 +26,9 @@ add_library("${ProjectName}"
 	Lamina/src/GL/opengl.cpp
 	Lamina/src/GL/texture.cpp
 	Lamina/src/GL/vertex_array.cpp
+	Lamina/src/GL/text.cpp
+	Lamina/src/misc_graphics/image.cpp
+	
 
 	#header files
 	Lamina/include/GL/window.hpp
@@ -38,10 +41,14 @@ add_library("${ProjectName}"
 	Lamina/include/Math/constants.hpp
 	Lamina/include/Math/timer.hpp
 	Lamina/include/GL/opengl.hpp
-	Lamina/include/GL/stb_image.h
 	Lamina/include/GL/texture.hpp
 	Lamina/include/GL/vertex_array.hpp
-	Lamina/include/GL/imageLoader.h
+	Lamina/include/misc_graphics/image.hpp
+
+	#dependency headers
+	dependencies/STB/stb_image.h
+	dependencies/STB/stb_truetype.h
+	dependencies/STB/stb_rect_pack.h
 )
 add_subdirectory(dependencies/GLFW)
 target_include_directories("${ProjectName}" PRIVATE dependencies)
