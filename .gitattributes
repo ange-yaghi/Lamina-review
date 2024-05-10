@@ -61,5 +61,5 @@
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
 
-*linguist-vendored
+* linguist-vendored
 dependencies/* linguist-vendored
