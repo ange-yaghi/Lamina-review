@@ -60,5 +60,5 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-* linguist-vendored
-dependencies/* linguist-vendored = true
+
+dependencies/* linguist-vendored
