@@ -31,13 +31,28 @@ int main()
 
 	lm::WavefrontObject object("Objects/testobj.obj");
 	lm::GLObject _object(object);
-	lm::VertexArray array(&_object);
-	array.SetScale(0.5, 0.5, 0.5);
-	array.SetRotation(lm::constants::DegToRad(45.f), lm::constants::DegToRad(45.f), lm::constants::DegToRad(0.f));
-	array.SetPosition(0, 0, 0);
+	lm::VertexArray array(&_object, window);
+	lm::VertexArray arrays[20];
+	array.SetScale(1, 1, 1);
+	//array.SetRotation(lm::constants::DegToRad(45.f), lm::constants::DegToRad(45.f), lm::constants::DegToRad(0.f));
+	array.SetPosition(0, 0, -3);
 	lm::Texture2D texture("Textures/test_texture.png");
 	array.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
+	srand(time(NULL));
+	for (int i = 0; i < 20; i++)
+	{
+		arrays[i].initaiateArray(&_object, window);
+		int posx = rand() % 10;
+		int posy = rand() % 10;
+		int posz = rand() % 50;
+		arrays[i].SetPosition(5 - posx, 5 - posy, -posz);
+		int rotx = rand() % 360;
+		int roty = rand() % 360;
+		int rotz = rand() % 360;
+		arrays[i].SetRotation(lm::constants::DegToRad((float)rotx), lm::constants::DegToRad((float)roty), lm::constants::DegToRad((float)rotz));
+		arrays[i].SetTexture(texture);
+	}
 
 	float averateFrameTime = 0;
 
@@ -71,13 +86,17 @@ int main()
 		if (state_k == GLFW_PRESS) array.SetPosition(array.GetPosition().x(), array.GetPosition().y() - 0.01f, array.GetPosition().z());
 		if (state_j == GLFW_PRESS) array.SetPosition(array.GetPosition().x() - 0.01f, array.GetPosition().y(), array.GetPosition().z());
 		if (state_l == GLFW_PRESS) array.SetPosition(array.GetPosition().x() + 0.01f, array.GetPosition().y(), array.GetPosition().z());
-		if (state_t == GLFW_PRESS) array.SetScale(array.GetScale().x() - 0.01f, array.GetScale().y() - 0.01f, array.GetScale().z() - 0.01f);
-		if (state_g == GLFW_PRESS) array.SetScale(array.GetScale().x() + 0.01f, array.GetScale().y() + 0.01f, array.GetScale().z() + 0.01f);
+		if (state_t == GLFW_PRESS) array.SetPosition(array.GetPosition().x(), array.GetPosition().y(), array.GetPosition().z() - 0.01f);
+		if (state_g == GLFW_PRESS) array.SetPosition(array.GetPosition().x(), array.GetPosition().y(), array.GetPosition().z() + 0.01f);
 
 		window.Clear(lm::Color{ 50, 50, 50, 255 });
-		lm::ColorF color = { 0.0f, 1.0f, 1.0f, 1.0f };
+		lm::ColorF color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		array.SetColor(lm::Get8BitColor(color)); 
 		array.DrawArray();
+		for (int i = 0; i < 20; i++)
+		{
+			arrays[i].DrawArray();
+		}
 		window.Display();
 
 		averateFrameTime += timer.GetTime(LM_MILISECONDS);

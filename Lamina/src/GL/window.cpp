@@ -46,7 +46,7 @@ bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, 
 
 void lm::Window::Clear(lm::Color color)
 {
-	glViewport(0, 0, GetSize().x, GetSize().y);
+	glViewport(0, 0, GetSize().x(), GetSize().y());
 
 	lm::ColorF floatColor = lm::GetFloatColor(color);
 	glClearColor(floatColor.r, floatColor.g, floatColor.b, floatColor.a);

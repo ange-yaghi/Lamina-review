@@ -9,21 +9,18 @@ out vec3 normalToFrag;
 out vec2 texturesToFrag;
 
 uniform vec4 color;
-uniform vec3 deltaTranslationVector;
+
+uniform mat4 translationMatrix;
 uniform mat4 scaleMatrix;
 uniform mat4 rotationMatrix_x;
 uniform mat4 rotationMatrix_y;
 uniform mat4 rotationMatrix_z;
+uniform mat4 projectionMatrix;
 
 void main()
 {
-	vec4 positionBuffer = vertexLoaction;
-	positionBuffer = scaleMatrix * positionBuffer;
-	positionBuffer = rotationMatrix_x * positionBuffer;
-	positionBuffer = rotationMatrix_y * positionBuffer;
-	positionBuffer = rotationMatrix_z * positionBuffer;
-	positionBuffer = positionBuffer + vec4(deltaTranslationVector, 0);
-	gl_Position = positionBuffer;
+	mat4 roationMatrix = rotationMatrix_x * rotationMatrix_y * rotationMatrix_z;
+	gl_Position = projectionMatrix * translationMatrix * roationMatrix * scaleMatrix * vertexLoaction;
 
 	colorToFrag = color;
 	normalToFrag = normals;

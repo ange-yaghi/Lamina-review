@@ -401,4 +401,87 @@ namespace lm
 //		rows ↓		columns ↓
 		std::array<std::array<float, 4>, 4> matrix;
 	};
+	class OrthographicProjectionMatrix
+	{
+	public:
+		OrthographicProjectionMatrix() : rows(4), columns(4)
+		{
+			matrix = { {
+				{1, 0, 0, 0},
+				{0, 1, 0, 0},
+				{0, 0, 1, 0},
+				{0, 0, 0, 1}
+			} };
+		}
+
+		OrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far) : rows(4), columns(4)
+		{
+			matrix = { {
+				{(2 / (right - left)),	0,						0,					((right + left) / (right - left))},
+				{0,						(2 / (top - bottom)),	0,					((top + bottom) / (top - bottom))},
+				{0,						0,						(2 / (far - near)),	((far + near) / (far - near))},
+				{0,						0,						0,					1}
+			} };
+		}
+
+		~OrthographicProjectionMatrix() {};
+
+		void ChangeMatrix(float left, float right, float top, float bottom, float near, float far)
+		{
+			matrix = { {
+				{(2 / (right - left)),	0,						0,					((right + left) / (right - left))},
+				{0,						(2 / (top - bottom)),	0,					((top + bottom) / (top - bottom))},
+				{0,						0,						(2 / (far - near)),	((far + near) / (far - near))},
+				{0,						0,						0,					1}
+			} };
+		}
+
+		const uint8_t rows;
+		const uint8_t columns;
+
+		//		rows ↓		columns ↓
+		std::array<std::array<float, 4>, 4> matrix;
+	};
+
+	class PerspectiveProjectionMatrix
+	{
+	public:
+		PerspectiveProjectionMatrix() : rows(4), columns(4)
+		{
+			matrix = { {
+				{1, 0, 0, 0},
+				{0, 1, 0, 0},
+				{0, 0, 1, 0},
+				{0, 0, 0, 1}
+			} };
+		}
+
+		PerspectiveProjectionMatrix(float fov, float aspect, float near, float far) : rows(4), columns(4)
+		{
+			matrix = { {
+				{(2 * near / (aspect * std::tan(fov / 2))),	0,			0,								0},
+				{0,						(2 * near / std::tan(fov / 2)),	0,								0},
+				{0,						0,								(-(far + near) / (far - near)),	(-(2 * far * near) / (far - near))},
+				{0,						0,								-1,								0}
+			} };
+		}
+
+		~PerspectiveProjectionMatrix() {};
+
+		void ChangeMatrix(float fov, float aspect, float far, float near)
+		{
+			matrix = { {
+				{(2 * near / (aspect * std::tan(fov / 2))),	0,			0,								0},
+				{0,						(2 * near / std::tan(fov / 2)),	0,								0},
+				{0,						0,								(-(far + near) / (far - near)),	(-(2 * far * near) / (far - near))},
+				{0,						0,								-1,								0}
+			} };
+		}
+
+		const uint8_t rows;
+		const uint8_t columns;
+
+		//		rows ↓		columns ↓
+		std::array<std::array<float, 4>, 4> matrix;
+	};
 }

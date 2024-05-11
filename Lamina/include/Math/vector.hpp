@@ -44,6 +44,12 @@ namespace lm
 			return *this;
 		}
 
+		Vector operator- (const Vector other)
+		{
+			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
+			return *this;
+		}
+
 		Vector operator = (const Vector &other)
 		{
 			if (this == &other)
@@ -90,6 +96,12 @@ namespace lm
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
+			return *this;
+		}
+
+		Vector operator- (const Vector other)
+		{
+			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
 			return *this;
 		}
 
@@ -195,6 +207,12 @@ namespace lm
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
+			return *this;
+		}
+
+		Vector operator- (const Vector other)
+		{
+			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
 			return *this;
 		}
 
@@ -308,6 +326,12 @@ namespace lm
 			return *this;
 		}
 
+		Vector operator- (const Vector other)
+		{
+			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
+			return *this;
+		}
+
 		Vector operator* (Matrix& other)
 		{
 			if (other.columns == 4)
@@ -412,4 +436,14 @@ namespace lm
 	vec4d TranslateVector(vec4d &vector, float x, float y, float z);
 	vec4d ScaleVector(vec4d &vector, float x, float y, float z);
 	vec4d RotateVector(vec4d &vector, float angle, int plane);
+
+	vec3f normalize(vec3f vec)
+	{
+		float length = std::sqrt((vec.x() * vec.x()) + (vec.y() * vec.y()) + (vec.z() * vec.z()));
+		return vec3f({ vec.x() / length, vec.y() / length, vec.z() / length });
+	}
+	vec3f CrossProduct(vec3f vec1, vec3f vec2)
+	{
+		return vec3f({ vec1.y() * vec2.z() - vec1.z() * vec2.y(), vec1.z() * vec2.x() - vec1.x() * vec2.z(), vec1.x() * vec2.y() - vec1.y() - vec2.y() });
+	}
 }

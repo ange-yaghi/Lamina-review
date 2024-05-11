@@ -41,18 +41,18 @@ namespace lm
 
 		bool CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints, int multisamplingLevel = 0);
 
-		lm::vec2<int> GetSize()
+		lm::vec2i GetSize()
 		{
-			vec2<int> size;
-			glfwGetWindowSize(window, &size.x, &size.y);
+			vec2i size;
+			glfwGetWindowSize(window, &size.x(), &size.y());
 			return size;
 		}
 		void SetSize(lm::vec2<int> size) { glfwSetWindowSize(window, size.x, size.y); }
 
-		lm::vec2<int> GetPosition()
+		lm::vec2i GetPosition()
 		{
-			vec2<int> position;
-			glfwGetWindowPos(window, &position.x, &position.y);
+			vec2i position;
+			glfwGetWindowPos(window, &position.x(), &position.y());
 			return position;
 		}
 		void SetPosition(lm::vec2<int> position) { glfwSetWindowPos(window, position.x, position.y); }

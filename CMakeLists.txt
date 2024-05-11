@@ -26,7 +26,9 @@ add_library("${ProjectName}"
 	Lamina/src/GL/opengl.cpp
 	Lamina/src/GL/texture.cpp
 	Lamina/src/GL/vertex_array.cpp
-	Lamina/src/GL/text.cpp
+	Lamina/src/GL/GL_text.cpp
+	Lamina/src/GL/camera.cpp
+	Lamina/src/misc_graphics/text.cpp
 	Lamina/src/misc_graphics/image.cpp
 	
 
@@ -43,6 +45,9 @@ add_library("${ProjectName}"
 	Lamina/include/GL/opengl.hpp
 	Lamina/include/GL/texture.hpp
 	Lamina/include/GL/vertex_array.hpp
+	Lamina/include/GL/GL_text.hpp
+	Lamina/include/GL/camera.hpp
+	Lamina/include/misc_graphics/text.hpp
 	Lamina/include/misc_graphics/image.hpp
 
 	#dependency headers
