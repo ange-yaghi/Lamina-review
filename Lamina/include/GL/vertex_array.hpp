@@ -77,9 +77,6 @@ namespace lm
 		lm::vec3f scale;
 		lm::vec3f rotation;
 
-		lm::WavefrontObject object;
-		lm::GLObject _object;
-
 		lm::Window* window;
 	};
 }

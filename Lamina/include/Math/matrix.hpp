@@ -1,12 +1,9 @@
-﻿#pragma once
+﻿#ifndef LM_MATRIX
+#define LM_MATRIX
 
-//#include "../Lamina/include/Math/vector.hpp"
 #include <iostream>
 #include <array>
 #include <vector>
-
-#ifndef LM_MATRIX
-#define LM_MATRIX
 
 namespace lm
 {
@@ -109,7 +106,7 @@ namespace lm
 	typedef Matrix<float, 4, 3> mat4x2;
 	typedef Matrix<float, 4, 4> mat4x4;
 
-	mat4 CreateTranslationMatrix(float x, float y, float z)
+	inline mat4 CreateTranslationMatrix(float x, float y, float z)
 	{
 		return mat4(
 			{
@@ -119,7 +116,7 @@ namespace lm
 				{0, 0, 0, 1}
 			});
 	}
-	mat4 CreateScaleMatrix(float x, float y, float z)
+	inline mat4 CreateScaleMatrix(float x, float y, float z)
 	{
 		return mat4(
 			{
@@ -129,7 +126,7 @@ namespace lm
 				{0, 0, 0, 1}
 			});
 	}
-	mat4 CreateRotationMatrix(float x, float y, float z)
+	inline mat4 CreateRotationMatrix(float x, float y, float z)
 	{
 		mat4 rotationX( {
 				{1, 0, 0, 0},
@@ -151,7 +148,7 @@ namespace lm
 			});
 		return rotationX * rotationY * rotationZ;
 	}
-	mat4 CreateOrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far)
+	inline mat4 CreateOrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far)
 	{
 		return mat4({
 				{(2 / (right - left)), 0, 0, ((right + left) / (right - left))},
@@ -160,7 +157,7 @@ namespace lm
 				{0,	0, 0, 1}
 			});
 	}
-	mat4 CreatePerspectiveProjectionMatrix(float fov, float aspect, float near, float far)
+	inline mat4 CreatePerspectiveProjectionMatrix(float fov, float aspect, float near, float far)
 	{
 		return mat4({
 				{(2 * near / (aspect * std::tan(fov / 2))),	0, 0, 0},

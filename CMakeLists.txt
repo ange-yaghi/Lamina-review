@@ -18,8 +18,6 @@ add_library("${ProjectName}"
 	#source files
 	dependencies/glad/glad.c
 	Lamina/src/GL/window.cpp
-	Lamina/src/Primitives/rectangle.cpp
-	Lamina/src/Primitives/triangle.cpp
 	Lamina/src/GL/colors.cpp
 	Lamina/src/Math/vector.cpp
 	Lamina/src/Math/vertex.cpp
@@ -35,9 +33,6 @@ add_library("${ProjectName}"
 	#header files
 	Lamina/include/GL/window.hpp
 	Lamina/include/GL/colors.hpp
-	Lamina/include/Math/vec2.hpp
-	Lamina/include/Primitives/rectangle.hpp
-	Lamina/include/Primitives/triangle.hpp
 	Lamina/include/Math/vector.hpp
 	Lamina/include/Math/vertex.hpp
 	Lamina/include/Math/constants.hpp

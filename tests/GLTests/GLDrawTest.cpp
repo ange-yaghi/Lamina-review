@@ -1,7 +1,6 @@
 #include <../Lamina/include/GL/colors.hpp>
 #include <../Lamina/include/GL/opengl.hpp>
 #include <../Lamina/include/Math/matrix.hpp>
-#include <../Lamina/include/Math/vec2.hpp>
 #include <../Lamina/include/GL/window.hpp>
 #include <../Lamina/include/GL/vertex_array.hpp>
 #include <../Lamina/include/Math/constants.hpp>
@@ -23,7 +22,7 @@ void set_cursor(int x = 0, int y = 0)
 int main()
 {
 	if (!glfwInit()) return -1;
-	lm::Window window(lm::vec2<int>(800, 800), "test window", LM_WINDOW_DEFAULT, 8);
+	lm::Window window(lm::vec2i({800, 800}), "test window", LM_WINDOW_DEFAULT, 8);
 	window.MakeContextCurrent();
 	int frameCounter = 0;
 	glfwSwapInterval(1);
@@ -34,7 +33,7 @@ int main()
 	lm::VertexArray array(&_object, window);
 	lm::VertexArray arrays[20];
 	array.SetScale(1, 1, 1);
-	//array.SetRotation(lm::constants::DegToRad(45.f), lm::constants::DegToRad(45.f), lm::constants::DegToRad(0.f));
+	array.SetRotation(lm::constants::DegToRad(45.f), lm::constants::DegToRad(45.f), lm::constants::DegToRad(0.f));
 	array.SetPosition(0, 0, -3);
 	lm::Texture2D texture("Textures/test_texture.png");
 	array.SetTexture(texture);
@@ -46,13 +45,14 @@ int main()
 		int posx = rand() % 10;
 		int posy = rand() % 10;
 		int posz = rand() % 50;
-		arrays[i].SetPosition(5 - posx, 5 - posy, -posz);
+		arrays[i].SetPosition(posx, posy, -posz);
 		int rotx = rand() % 360;
 		int roty = rand() % 360;
 		int rotz = rand() % 360;
 		arrays[i].SetRotation(lm::constants::DegToRad((float)rotx), lm::constants::DegToRad((float)roty), lm::constants::DegToRad((float)rotz));
 		arrays[i].SetTexture(texture);
 	}
+	SetCursorPos(1, 0);
 
 	float averateFrameTime = 0;
 
@@ -99,16 +99,16 @@ int main()
 		}
 		window.Display();
 
-		averateFrameTime += timer.GetTime(LM_MILISECONDS);
+		//averateFrameTime += timer.GetTime(LM_MILISECONDS);
 
-		if(frameCounter >= 10)
-		{
-			set_cursor(0, 0);
-			std::cout << averateFrameTime / frameCounter << " ms " << 1000 / (averateFrameTime / frameCounter) << " FPS " << "      " << std::endl;
-			averateFrameTime = 0;
-			frameCounter = 0;
-		}
-		frameCounter++;
+		//if(frameCounter >= 10)
+		//{
+		//	set_cursor(0, 0);
+		//	std::cout << averateFrameTime / frameCounter << " ms " << 1000 / (averateFrameTime / frameCounter) << " FPS " << "      " << std::endl;
+		//	averateFrameTime = 0;
+		//	frameCounter = 0;
+		//}
+		//frameCounter++;
 	}
 	glfwTerminate();
 	return 0;

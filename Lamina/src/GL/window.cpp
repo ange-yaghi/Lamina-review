@@ -1,6 +1,6 @@
 #include "../Lamina/include/GL/window.hpp"
 
-bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints, int multisamplingLevel)
+bool lm::Window::CreateWindow(lm::vec2i windowSize, std::string windowName, int windowHints, int multisamplingLevel)
 {
 	bool fullScreen = false;
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -30,8 +30,8 @@ bool lm::Window::CreateWindow(lm::vec2<int> windowSize, std::string windowName, 
 	}
 
 
-	if(fullScreen) window = glfwCreateWindow(windowSize.x, windowSize.y, windowName.c_str(), glfwGetPrimaryMonitor(), NULL);
-	else window = glfwCreateWindow(windowSize.x, windowSize.y, windowName.c_str(), NULL, NULL);
+	if(fullScreen) window = glfwCreateWindow(windowSize.x(), windowSize.y(), windowName.c_str(), glfwGetPrimaryMonitor(), NULL);
+	else window = glfwCreateWindow(windowSize.x(), windowSize.y(), windowName.c_str(), NULL, NULL);
 
 	glfwMakeContextCurrent(window);
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
@@ -51,9 +51,4 @@ void lm::Window::Clear(lm::Color color)
 	lm::ColorF floatColor = lm::GetFloatColor(color);
 	glClearColor(floatColor.r, floatColor.g, floatColor.b, floatColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void lm::Window::DrawVertexArray(lm::GLObject& vertexArray)
-{
-
 }

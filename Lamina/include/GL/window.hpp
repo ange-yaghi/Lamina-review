@@ -1,10 +1,7 @@
 #pragma once
 
 #include "../Lamina/include/GL/colors.hpp"
-#include "../Lamina/include/Math/vec2.hpp"
 #include "../Lamina/include/Math/vertex.hpp"
-#include "../Lamina/include/Primitives/rectangle.hpp"
-#include "../Lamina/include/Primitives/triangle.hpp"
 #include <glad/glad.h>
 #include <GLFW/include/GLFW/glfw3.h>
 #include <iostream>
@@ -37,9 +34,9 @@ namespace lm
 		GLFWwindow* window;
 
 		Window() : window(NULL) {};
-		Window(lm::vec2<int> windowSize, std::string windowName, int windowHint, int multisamplingLevel = 0) { CreateWindow(windowSize, windowName, windowHint, multisamplingLevel); }
+		Window(lm::vec2i windowSize, std::string windowName, int windowHint, int multisamplingLevel = 0) { CreateWindow(windowSize, windowName, windowHint, multisamplingLevel); }
 
-		bool CreateWindow(lm::vec2<int> windowSize, std::string windowName, int windowHints, int multisamplingLevel = 0);
+		bool CreateWindow(lm::vec2i windowSize, std::string windowName, int windowHints, int multisamplingLevel = 0);
 
 		lm::vec2i GetSize()
 		{
@@ -47,7 +44,7 @@ namespace lm
 			glfwGetWindowSize(window, &size.x(), &size.y());
 			return size;
 		}
-		void SetSize(lm::vec2<int> size) { glfwSetWindowSize(window, size.x, size.y); }
+		void SetSize(lm::vec2i size) { glfwSetWindowSize(window, size.x(), size.y()); }
 
 		lm::vec2i GetPosition()
 		{
@@ -55,7 +52,7 @@ namespace lm
 			glfwGetWindowPos(window, &position.x(), &position.y());
 			return position;
 		}
-		void SetPosition(lm::vec2<int> position) { glfwSetWindowPos(window, position.x, position.y); }
+		void SetPosition(lm::vec2i position) { glfwSetWindowPos(window, position.x(), position.y()); }
 
 		bool IsOpen() { return !glfwWindowShouldClose(window); }
 		void Close() { glfwSetWindowShouldClose(window, true); }

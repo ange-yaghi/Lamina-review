@@ -70,7 +70,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
-		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
+		Vector(const std::array<t_vector, 2>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 2>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 2, vector.begin());
@@ -216,7 +216,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
-		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
+		Vector(const std::array<t_vector, 2>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 4>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 4, vector.begin());
@@ -307,16 +307,16 @@ namespace lm
 	typedef Vector<GLfloat, 3> GLTriangleNorm;
 	typedef Vector<GLfloat, 2> GLTriangleTextr;
 
-	vec4d TranslateVector(vec4d &vector, float x, float y, float z);
-	vec4d ScaleVector(vec4d &vector, float x, float y, float z);
-	vec4d RotateVector(vec4d &vector, float angle, int plane);
+	//vec4d TranslateVector(vec4d &vector, float x, float y, float z);
+	//vec4d ScaleVector(vec4d &vector, float x, float y, float z);
+	//vec4d RotateVector(vec4d &vector, float angle, int plane);
 
-	vec3f normalize(vec3f vec)
+	inline vec3f normalize(vec3f vec)
 	{
 		float length = std::sqrt((vec.x() * vec.x()) + (vec.y() * vec.y()) + (vec.z() * vec.z()));
 		return vec3f({ vec.x() / length, vec.y() / length, vec.z() / length });
 	}
-	vec3f CrossProduct(vec3f vec1, vec3f vec2)
+	inline vec3f CrossProduct(vec3f vec1, vec3f vec2)
 	{
 		return vec3f({ vec1.y() * vec2.z() - vec1.z() * vec2.y(), vec1.z() * vec2.x() - vec1.x() * vec2.z(), vec1.x() * vec2.y() - vec1.y() - vec2.y() });
 	}

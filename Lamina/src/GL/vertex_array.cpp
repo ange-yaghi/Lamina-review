@@ -27,7 +27,7 @@ void lm::VertexArray::DrawArray()
 	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
 
 	//glUniform3f(glGetUniformLocation(program, "deltaTranslationVector"), position.x(), position.y(), position.z());
-	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_FALSE, &translationMatrix.data[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_TRUE, &translationMatrix.data[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_TRUE, &scaleMatrix.data[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix"), 1, GL_TRUE, &rotationMatrix.data[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "projectionMatrix"), 1, GL_TRUE, &perspectiveMatrix.data[0][0]);
