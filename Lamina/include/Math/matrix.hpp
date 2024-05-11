@@ -5,15 +5,26 @@
 #include <array>
 #include <vector>
 
+///////////////////////////////////////////////////////////////////////////
+// Row major matrix library with addition, subtraction, and multiplication.
+// 
+// To define a new matrix type:
+// typedef Matrix<type, columns, rows> name;
+// 
+// or directly use the matrix class:
+// Matrix<type, columns, rows> name(*matrix data*)
+///////////////////////////////////////////////////////////////////////////
 namespace lm
 {
+	//main matrix class
 	template<typename mat_type, size_t columns, size_t rows>
 	class Matrix
 	{
 	public:
+		//constructors
 		Matrix() {};
-		Matrix(const std::array<std::array<mat_type, rows>, columns> _matrix) : data(_matrix) {};
-		Matrix(const std::vector<std::vector<mat_type>> _matrix) 
+		Matrix(const std::array<std::array<mat_type, rows>, columns>& _matrix) : data(_matrix) {};
+		Matrix(const std::vector<std::vector<mat_type>>& _matrix) 
 		{
 			if (_matrix.size() == this->data.size() && _matrix[0].size() == this->data[0].size())
 			{
@@ -24,6 +35,7 @@ namespace lm
 				<< " Size of copied: " << _matrix.size() << " " << _matrix[0].size() << std::endl;
 		};
 
+		//operator definitions
 		Matrix operator+ (mat_type& scalar)
 		{
 			for (int i = 0; i < this->data.size(); i++)
@@ -78,6 +90,7 @@ namespace lm
 			return *this;
 		}
 
+		//transpose functions
 		Matrix TransposeMatrix()
 		{
 			std::array<std::array<mat_type, columns>, rows> result;
@@ -85,11 +98,13 @@ namespace lm
 				for (int j = 0; j < this->data[0].size(); j++) result[i][j] = data[j][i];
 			return Matrix(result);
 		}
-
+		
+// 		matrix data storage (64 bytes for a 4x4 matrix)
 //		columns ↓	rows ↓
 		std::array<std::array<mat_type, columns>, rows> data;
 	};
 
+	//type definitions for common matrices
 	typedef Matrix<float, 2, 2> mat2;
 	typedef Matrix<float, 3, 3> mat3;
 	typedef Matrix<float, 4, 4> mat4;
@@ -106,6 +121,7 @@ namespace lm
 	typedef Matrix<float, 4, 3> mat4x2;
 	typedef Matrix<float, 4, 4> mat4x4;
 
+	//GL 3D math vector creation functions
 	inline mat4 CreateTranslationMatrix(float x, float y, float z)
 	{
 		return mat4(
