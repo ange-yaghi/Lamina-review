@@ -119,19 +119,6 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 	}
 }
 
-void lm::WavefrontObject::TranslateObject(float x, float y, float z)
-{
-	for(int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
-}
-void lm::WavefrontObject::ScaleObject(float x, float y, float z)
-{
-	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
-}
-void lm::WavefrontObject::RotateObject(float angle, int plane)
-{
-	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
-}
-
 void lm::GLObject::ParseObject()
 {
 	meshData.clear();
@@ -160,39 +147,4 @@ void lm::GLObject::ParseObject()
 		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].y());
 		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].z());
 	}
-}
-
-//void lm::GLObject::RuntimeParse()
-//{
-//	unsigned int numberOfObjects = object->faces.size();
-//	for (int i = 0; i < numberOfObjects; i += 9)
-//	{
-//		meshData.push_back(vertices[indeces[i] - 1].x());
-//		meshData.push_back(vertices[indeces[i + 1] - 1].y());
-//		meshData.push_back(vertices[indeces[i + 2] - 1].z());
-//		meshData.push_back(vertices[indeces[i + 3] - 1].w());
-//
-//		meshData.push_back(vertices[indeces[i + 4] - 1].x());
-//		meshData.push_back(vertices[indeces[i + 5] - 1].y());
-//		meshData.push_back(vertices[indeces[i + 6] - 1].z());
-//
-//		meshData.push_back(vertices[indeces[i + 7] - 1].x());
-//		meshData.push_back(vertices[indeces[i + 8] - 1].y());
-//	}
-//}
-
-void lm::GLObject::TranslateObject(float x, float y, float z)
-{
-	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::TranslateVector(vertices[i], x, y, z);
-	ParseObject();
-}
-void lm::GLObject::ScaleObject(float x, float y, float z)
-{
-	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::ScaleVector(vertices[i], x, y, z);
-	ParseObject();
-}
-void lm::GLObject::RotateObject(float angle, int plane)
-{
-	for (int i = 0; i < vertices.size(); i++) vertices[i] = lm::RotateVector(vertices[i], angle, plane);
-	ParseObject();
 }

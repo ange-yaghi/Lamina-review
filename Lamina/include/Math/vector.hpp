@@ -105,58 +105,19 @@ namespace lm
 			return *this;
 		}
 
-		Vector operator* (Matrix& other)
-		{
-			if (other.columns == 2)
-			{
-				Vector<t_vector, 2> result;
+		//Vector operator* (Matrix& other)
+		//{
+		//	if (other.data.size() == 2)
+		//	{
+		//		Vector<t_vector, 2> result;
 
-				result.vector[0] = other.matrix[0][0] * this->vector.vector[0] + other.matrix[0][1] * this->vector.vector[1];
-				result.vector[1] = other.matrix[1][0] * this->vector.vector[0] + other.matrix[1][1] * this->vector.vector[1];
+		//		result.vector[0] = other.matrix[0][0] * this->vector.vector[0] + other.matrix[0][1] * this->vector.vector[1];
+		//		result.vector[1] = other.matrix[1][0] * this->vector.vector[0] + other.matrix[1][1] * this->vector.vector[1];
 
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (TranslationMatrix& other)
-		{
-			if (other.columns == 2)
-			{
-				Vector<t_vector, 2> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1];
-
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (ScaleMatrix& other)
-		{
-			if (other.columns == 2)
-			{
-				Vector<t_vector, 2> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1];
-
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (RotationMatrix& other)
-		{
-			if (other.columns == 2)
-			{
-				Vector<t_vector, 2> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1];
-
-				return result;
-			}
-			else return *this;
-		}
+		//		return result;
+		//	}
+		//	else return *this;
+		//}
 
 		Vector operator = (const Vector& other)
 		{
@@ -181,7 +142,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
-		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
+		Vector(const std::array<t_vector, 3>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 3>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 3, vector.begin());
@@ -210,68 +171,26 @@ namespace lm
 			return *this;
 		}
 
-		Vector operator- (const Vector other)
+		Vector operator- (const Vector& other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
+			for (int i = 0; i < vector.size(); i++) this->vector[i] -= other.vector[i];
 			return *this;
 		}
 
-		Vector operator* (Matrix& other)
-		{
-			if (other.columns == 3)
-			{
-				Vector<t_vector, 3> result;
+		//Vector operator* (Matrix& other)
+		//{
+		//	if (other.columns == 3)
+		//	{
+		//		Vector<t_vector, 3> result;
 
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
+		//		result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
+		//		result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
+		//		result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
 
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (TranslationMatrix& other)
-		{
-			if (other.columns == 3)
-			{
-				Vector<t_vector, 3> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
-
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (ScaleMatrix& other)
-		{
-			if (other.columns == 3)
-			{
-				Vector<t_vector, 3> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
-
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (RotationMatrix& other)
-		{
-			if (other.columns == 3)
-			{
-				Vector<t_vector, 3> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
-
-				return result;
-			}
-			else return *this;
-		}
+		//		return result;
+		//	}
+		//	else return *this;
+		//}
 
 		Vector operator = (const Vector& other)
 		{
@@ -332,66 +251,21 @@ namespace lm
 			return *this;
 		}
 
-		Vector operator* (Matrix& other)
-		{
-			if (other.columns == 4)
-			{
-				Vector<t_vector, 4> result;
+		//Vector operator* (Matrix& other)
+		//{
+		//	if (other.columns == 4)
+		//	{
+		//		Vector<t_vector, 4> result;
 
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
-				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
+		//		result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
+		//		result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
+		//		result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
+		//		result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
 
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (TranslationMatrix& other)
-		{
-			if (other.columns == 4)
-			{
-				Vector<t_vector, 4> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
-				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
-
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (ScaleMatrix& other)
-		{
-			if (other.columns == 4)
-			{
-				Vector<t_vector, 4> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
-				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
-
-				return result;
-			}
-			else return *this;
-		}
-		Vector operator* (RotationMatrix& other)
-		{
-			if (other.columns == 4)
-			{
-				Vector<t_vector, 4> result;
-
-				result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
-				result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
-				result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
-				result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
-
-				return result;
-			}
-			return *this;
-		}
+		//		return result;
+		//	}
+		//	else return *this;
+		//}
 
 		Vector operator = (const Vector& other)
 		{

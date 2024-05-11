@@ -1,487 +1,173 @@
 ﻿#pragma once
+
 //#include "../Lamina/include/Math/vector.hpp"
 #include <iostream>
 #include <array>
 #include <vector>
-#include <stdint.h>
 
-
-#define LM_ROTATE_X_PLANE 0b001
-#define LM_ROTATE_Y_PLANE 0b010
-#define LM_ROTATE_Z_PLANE 0b100
+#ifndef LM_MATRIX
+#define LM_MATRIX
 
 namespace lm
 {
+	template<typename mat_type, size_t columns, size_t rows>
 	class Matrix
 	{
 	public:
-		Matrix() : rows(NULL), columns(NULL) {};
-		Matrix(uint8_t _rows, uint8_t _columns) : rows(_rows), columns(_columns)
+		Matrix() {};
+		Matrix(const std::array<std::array<mat_type, rows>, columns> _matrix) : data(_matrix) {};
+		Matrix(const std::vector<std::vector<mat_type>> _matrix) 
 		{
-			matrix = std::vector<std::vector<float>>(rows, std::vector<float>(columns, 0));
-		}
-		~Matrix() {};
-		
-		void CreateMatrix(const std::vector<std::vector<float>> &_matrix) 
-		{
-			bool matrixCompatible = true;
-			if (_matrix.size() != rows) matrixCompatible = false;
-			for (int i = 0; i < _matrix.size(); i++)
+			if (_matrix.size() == this->data.size() && _matrix[0].size() == this->data[0].size())
 			{
-				if (_matrix[i].size() != columns) matrixCompatible = false;
+				for (int i = 0; i < this->data.size(); i++)
+					for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] = _matrix[i][j];
 			}
-			if (matrixCompatible) matrix = _matrix;
-			else std::cout << "Unable to assign matix. Incompatible size" << std::endl;
-		}
-		void ChangeMatrixValue(uint8_t row, uint8_t column, float value) { matrix[row][column] = value; }
+			else std::cout << "could not copy vector, incompatible size. Size of this: " << this->data.size() << " " << this->data[0].size() 
+				<< " Size of copied: " << _matrix.size() << " " << _matrix[0].size() << std::endl;
+		};
 
-		Matrix operator+ (float &scalar)
+		Matrix operator+ (mat_type& scalar)
 		{
-			Matrix result(rows, columns);
-			result.CreateMatrix(matrix);
-			for (int i = 0; i < matrix.size(); i++)
-			{
-				for (int j = 0; j < matrix[i].size(); j++)
-				{
-					result.matrix[i][j] += scalar;
-				}
-			}
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] += scalar;
+			return *this;
+		}
+		Matrix operator+ (Matrix& other)
+		{
+			if (this->data.size() != other.data.size()) return *this;
+			if (this->data[0].size() != other.data[0].size()) return *this;
+
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] += other.data[i][j];
+			return *this;
+		}
+		Matrix operator- (mat_type& scalar)
+		{
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] -= scalar;
+			return *this;
+		}
+		Matrix operator- (Matrix& other)
+		{
+			if (this->data.size() != other.data.size()) return *this;
+			if (this->data[0].size() != other.data[0].size()) return *this;
+
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] -= other.data[i][j];
+			return *this;
+		}
+		Matrix operator* (mat_type& scalar)
+		{
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] *= scalar;
+		}
+		Matrix operator* (Matrix& other)
+		{
+			if (this->data.size() != other.data[0].size()) return *this;
+			std::vector<std::vector<mat_type>> result (this->data[0].size(), std::vector<mat_type>(other.data.size(), 0));
+			for (int i = 0; i < this->data[0].size(); i++)
+				for (int j = 0; j < other.data.size(); j++)
+					for (int k = 0; k < this->data.size(); k++) result[i][j] += this->data[i][k] * other.data[k][j];
 			return result;
 		}
-
-		Matrix operator+ (Matrix &other)
-		{
-			Matrix result(rows, columns);
-			result.CreateMatrix(matrix);
-			for (int i = 0; i < matrix.size(); i++)
-			{
-				for (int j = 0; j < matrix[i].size(); j++)
-				{
-					result.matrix[i][j] += other.matrix[i][j];
-				}
-			}
-			return result;
-		}
-
-		Matrix operator- (float &scalar)
-		{
-			Matrix result(rows, columns);
-			result.CreateMatrix(matrix);
-			for (int i = 0; i < matrix.size(); i++)
-			{
-				for (int j = 0; j < matrix[i].size(); j++)
-				{
-					result.matrix[i][j] -= scalar;
-				}
-			}
-			return result;
-		}
-
-		Matrix operator- (Matrix &other)
-		{
-			Matrix result(rows, columns);
-			result.CreateMatrix(matrix);
-			for (int i = 0; i < matrix.size(); i++)
-			{
-				for (int j = 0; j < matrix[i].size(); j++)
-				{
-					result.matrix[i][j] -= other.matrix[i][j];
-				}
-			}
-			return result;
-		}
-
-		Matrix operator* (Matrix &other)
-		{
-			if (columns == other.rows)
-			{
-				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
-
-				for (int i = 0; i < rows; i++)
-				{
-					for (int j = 0; j < other.columns; j++)
-					{
-						for (int k = 0; k < rows; k++)
-						{
-							result[i][j] += matrix[i][k] * other.matrix[k][j];
-						}
-					}
-				}
-
-				Matrix out(rows, other.columns);
-				out.CreateMatrix(result);
-				return out;
-			}
-			else 
-			{
-				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
-				return Matrix();
-			}
-		}
-
 		Matrix operator= (Matrix& other)
 		{
-			if (this == &other) return *this;
+			if (this->data.size() != other.data.size()) return *this;
+			if (this->data[0].size() != other.data[0].size()) return *this;
 
-			this->rows = other.rows;
-			this->columns = other.columns;
-			this->matrix = other.matrix;
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) this->data[i][j] = other.data[i][j];
 			return *this;
 		}
 
-		uint8_t rows;
-		uint8_t columns;
-
-//		rows ↓		columns ↓
-		std::vector<std::vector<float>> matrix;
-	};
-
-	class TranslationMatrix
-	{
-	public:
-		TranslationMatrix() : rows(4), columns(4) 
-		{ 
-			matrix = { {
-				{1, 0, 0, 0},
-				{0, 1, 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, 0, 1}
-			} };
+		Matrix TransposeMatrix()
+		{
+			std::array<std::array<mat_type, columns>, rows> result;
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < this->data[0].size(); j++) result[i][j] = data[j][i];
+			return Matrix(result);
 		}
 
-		TranslationMatrix(float x, float y, float z) : rows(4), columns(4)
-		{
-			matrix = { {
+//		columns ↓	rows ↓
+		std::array<std::array<mat_type, rows>, columns> data;
+	};
+
+	typedef Matrix<float, 2, 2> mat2;
+	typedef Matrix<float, 3, 3> mat3;
+	typedef Matrix<float, 4, 4> mat4;
+
+	typedef Matrix<float, 2, 1> mat2x1;
+	typedef Matrix<float, 2, 3> mat2x2;
+	typedef Matrix<float, 2, 4> mat2x4;
+
+	typedef Matrix<float, 3, 1> mat3x1;
+	typedef Matrix<float, 3, 3> mat3x2;
+	typedef Matrix<float, 3, 4> mat3x4;
+
+	typedef Matrix<float, 4, 1> mat4x1;
+	typedef Matrix<float, 4, 3> mat4x2;
+	typedef Matrix<float, 4, 4> mat4x4;
+
+	mat4 CreateTranslationMatrix(float x, float y, float z)
+	{
+		return mat4(
+			{
 				{1, 0, 0, x},
 				{0, 1, 0, y},
 				{0, 0, 1, z},
 				{0, 0, 0, 1}
-			} };
-		}
-
-		~TranslationMatrix() {};
-
-		void ChangeTranlationValues(float x, float y, float z)
-		{
-			matrix = { {
-				{1, 0, 0, x},
-				{0, 1, 0, y},
-				{0, 0, 1, z},
-				{0, 0, 0, 1}
-			} };
-		}
-
-		Matrix operator* (Matrix other)
-		{
-			if (columns == other.rows)
-			{
-				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
-
-				for (int i = 0; i < rows; i++)
-				{
-					for (int j = 0; j < other.columns; j++)
-					{
-						for (int k = 0; k < rows; k++)
-						{
-							result[i][j] += matrix[i][k] * other.matrix[k][j];
-						}
-					}
-				}
-
-				Matrix out(rows, other.columns);
-				out.CreateMatrix(result);
-				return out;
-			}
-			else
-			{
-				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
-				return Matrix();
-			}
-		}
-
-		const uint8_t rows;
-		const uint8_t columns;
-
-//		rows ↓		columns ↓
-		std::array<std::array<float, 4>, 4> matrix;
-	};
-
-	class ScaleMatrix
+			});
+	}
+	mat4 CreateScaleMatrix(float x, float y, float z)
 	{
-	public:
-		ScaleMatrix() : rows(4), columns(4)
-		{
-			matrix = { {
-				{1, 0, 0, 0},
-				{0, 1, 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, 0, 1}
-			} };
-		}
-		ScaleMatrix(float x, float y, float z) : rows(4), columns(4)
-		{
-			matrix = { {
+		return mat4(
+			{
 				{x, 0, 0, 0},
 				{0, y, 0, 0},
 				{0, 0, z, 0},
 				{0, 0, 0, 1}
-			} };
-		}
-
-		~ScaleMatrix() {};
-
-		void ChangeScaleValues(float x, float y, float z)
-		{
-			matrix = { {
-				{x, 0, 0, 0},
-				{0, y, 0, 0},
-				{0, 0, z, 0},
-				{0, 0, 0, 1}
-			} };
-		}
-
-		Matrix operator* (Matrix other)
-		{
-			if (columns == other.rows)
-			{
-				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
-
-				for (int i = 0; i < rows; i++)
-				{
-					for (int j = 0; j < other.columns; j++)
-					{
-						for (int k = 0; k < rows; k++)
-						{
-							result[i][j] += matrix[i][k] * other.matrix[k][j];
-						}
-					}
-				}
-
-				Matrix out(rows, other.columns);
-				out.CreateMatrix(result);
-				return out;
-			}
-			else
-			{
-				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
-				return Matrix();
-			}
-		}
-
-		const uint8_t rows;
-		const uint8_t columns;
-
-//		rows ↓		columns ↓
-		std::array<std::array<float, 4>, 4> matrix;
-	};
-
-	class RotationMatrix
+			});
+	}
+	mat4 CreateRotationMatrix(float x, float y, float z)
 	{
-	public:
-		RotationMatrix() : rows(4), columns(4)
-		{
-			matrix = { {
+		mat4 rotationX( {
 				{1, 0, 0, 0},
+				{0, std::cos(x), -std::sin(x), 0},
+				{0, std::sin(x), std::cos(x), 0},
+				{0, 0, 0, 1}
+			});
+		mat4 rotationY({
+				{std::cos(y), 0, std::sin(y), 0},
 				{0, 1, 0, 0},
+				{-std::sin(y), 0, std::cos(y), 0},
+				{0, 0, 0, 1}
+			});
+		mat4 rotationZ({
+				{std::cos(z), -std::sin(z), 0, 0},
+				{std::sin(z), std::cos(z), 0, 0},
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}
-			} };
-		}
-		RotationMatrix(float angle, int plane) : rows(4), columns(4)
-		{
-			switch (plane)
-			{
-			case LM_ROTATE_X_PLANE:
-				matrix = { {
-					{1, 0, 0, 0},
-					{0, std::cos(angle), -std::sin(angle), 0},
-					{0, std::sin(angle), std::cos(angle), 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			case LM_ROTATE_Y_PLANE:
-				matrix = { {
-					{std::cos(angle), 0, std::sin(angle), 0},
-					{0, 1, 0, 0},
-					{-std::sin(angle), 0, std::cos(angle), 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			case LM_ROTATE_Z_PLANE:
-				matrix = { {
-					{std::cos(angle), -std::sin(angle), 0, 0},
-					{std::sin(angle), std::cos(angle), 0, 0},
-					{0, 0, 1, 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			default:
-				matrix = { {
-					{1, 0, 0, 0},
-					{0, 1, 0, 0},
-					{0, 0, 1, 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			}
-		}
-
-		~RotationMatrix() {};
-
-		void ChangeRotationAngle(float angle, int plane)
-		{
-			switch (plane)
-			{
-			case LM_ROTATE_X_PLANE:
-				matrix = { {
-					{1, 0, 0, 0},
-					{0, std::cos(angle), -std::sin(angle), 0},
-					{0, std::sin(angle), std::cos(angle), 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			case LM_ROTATE_Y_PLANE:
-				matrix = { {
-					{std::cos(angle), 0, std::sin(angle), 0},
-					{0, 1, 0, 0},
-					{-std::sin(angle), 0, std::cos(angle), 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			case LM_ROTATE_Z_PLANE:
-				matrix = { {
-					{std::cos(angle), -std::sin(angle), 0, 0},
-					{std::sin(angle), std::cos(angle), 0, 0},
-					{0, 0, 1, 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			default:
-				matrix = { {
-					{1, 0, 0, 0},
-					{0, 1, 0, 0},
-					{0, 0, 1, 0},
-					{0, 0, 0, 1}
-				} };
-				break;
-			}
-		}
-
-		Matrix operator* (Matrix other)
-		{
-			if (!(columns == other.rows))
-			{
-				std::vector<std::vector<float>> result(rows, std::vector<float>(other.columns, 0));
-
-				for (int i = 0; i < rows; i++)
-				{
-					for (int j = 0; j < other.columns; j++)
-					{
-						for (int k = 0; k < rows; k++)
-						{
-							result[i][j] += matrix[i][k] * other.matrix[k][j];
-						}
-					}
-				}
-
-				Matrix out(rows, other.columns);
-				out.CreateMatrix(result);
-				return out;
-			}
-			else
-			{
-				std::cout << "Matrices can not be multiplied. Incompatible size." << std::endl;
-				return Matrix();
-			}
-		}
-
-		const uint8_t rows;
-		const uint8_t columns;
-
-//		rows ↓		columns ↓
-		std::array<std::array<float, 4>, 4> matrix;
-	};
-	class OrthographicProjectionMatrix
+			});
+		return rotationX * rotationY * rotationZ;
+	}
+	mat4 CreateOrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far)
 	{
-	public:
-		OrthographicProjectionMatrix() : rows(4), columns(4)
-		{
-			matrix = { {
-				{1, 0, 0, 0},
-				{0, 1, 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, 0, 1}
-			} };
-		}
-
-		OrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far) : rows(4), columns(4)
-		{
-			matrix = { {
-				{(2 / (right - left)),	0,						0,					((right + left) / (right - left))},
-				{0,						(2 / (top - bottom)),	0,					((top + bottom) / (top - bottom))},
-				{0,						0,						(2 / (far - near)),	((far + near) / (far - near))},
-				{0,						0,						0,					1}
-			} };
-		}
-
-		~OrthographicProjectionMatrix() {};
-
-		void ChangeMatrix(float left, float right, float top, float bottom, float near, float far)
-		{
-			matrix = { {
-				{(2 / (right - left)),	0,						0,					((right + left) / (right - left))},
-				{0,						(2 / (top - bottom)),	0,					((top + bottom) / (top - bottom))},
-				{0,						0,						(2 / (far - near)),	((far + near) / (far - near))},
-				{0,						0,						0,					1}
-			} };
-		}
-
-		const uint8_t rows;
-		const uint8_t columns;
-
-		//		rows ↓		columns ↓
-		std::array<std::array<float, 4>, 4> matrix;
-	};
-
-	class PerspectiveProjectionMatrix
+		return mat4({
+				{(2 / (right - left)), 0, 0, ((right + left) / (right - left))},
+				{0,	(2 / (top - bottom)), 0, ((top + bottom) / (top - bottom))},
+				{0,	0, (2 / (far - near)), ((far + near) / (far - near))},
+				{0,	0, 0, 1}
+			});
+	}
+	mat4 CreatePerspectiveProjectionMatrix(float fov, float aspect, float near, float far)
 	{
-	public:
-		PerspectiveProjectionMatrix() : rows(4), columns(4)
-		{
-			matrix = { {
-				{1, 0, 0, 0},
-				{0, 1, 0, 0},
-				{0, 0, 1, 0},
-				{0, 0, 0, 1}
-			} };
-		}
-
-		PerspectiveProjectionMatrix(float fov, float aspect, float near, float far) : rows(4), columns(4)
-		{
-			matrix = { {
-				{(2 * near / (aspect * std::tan(fov / 2))),	0,			0,								0},
-				{0,						(2 * near / std::tan(fov / 2)),	0,								0},
-				{0,						0,								(-(far + near) / (far - near)),	(-(2 * far * near) / (far - near))},
-				{0,						0,								-1,								0}
-			} };
-		}
-
-		~PerspectiveProjectionMatrix() {};
-
-		void ChangeMatrix(float fov, float aspect, float far, float near)
-		{
-			matrix = { {
-				{(2 * near / (aspect * std::tan(fov / 2))),	0,			0,								0},
-				{0,						(2 * near / std::tan(fov / 2)),	0,								0},
-				{0,						0,								(-(far + near) / (far - near)),	(-(2 * far * near) / (far - near))},
-				{0,						0,								-1,								0}
-			} };
-		}
-
-		const uint8_t rows;
-		const uint8_t columns;
-
-		//		rows ↓		columns ↓
-		std::array<std::array<float, 4>, 4> matrix;
-	};
+		return mat4({
+				{(2 * near / (aspect * std::tan(fov / 2))),	0, 0, 0},
+				{0,	(2 * near / std::tan(fov / 2)),	0, 0},
+				{0,	0, (-(far + near) / (far - near)), (-(2 * far * near) / (far - near))},
+				{0, 0, -1, 0}
+			});
+	}
 }
+#endif // !LM_MATRIX

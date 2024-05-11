@@ -3,14 +3,19 @@
 void lm::VertexArray::DrawArray()
 {
 	if (window == nullptr) return;
-	lm::TranslationMatrix tranlationMatrix ({ position.x(), position.y(), position.z()});
-	lm::ScaleMatrix scaleMatrix({ scale.x(), scale.y(), scale.z() });
-	lm::RotationMatrix rotationMatrix_x(rotation.x(), LM_ROTATE_X_PLANE);
-	lm::RotationMatrix rotationMatrix_y(rotation.y(), LM_ROTATE_Y_PLANE);
-	lm::RotationMatrix rotationMatrix_z(rotation.z(), LM_ROTATE_Z_PLANE);
-	lm::vec2i windowSize = window->GetSize();
-	//std::cout << "X: " << scale.x() << " Y: " << scale.y() << " Z: " << scale.y() << std::endl;
-	lm::PerspectiveProjectionMatrix projection(lm::constants::RadToDeg(70.f), (float)windowSize.x() / (float)windowSize.y(), 1, 10000);
+	//lm::TranslationMatrix tranlationMatrix ({ position.x(), position.y(), position.z()});
+	//lm::ScaleMatrix scaleMatrix({ scale.x(), scale.y(), scale.z() });
+	//lm::RotationMatrix rotationMatrix_x(rotation.x(), LM_ROTATE_X_PLANE);
+	//lm::RotationMatrix rotationMatrix_y(rotation.y(), LM_ROTATE_Y_PLANE);
+	//lm::RotationMatrix rotationMatrix_z(rotation.z(), LM_ROTATE_Z_PLANE);
+	//lm::vec2i windowSize = window->GetSize();
+	////std::cout << "X: " << scale.x() << " Y: " << scale.y() << " Z: " << scale.y() << std::endl;
+	//lm::PerspectiveProjectionMatrix projection(lm::constants::RadToDeg(70.f), (float)windowSize.x() / (float)windowSize.y(), 1, 10000);
+
+	lm::mat4 translationMatrix = lm::CreateTranslationMatrix(position.x(), position.y(), position.z());
+	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x(), scale.y(), scale.z());
+	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(rotation.x(), rotation.y(), rotation.z());
+	lm::mat4 perspectiveMatrix = lm::CreatePerspectiveProjectionMatrix(lm::constants::RadToDeg(70.f), (float)window->GetSize().x() / (float)window->GetSize().y(), 1, 10000);
 	
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -22,12 +27,10 @@ void lm::VertexArray::DrawArray()
 	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
 
 	//glUniform3f(glGetUniformLocation(program, "deltaTranslationVector"), position.x(), position.y(), position.z());
-	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_TRUE, &tranlationMatrix.matrix[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_TRUE, &scaleMatrix.matrix[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix_x"), 1, GL_TRUE, &rotationMatrix_x.matrix[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix_y"), 1, GL_TRUE, &rotationMatrix_y.matrix[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix_z"), 1, GL_TRUE, &rotationMatrix_z.matrix[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "projectionMatrix"), 1, GL_TRUE, &projection.matrix[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_FALSE, &translationMatrix.data[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_TRUE, &scaleMatrix.data[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix"), 1, GL_TRUE, &rotationMatrix.data[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "projectionMatrix"), 1, GL_TRUE, &perspectiveMatrix.data[0][0]);
 	glUniform1i(glGetUniformLocation(program, "textured"), GL_FALSE);
 	if (texture != nullptr)
 	{
