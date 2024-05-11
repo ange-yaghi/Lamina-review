@@ -61,10 +61,10 @@ namespace lm
 		}
 		Matrix operator* (Matrix& other)
 		{
-			if (this->data.size() != other.data[0].size()) return *this;
+			if (this->data[0].size() != other.data.size()) return *this;
 			std::vector<std::vector<mat_type>> result (this->data[0].size(), std::vector<mat_type>(other.data.size(), 0));
-			for (int i = 0; i < this->data[0].size(); i++)
-				for (int j = 0; j < other.data.size(); j++)
+			for (int i = 0; i < this->data.size(); i++)
+				for (int j = 0; j < other.data[0].size(); j++)
 					for (int k = 0; k < this->data.size(); k++) result[i][j] += this->data[i][k] * other.data[k][j];
 			return result;
 		}
@@ -87,7 +87,7 @@ namespace lm
 		}
 
 //		columns ↓	rows ↓
-		std::array<std::array<mat_type, rows>, columns> data;
+		std::array<std::array<mat_type, columns>, rows> data;
 	};
 
 	typedef Matrix<float, 2, 2> mat2;
@@ -135,9 +135,9 @@ namespace lm
 				{0, 0, 0, 1}
 			});
 		mat4 rotationY({
-				{std::cos(y), 0, std::sin(y), 0},
+				{std::cos(y), 0, -std::sin(y), 0},
 				{0, 1, 0, 0},
-				{-std::sin(y), 0, std::cos(y), 0},
+				{std::sin(y), 0, std::cos(y), 0},
 				{0, 0, 0, 1}
 			});
 		mat4 rotationZ({
@@ -146,7 +146,7 @@ namespace lm
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}
 			});
-		return rotationX * rotationY * rotationZ;
+		return rotationZ * rotationY * rotationX;
 	}
 	inline mat4 CreateOrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far)
 	{

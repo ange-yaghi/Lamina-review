@@ -105,19 +105,15 @@ namespace lm
 			return *this;
 		}
 
-		//Vector operator* (Matrix& other)
-		//{
-		//	if (other.data.size() == 2)
-		//	{
-		//		Vector<t_vector, 2> result;
+		Vector operator* (mat2& other)
+		{
+			Vector<t_vector, 2> result;
 
-		//		result.vector[0] = other.matrix[0][0] * this->vector.vector[0] + other.matrix[0][1] * this->vector.vector[1];
-		//		result.vector[1] = other.matrix[1][0] * this->vector.vector[0] + other.matrix[1][1] * this->vector.vector[1];
+			result.vector[0] = other.data[0][0] * this->vector[0] + other.data[0][1] * this->vector[1] + other.data[0][2] * this->vector[2] + other.data[0][3] * this->vector[3];
+			result.vector[1] = other.data[1][0] * this->vector[0] + other.data[1][1] * this->vector[1] + other.data[1][2] * this->vector[2] + other.data[1][3] * this->vector[3];
 
-		//		return result;
-		//	}
-		//	else return *this;
-		//}
+			return result;
+		}
 
 		Vector operator = (const Vector& other)
 		{
@@ -177,20 +173,16 @@ namespace lm
 			return *this;
 		}
 
-		//Vector operator* (Matrix& other)
-		//{
-		//	if (other.columns == 3)
-		//	{
-		//		Vector<t_vector, 3> result;
+		Vector operator* (mat3& other)
+		{
+			Vector<t_vector, 3> result;
 
-		//		result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2];
-		//		result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2];
-		//		result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2];
+			result.vector[0] = other.data[0][0] * this->vector[0] + other.data[0][1] * this->vector[1] + other.data[0][2] * this->vector[2] + other.data[0][3] * this->vector[3];
+			result.vector[1] = other.data[1][0] * this->vector[0] + other.data[1][1] * this->vector[1] + other.data[1][2] * this->vector[2] + other.data[1][3] * this->vector[3];
+			result.vector[2] = other.data[2][0] * this->vector[0] + other.data[2][1] * this->vector[1] + other.data[2][2] * this->vector[2] + other.data[2][3] * this->vector[3];
 
-		//		return result;
-		//	}
-		//	else return *this;
-		//}
+			return result;
+		}
 
 		Vector operator = (const Vector& other)
 		{
@@ -251,21 +243,17 @@ namespace lm
 			return *this;
 		}
 
-		//Vector operator* (Matrix& other)
-		//{
-		//	if (other.columns == 4)
-		//	{
-		//		Vector<t_vector, 4> result;
+		Vector operator* (lm::mat4& other)
+		{
+			Vector<t_vector, 4> result;
 
-		//		result.vector[0] = other.matrix[0][0] * this->vector[0] + other.matrix[0][1] * this->vector[1] + other.matrix[0][2] * this->vector[2] + other.matrix[0][3] * this->vector[3];
-		//		result.vector[1] = other.matrix[1][0] * this->vector[0] + other.matrix[1][1] * this->vector[1] + other.matrix[1][2] * this->vector[2] + other.matrix[1][3] * this->vector[3];
-		//		result.vector[2] = other.matrix[2][0] * this->vector[0] + other.matrix[2][1] * this->vector[1] + other.matrix[2][2] * this->vector[2] + other.matrix[2][3] * this->vector[3];
-		//		result.vector[3] = other.matrix[3][0] * this->vector[0] + other.matrix[3][1] * this->vector[1] + other.matrix[3][2] * this->vector[2] + other.matrix[3][3] * this->vector[3];
+			result.vector[0] = other.data[0][0] * this->vector[0] + other.data[0][1] * this->vector[1] + other.data[0][2] * this->vector[2] + other.data[0][3] * this->vector[3];
+			result.vector[1] = other.data[1][0] * this->vector[0] + other.data[1][1] * this->vector[1] + other.data[1][2] * this->vector[2] + other.data[1][3] * this->vector[3];
+			result.vector[2] = other.data[2][0] * this->vector[0] + other.data[2][1] * this->vector[1] + other.data[2][2] * this->vector[2] + other.data[2][3] * this->vector[3];
+			result.vector[3] = other.data[3][0] * this->vector[0] + other.data[3][1] * this->vector[1] + other.data[3][2] * this->vector[2] + other.data[3][3] * this->vector[3];
 
-		//		return result;
-		//	}
-		//	else return *this;
-		//}
+			return result;
+		}
 
 		Vector operator = (const Vector& other)
 		{
@@ -318,6 +306,13 @@ namespace lm
 	}
 	inline vec3f CrossProduct(vec3f vec1, vec3f vec2)
 	{
-		return vec3f({ vec1.y() * vec2.z() - vec1.z() * vec2.y(), vec1.z() * vec2.x() - vec1.x() * vec2.z(), vec1.x() * vec2.y() - vec1.y() - vec2.y() });
+		return vec3f({ 
+			vec1.y() * vec2.z() - vec1.z() * vec2.y(), 
+			vec1.z() * vec2.x() - vec1.x() * vec2.z(), 
+			vec1.x() * vec2.y() - vec1.y() - vec2.x() });
+	}
+	inline float DotProcuct(vec3f vec1, vec3f vec2)
+	{
+		return vec1.x() * vec2.x() + vec1.y() * vec2.y() + vec1.z() * vec2.z();
 	}
 }

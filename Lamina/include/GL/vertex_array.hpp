@@ -7,6 +7,7 @@
 #include "../Lamina/include/Math/matrix.hpp"
 #include "../Lamina/include/Math/vertex.hpp"
 #include "../Lamina/include/GL/window.hpp"
+#include "../Lamina/include/GL/camera.hpp"
 #include <iostream>
 
 namespace lm

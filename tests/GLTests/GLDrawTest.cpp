@@ -31,27 +31,27 @@ int main()
 	lm::WavefrontObject object("Objects/testobj.obj");
 	lm::GLObject _object(object);
 	lm::VertexArray array(&_object, window);
-	lm::VertexArray arrays[20];
+	//lm::VertexArray arrays[100];
 	array.SetScale(1, 1, 1);
-	array.SetRotation(lm::constants::DegToRad(45.f), lm::constants::DegToRad(45.f), lm::constants::DegToRad(0.f));
-	array.SetPosition(0, 0, -3);
+	array.SetRotation(lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f));
+	array.SetPosition(0, 0, 0);
 	lm::Texture2D texture("Textures/test_texture.png");
 	array.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
-	srand(time(NULL));
-	for (int i = 0; i < 20; i++)
-	{
-		arrays[i].initaiateArray(&_object, window);
-		int posx = rand() % 10;
-		int posy = rand() % 10;
-		int posz = rand() % 50;
-		arrays[i].SetPosition(posx, posy, -posz);
-		int rotx = rand() % 360;
-		int roty = rand() % 360;
-		int rotz = rand() % 360;
-		arrays[i].SetRotation(lm::constants::DegToRad((float)rotx), lm::constants::DegToRad((float)roty), lm::constants::DegToRad((float)rotz));
-		arrays[i].SetTexture(texture);
-	}
+	srand((unsigned int)time(NULL));
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	arrays[i].initaiateArray(&_object, window);
+	//	int posx = rand() % 10;
+	//	int posy = rand() % 10;
+	//	int posz = rand() % 50;
+	//	arrays[i].SetPosition((float) posx, (float) posy, (float) - posz);
+	//	int rotx = rand() % 360;
+	//	int roty = rand() % 360;
+	//	int rotz = rand() % 360;
+	//	arrays[i].SetRotation(lm::constants::DegToRad((float)rotx), lm::constants::DegToRad((float)roty), lm::constants::DegToRad((float)rotz));
+	//	arrays[i].SetTexture(texture);
+	//}
 	SetCursorPos(1, 0);
 
 	float averateFrameTime = 0;
@@ -93,10 +93,10 @@ int main()
 		lm::ColorF color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		array.SetColor(lm::Get8BitColor(color)); 
 		array.DrawArray();
-		for (int i = 0; i < 20; i++)
-		{
-			arrays[i].DrawArray();
-		}
+		//for (int i = 0; i < 100; i++)
+		//{
+		//	arrays[i].DrawArray();
+		//}
 		window.Display();
 
 		//averateFrameTime += timer.GetTime(LM_MILISECONDS);

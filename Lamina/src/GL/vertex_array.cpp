@@ -16,6 +16,10 @@ void lm::VertexArray::DrawArray()
 	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x(), scale.y(), scale.z());
 	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(rotation.x(), rotation.y(), rotation.z());
 	lm::mat4 perspectiveMatrix = lm::CreatePerspectiveProjectionMatrix(lm::constants::RadToDeg(70.f), (float)window->GetSize().x() / (float)window->GetSize().y(), 1, 10000);
+	float radius = 5;
+	float posx = std::sin(glfwGetTime()) * radius;
+	float posz = std::cos(glfwGetTime()) * radius;
+	lm::mat4 view = lm::Camera::LookAtMatrix(lm::vec3f({posx, 0, posz }), lm::vec3f({0, 0, 0}), lm::vec3f({0.f, 1.f, 0.f}));
 	
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -30,6 +34,7 @@ void lm::VertexArray::DrawArray()
 	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_TRUE, &translationMatrix.data[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_TRUE, &scaleMatrix.data[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix"), 1, GL_TRUE, &rotationMatrix.data[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "viewMatrix"), 1, GL_TRUE, &view.data[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "projectionMatrix"), 1, GL_TRUE, &perspectiveMatrix.data[0][0]);
 	glUniform1i(glGetUniformLocation(program, "textured"), GL_FALSE);
 	if (texture != nullptr)
