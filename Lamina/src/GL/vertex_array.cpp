@@ -16,10 +16,8 @@ void lm::VertexArray::DrawArray()
 	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x(), scale.y(), scale.z());
 	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(rotation.x(), rotation.y(), rotation.z());
 	lm::mat4 perspectiveMatrix = lm::CreatePerspectiveProjectionMatrix(lm::constants::RadToDeg(70.f), (float)window->GetSize().x() / (float)window->GetSize().y(), 1, 10000);
-	float radius = 5;
-	float posx = std::sin(glfwGetTime()) * radius;
-	float posz = std::cos(glfwGetTime()) * radius;
-	lm::mat4 view = lm::Camera::LookAtMatrix(lm::vec3f({posx, 0, posz }), lm::vec3f({0, 0, 0}), lm::vec3f({0.f, 1.f, 0.f}));
+
+	lm::mat4 view = camera->GetViewMatrix();
 	
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);

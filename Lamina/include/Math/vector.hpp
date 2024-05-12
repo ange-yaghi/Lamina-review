@@ -38,15 +38,50 @@ namespace lm
 			else std::cout << "Incompatible vector size for addition\n";
 		}
 
+		Vector operator+= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] += other.vector[i];
+			}
+			return *this;
+		}
+
 		Vector operator- (const t_vector &other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
-
+		Vector operator-= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] -= other.vector[i];
+			}
+			return *this;
+		}
 		Vector operator- (const Vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
+			return *this;
+		}
+
+		Vector operator*(const t_vector& scalar)
+		{
+			for (int i = 0; i < vector.size(); i++)
+			{
+				vector[i] *= scalar;
+			}
 			return *this;
 		}
 
@@ -93,26 +128,48 @@ namespace lm
 			}
 			else std::cout << "Incompatible vector size for addition\n";
 		}
+		Vector operator+= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] += other.vector[i];
+			}
+			return *this;
+		}
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
-
+		Vector operator-= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] -= other.vector[i];
+			}
+			return *this;
+		}
 		Vector operator- (const Vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
 			return *this;
 		}
 
-		Vector operator* (mat2& other)
-		{
-			Vector<t_vector, 2> result;
-
-			result.vector[0] = other.data[0][0] * this->vector[0] + other.data[0][1] * this->vector[1] + other.data[0][2] * this->vector[2] + other.data[0][3] * this->vector[3];
-			result.vector[1] = other.data[1][0] * this->vector[0] + other.data[1][1] * this->vector[1] + other.data[1][2] * this->vector[2] + other.data[1][3] * this->vector[3];
-
-			return result;
+		Vector operator* (const t_vector& scalar) {
+			return lm::Vector<t_vector, 2>({
+				this->vector[0] * scalar,
+				this->vector[1] * scalar,
+				});
 		}
 
 		Vector operator = (const Vector& other)
@@ -161,27 +218,49 @@ namespace lm
 			}
 			else std::cout << "Incompatible vector size for addition\n";
 		}
+		Vector operator+= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] += other.vector[i];
+			}
+			return *this;
+		}
 		Vector operator- (const t_vector other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
-
+		Vector operator-= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] -= other.vector[i];
+			}
+			return *this;
+		}
 		Vector operator- (const Vector& other)
 		{
 			for (int i = 0; i < vector.size(); i++) this->vector[i] -= other.vector[i];
 			return *this;
 		}
 
-		Vector operator* (mat3& other)
-		{
-			Vector<t_vector, 3> result;
-
-			result.vector[0] = other.data[0][0] * this->vector[0] + other.data[0][1] * this->vector[1] + other.data[0][2] * this->vector[2] + other.data[0][3] * this->vector[3];
-			result.vector[1] = other.data[1][0] * this->vector[0] + other.data[1][1] * this->vector[1] + other.data[1][2] * this->vector[2] + other.data[1][3] * this->vector[3];
-			result.vector[2] = other.data[2][0] * this->vector[0] + other.data[2][1] * this->vector[1] + other.data[2][2] * this->vector[2] + other.data[2][3] * this->vector[3];
-
-			return result;
+		Vector operator* (const t_vector& scalar) {
+			return lm::Vector<t_vector, 3>({
+				this->vector[0] * scalar,
+				this->vector[1] * scalar,
+				this->vector[2] * scalar
+				});
 		}
 
 		Vector operator = (const Vector& other)
@@ -208,7 +287,7 @@ namespace lm
 	{
 	public:
 		Vector() : vector{} {};
-		Vector(const std::array<t_vector, 2>& _vector) { CreateVector(_vector); }
+		Vector(const std::array<t_vector, 4>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 4>& _vector)
 		{
 			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 4, vector.begin());
@@ -231,28 +310,51 @@ namespace lm
 			}
 			else std::cout << "Incompatible vector size for addition\n";
 		}
-		Vector operator- (const t_vector other)
+		Vector operator+= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] += other.vector[i];
+			}
+			return *this;
+		}
+		Vector operator- (const t_vector& other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
 			return *this;
 		}
-
-		Vector operator- (const Vector other)
+		Vector operator-= (Vector& other)
+		{
+			if (this->vector.size() != other.vector.size())
+			{
+				std::cout << "Incompatible vector size for addition\n";
+				return *this;
+			}
+			for (int i = 0; i < this->vector.size(); i++)
+			{
+				this->vector[i] -= other.vector[i];
+			}
+			return *this;
+		}
+		Vector operator- (const Vector& other)
 		{
 			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
 			return *this;
 		}
 
-		Vector operator* (lm::mat4& other)
+		Vector operator* (const t_vector& scalar)
 		{
-			Vector<t_vector, 4> result;
-
-			result.vector[0] = other.data[0][0] * this->vector[0] + other.data[0][1] * this->vector[1] + other.data[0][2] * this->vector[2] + other.data[0][3] * this->vector[3];
-			result.vector[1] = other.data[1][0] * this->vector[0] + other.data[1][1] * this->vector[1] + other.data[1][2] * this->vector[2] + other.data[1][3] * this->vector[3];
-			result.vector[2] = other.data[2][0] * this->vector[0] + other.data[2][1] * this->vector[1] + other.data[2][2] * this->vector[2] + other.data[2][3] * this->vector[3];
-			result.vector[3] = other.data[3][0] * this->vector[0] + other.data[3][1] * this->vector[1] + other.data[3][2] * this->vector[2] + other.data[3][3] * this->vector[3];
-
-			return result;
+			return lm::Vector<t_vector, 4>({
+				this->vector[0] * scalar,
+				this->vector[1] * scalar,
+				this->vector[2] * scalar,
+				this->vector[3] * scalar
+				});
 		}
 
 		Vector operator = (const Vector& other)
@@ -314,5 +416,30 @@ namespace lm
 	inline float DotProcuct(vec3f vec1, vec3f vec2)
 	{
 		return vec1.x() * vec2.x() + vec1.y() * vec2.y() + vec1.z() * vec2.z();
+	}
+	
+	inline lm::vec2f Mat2xVec2(lm::mat2& matrix, lm::vec2f& vector)
+	{
+		return lm::vec2f({
+			matrix.data[0][0] * vector.x() + matrix.data[0][1] * vector.y(),
+			matrix.data[1][0] * vector.x() + matrix.data[1][1] * vector.y()
+			});
+	}
+	inline lm::vec3f Mat3xVec3(lm::mat3& matrix, lm::vec3f& vector)
+	{
+		return lm::vec3f({
+			matrix.data[0][0] * vector.x() + matrix.data[0][1] * vector.y() + matrix.data[0][2] * vector.z(),
+			matrix.data[1][0] * vector.x() + matrix.data[1][1] * vector.y() + matrix.data[1][2] * vector.z(),
+			matrix.data[2][0] * vector.x() + matrix.data[2][1] * vector.y() + matrix.data[2][2] * vector.z(),
+			});
+	}
+	inline lm::vec4f Mat4xVec4(lm::mat4& matrix, lm::vec4f& vector)
+	{
+		return lm::vec4f({
+			matrix.data[0][0] * vector.x() + matrix.data[0][1] * vector.y() + matrix.data[0][2] * vector.z() + matrix.data[0][3] * vector.w(),
+			matrix.data[1][0] * vector.x() + matrix.data[1][1] * vector.y() + matrix.data[1][2] * vector.z() + matrix.data[1][3] * vector.w(),
+			matrix.data[2][0] * vector.x() + matrix.data[2][1] * vector.y() + matrix.data[2][2] * vector.z() + matrix.data[2][3] * vector.w(),
+			matrix.data[3][0] * vector.x() + matrix.data[3][1] * vector.y() + matrix.data[3][2] * vector.z() + matrix.data[3][3] * vector.w()
+			});
 	}
 }
