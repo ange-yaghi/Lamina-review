@@ -12,27 +12,27 @@ namespace lm
 	class Vector
 	{
 	public:
-		Vector() : vector{} {};
+		Vector() : data{} {};
 		Vector(const std::vector<t_vector>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, t_vec_size>& _vector)
 		{
-			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), t_vec_size, vector.begin());
+			if (_vector.size() == data.size()) std::copy_n(_vector.begin(), t_vec_size, data.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
 		Vector operator+ (const t_vector &other)
 		{
-			Vector<t_vector, vector.size()> result;
-			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
+			lm::Vector<t_vector, 2> result(this->data);
+			for (int i = 0; i < this->data.size(); i++) result.data[i] += other;
 			return result;
 		}
 
 		Vector operator+ (Vector& other)
 		{
-			if (this->vector.size() == other.vector.size())
+			if (this->data.size() == other.data.size())
 			{
-				Vector<t_vector, vector.size()> result;
-				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				lm::Vector<t_vector, 2> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] += other.data[i];
 				return result;
 			}
 			else std::cout << "Incompatible vector size for addition\n";
@@ -40,47 +40,48 @@ namespace lm
 
 		Vector operator+= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (this->data.size() != other.data.size())
 			{
 				std::cout << "Incompatible vector size for addition\n";
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
+			for (int i = 0; i < this->data.size(); i++)
 			{
-				this->vector[i] += other.vector[i];
+				this->data[i] += other.data[i];
 			}
 			return *this;
 		}
 
 		Vector operator- (const t_vector &other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
+			for (int i = 0; i < data.size(); i++) data[i] -= other;
 			return *this;
 		}
 		Vector operator-= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (other.data.size() == 3)
 			{
-				std::cout << "Incompatible vector size for addition\n";
+				for (int i = 0; i < this->data.size(); i++) this->data[i] -= other.data[i];
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
-			{
-				this->vector[i] -= other.vector[i];
-			}
-			return *this;
+			else std::cout << "Incompatible vector size for addition\n";
 		}
-		Vector operator- (const Vector other)
+		Vector operator- (const Vector& other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
-			return *this;
+			if (other.data.size() == 3)
+			{
+				lm::Vector<t_vector, 3> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] -= other.data[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
 		}
 
 		Vector operator*(const t_vector& scalar)
 		{
-			for (int i = 0; i < vector.size(); i++)
+			for (int i = 0; i < data.size(); i++)
 			{
-				vector[i] *= scalar;
+				data[i] *= scalar;
 			}
 			return *this;
 		}
@@ -92,11 +93,11 @@ namespace lm
 				return *this;
 			}
 
-			this->vector = other.vector;
+			this->data = other.data;
 			return *this;
 		}
 
-		std::array<t_vector, t_vec_size> vector;
+		std::array<t_vector, t_vec_size> data;
 	};
 
 	//specialization for 2d vector
@@ -104,71 +105,72 @@ namespace lm
 	class Vector<t_vector, 2>
 	{
 	public:
-		Vector() : vector{} {};
+		Vector() : data{} {};
 		Vector(const std::array<t_vector, 2>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 2>& _vector)
 		{
-			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 2, vector.begin());
+			if (_vector.size() == data.size()) std::copy_n(_vector.begin(), 2, data.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
 		Vector operator+ (const t_vector other)
 		{
-			Vector<t_vector, vector.size()> result;
-			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
+			lm::Vector<t_vector, 2> result(this->data);
+			for (int i = 0; i < this->data.size(); i++) result.data[i] += other;
 			return result;
 		}
 		Vector operator+ (Vector& other)
 		{
-			if (other.vector.size() == 2)
+			if (other.data.size() == 2)
 			{
-				Vector<t_vector, 2> result;
-				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				lm::Vector<t_vector, 2> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] += other.data[i];
 				return result;
 			}
 			else std::cout << "Incompatible vector size for addition\n";
 		}
 		Vector operator+= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (this->data.size() != other.data.size())
 			{
 				std::cout << "Incompatible vector size for addition\n";
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
+			for (int i = 0; i < this->data.size(); i++)
 			{
-				this->vector[i] += other.vector[i];
+				this->data[i] += other.data[i];
 			}
 			return *this;
 		}
 		Vector operator- (const t_vector other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
+			for (int i = 0; i < data.size(); i++) data[i] -= other;
 			return *this;
 		}
 		Vector operator-= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (other.data.size() == 3)
 			{
-				std::cout << "Incompatible vector size for addition\n";
+				for (int i = 0; i < this->data.size(); i++) this->data[i] -= other.data[i];
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
-			{
-				this->vector[i] -= other.vector[i];
-			}
-			return *this;
+			else std::cout << "Incompatible vector size for addition\n";
 		}
-		Vector operator- (const Vector other)
+		Vector operator- (const Vector& other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
-			return *this;
+			if (other.data.size() == 3)
+			{
+				lm::Vector<t_vector, 3> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] -= other.data[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
 		}
 
 		Vector operator* (const t_vector& scalar) {
 			return lm::Vector<t_vector, 2>({
-				this->vector[0] * scalar,
-				this->vector[1] * scalar,
+				this->data[0] * scalar,
+				this->data[1] * scalar,
 				});
 		}
 
@@ -179,14 +181,14 @@ namespace lm
 				return *this;
 			}
 
-			this->vector = other.vector;
+			this->data = other.data;
 			return *this;
 		}
 
-		std::array<t_vector, 2> vector;
+		std::array<t_vector, 2> data;
 
-		inline t_vector& x() { return vector[0]; }
-		inline t_vector& y() { return vector[1]; }
+		inline t_vector& x() { return data[0]; }
+		inline t_vector& y() { return data[1]; }
 	};
 
 	//specialization for 3d vector
@@ -194,72 +196,73 @@ namespace lm
 	class Vector<t_vector, 3>
 	{
 	public:
-		Vector() : vector{} {};
+		Vector() : data{} {};
 		Vector(const std::array<t_vector, 3>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 3>& _vector)
 		{
-			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 3, vector.begin());
+			if (_vector.size() == data.size()) std::copy_n(_vector.begin(), 3, data.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
 		Vector operator+ (const t_vector other)
 		{
-			Vector<t_vector, vector.size()> result;
-			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
+			lm::Vector<t_vector, 3> result(this->data);
+			for (int i = 0; i < this->data.size(); i++) result.data[i] += other;
 			return result;
 		}
 		Vector operator+ (Vector& other)
 		{
-			if (other.vector.size() == 3)
+			if (other.data.size() == 3)
 			{
-				Vector<t_vector, 3> result;
-				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				lm::Vector<t_vector, 3> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] += other.data[i];
 				return result;
 			}
 			else std::cout << "Incompatible vector size for addition\n";
 		}
 		Vector operator+= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (this->data.size() != other.data.size())
 			{
 				std::cout << "Incompatible vector size for addition\n";
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
+			for (int i = 0; i < this->data.size(); i++)
 			{
-				this->vector[i] += other.vector[i];
+				this->data[i] += other.data[i];
 			}
 			return *this;
 		}
 		Vector operator- (const t_vector other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
+			for (int i = 0; i < data.size(); i++) data[i] -= other;
 			return *this;
 		}
 		Vector operator-= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (other.data.size() == 3)
 			{
-				std::cout << "Incompatible vector size for addition\n";
+				for (int i = 0; i < this->data.size(); i++) this->data[i] -= other.data[i];
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
-			{
-				this->vector[i] -= other.vector[i];
-			}
-			return *this;
+			else std::cout << "Incompatible vector size for addition\n";
 		}
 		Vector operator- (const Vector& other)
 		{
-			for (int i = 0; i < vector.size(); i++) this->vector[i] -= other.vector[i];
-			return *this;
+			if (other.data.size() == 3)
+			{
+				lm::Vector<t_vector, 3> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] -= other.data[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
 		}
 
 		Vector operator* (const t_vector& scalar) {
 			return lm::Vector<t_vector, 3>({
-				this->vector[0] * scalar,
-				this->vector[1] * scalar,
-				this->vector[2] * scalar
+				this->data[0] * scalar,
+				this->data[1] * scalar,
+				this->data[2] * scalar
 				});
 		}
 
@@ -270,15 +273,15 @@ namespace lm
 				return *this;
 			}
 
-			this->vector = other.vector;
+			this->data = other.data;
 			return *this;
 		}
 
-		std::array<t_vector, 3> vector;
+		std::array<t_vector, 3> data;
 
-		inline t_vector& x() { return vector[0]; }
-		inline t_vector& y() { return vector[1]; }
-		inline t_vector& z() { return vector[2]; }
+		inline t_vector& x() { return data[0]; }
+		inline t_vector& y() { return data[1]; }
+		inline t_vector& z() { return data[2]; }
 	};
 
 	//specialization for 4d vector
@@ -286,74 +289,75 @@ namespace lm
 	class Vector<t_vector, 4>
 	{
 	public:
-		Vector() : vector{} {};
+		Vector() : data{} {};
 		Vector(const std::array<t_vector, 4>& _vector) { CreateVector(_vector); }
 		void CreateVector(const std::array<t_vector, 4>& _vector)
 		{
-			if (_vector.size() == vector.size()) std::copy_n(_vector.begin(), 4, vector.begin());
+			if (_vector.size() == data.size()) std::copy_n(_vector.begin(), 4, data.begin());
 			else std::cout << "Unable to assign vector. Incompatible size" << std::endl;
 		}
 
 		Vector operator+ (const t_vector other)
 		{
-			Vector<t_vector, vector.size()> result;
-			for (int i = 0; i < vector.size(); i++) result.vector[i] += other;
+			lm::Vector<t_vector, 4> result(this->data);
+			for (int i = 0; i < this->data.size(); i++) result.data[i] += other;
 			return result;
 		}
 		Vector operator+ (Vector& other)
 		{
-			if (other.vector.size() == 4)
+			if (other.data.size() == 4)
 			{
-				Vector<t_vector, 4> result;
-				for (int i = 0; i < this->vector.size(); i++) result.vector[i] += other.vector[i];
+				lm::Vector<t_vector, 4> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] += other.data[i];
 				return result;
 			}
 			else std::cout << "Incompatible vector size for addition\n";
 		}
 		Vector operator+= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (this->data.size() != other.data.size())
 			{
 				std::cout << "Incompatible vector size for addition\n";
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
+			for (int i = 0; i < this->data.size(); i++)
 			{
-				this->vector[i] += other.vector[i];
+				this->data[i] += other.data[i];
 			}
 			return *this;
 		}
 		Vector operator- (const t_vector& other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other;
+			for (int i = 0; i < data.size(); i++) data[i] -= other;
 			return *this;
 		}
 		Vector operator-= (Vector& other)
 		{
-			if (this->vector.size() != other.vector.size())
+			if (other.data.size() == 3)
 			{
-				std::cout << "Incompatible vector size for addition\n";
+				for (int i = 0; i < this->data.size(); i++) this->data[i] -= other.data[i];
 				return *this;
 			}
-			for (int i = 0; i < this->vector.size(); i++)
-			{
-				this->vector[i] -= other.vector[i];
-			}
-			return *this;
+			else std::cout << "Incompatible vector size for addition\n";
 		}
 		Vector operator- (const Vector& other)
 		{
-			for (int i = 0; i < vector.size(); i++) vector[i] -= other[i];
-			return *this;
+			if (other.data.size() == 3)
+			{
+				lm::Vector<t_vector, 3> result(this->data);
+				for (int i = 0; i < this->data.size(); i++) result.data[i] -= other.data[i];
+				return result;
+			}
+			else std::cout << "Incompatible vector size for addition\n";
 		}
 
 		Vector operator* (const t_vector& scalar)
 		{
 			return lm::Vector<t_vector, 4>({
-				this->vector[0] * scalar,
-				this->vector[1] * scalar,
-				this->vector[2] * scalar,
-				this->vector[3] * scalar
+				this->data[0] * scalar,
+				this->data[1] * scalar,
+				this->data[2] * scalar,
+				this->data[3] * scalar
 				});
 		}
 
@@ -364,16 +368,16 @@ namespace lm
 				return *this;
 			}
 
-			this->vector = other.vector;
+			this->data = other.data;
 			return *this;
 		}
 
-		std::array<t_vector, 4> vector;
+		std::array<t_vector, 4> data;
 
-		inline t_vector& x() { return vector[0]; }
-		inline t_vector& y() { return vector[1]; }
-		inline t_vector& z() { return vector[2]; }
-		inline t_vector& w() { return vector[3]; }
+		inline t_vector& x() { return data[0]; }
+		inline t_vector& y() { return data[1]; }
+		inline t_vector& z() { return data[2]; }
+		inline t_vector& w() { return data[3]; }
 	};
 
 	//definitions for common types of vector
@@ -389,21 +393,18 @@ namespace lm
 	typedef Vector<float, 3> vec3f;
 	typedef Vector<float, 4> vec4f;
 
-	typedef Vector<float, 2> vec2d;
-	typedef Vector<float, 3> vec3d;
-	typedef Vector<float, 4> vec4d;
+	typedef Vector<double, 2> vec2d;
+	typedef Vector<double, 3> vec3d;
+	typedef Vector<double, 4> vec4d;
 
 	typedef Vector<GLfloat, 4> GLTriangleVert;
 	typedef Vector<GLfloat, 3> GLTriangleNorm;
 	typedef Vector<GLfloat, 2> GLTriangleTextr;
 
-	//vec4d TranslateVector(vec4d &vector, float x, float y, float z);
-	//vec4d ScaleVector(vec4d &vector, float x, float y, float z);
-	//vec4d RotateVector(vec4d &vector, float angle, int plane);
-
 	inline vec3f normalize(vec3f vec)
 	{
 		float length = std::sqrt((vec.x() * vec.x()) + (vec.y() * vec.y()) + (vec.z() * vec.z()));
+		if (length == 0.f) return vec3f({ 0.f, 0.f, 0.f });
 		return vec3f({ vec.x() / length, vec.y() / length, vec.z() / length });
 	}
 	inline vec3f CrossProduct(vec3f vec1, vec3f vec2)
@@ -411,7 +412,7 @@ namespace lm
 		return vec3f({ 
 			vec1.y() * vec2.z() - vec1.z() * vec2.y(), 
 			vec1.z() * vec2.x() - vec1.x() * vec2.z(), 
-			vec1.x() * vec2.y() - vec1.y() - vec2.x() });
+			vec1.x() * vec2.y() - vec1.y() * vec2.x() });
 	}
 	inline float DotProcuct(vec3f vec1, vec3f vec2)
 	{

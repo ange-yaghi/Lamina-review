@@ -104,7 +104,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
 				if (isdigit(buffer[j])) trBuffer += buffer[j];
 				else
 				{
-					trv[i].vector[trNum] = std::stoi(trBuffer);
+					trv[i].data[trNum] = std::stoi(trBuffer);
 					trBuffer.clear();
 					trNum++;
 				}
@@ -130,7 +130,7 @@ void lm::GLObject::ParseObject()
 
 	for (int i = 0; i < object->faces.size(); i++)
 		for (int j = 0; j < object->faces[i].size(); j++)
-			for (int k = 0; k < object->faces[i][j].vector.size(); k++) indeces.push_back(object->faces[i][j].vector[k]);
+			for (int k = 0; k < object->faces[i][j].data.size(); k++) indeces.push_back(object->faces[i][j].data[k]);
 
 	unsigned int numberOfObjects = (unsigned int) indeces.size();
 	for (unsigned int i = 0; i < numberOfObjects; i += 3)

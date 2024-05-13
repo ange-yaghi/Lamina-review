@@ -35,17 +35,6 @@ namespace lm
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
 		};
-		VertexArray(GLObject* object, lm::Window& _window, lm::Camera& _camera) : window(&_window), mesh(object), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"),
-			texture(nullptr), color({ 255, 255, 255, 255 })
-		{
-			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
-			glGenVertexArrays(1, &VAO);
-			glGenBuffers(1, &VBO);
-			position.CreateVector({ 0, 0, 0 });
-			scale.CreateVector({ 1, 1, 1 });
-			rotation.CreateVector({ 0, 0, 0 });
-			camera = &_camera;
-		};
 
 		void initaiateArray(GLObject* object, lm::Window& _window)
 		{
@@ -90,6 +79,5 @@ namespace lm
 		lm::vec3f rotation;
 
 		lm::Window* window;
-		lm::Camera* camera;
 	};
 }

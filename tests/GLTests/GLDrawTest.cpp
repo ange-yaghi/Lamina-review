@@ -30,14 +30,16 @@ int main()
 
 	lm::WavefrontObject object("Objects/testobj.obj");
 	lm::GLObject _object(object);
-	lm::Camera cam;
-	lm::VertexArray array(&_object, window, cam);
+	lm::VertexArray array(&_object, window);
+	lm::VertexArray array2(&_object, window);
 	//lm::VertexArray arrays[100];
 	array.SetScale(1, 1, 1);
 	array.SetRotation(lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f));
-	array.SetPosition(0, 0, 3);
+	array.SetPosition(0, 0, 2);
+	array2.SetPosition(0, 0, -2);
 	lm::Texture2D texture("Textures/test_texture.png");
 	array.SetTexture(texture);
+	array2.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
 	srand((unsigned int)time(NULL));
 	//for (int i = 0; i < 100; i++)
@@ -61,7 +63,6 @@ int main()
 	{
 		timer.Restart();
 		glfwPollEvents();
-		cam.GetInput(window);
 		//int state_w = glfwGetKey(window.window, GLFW_KEY_W);
 		//int state_a = glfwGetKey(window.window, GLFW_KEY_A);
 		//int state_s = glfwGetKey(window.window, GLFW_KEY_S);
@@ -94,6 +95,7 @@ int main()
 		lm::ColorF color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		array.SetColor(lm::Get8BitColor(color)); 
 		array.DrawArray();
+		array2.DrawArray();
 		//for (int i = 0; i < 100; i++)
 		//{
 		//	arrays[i].DrawArray();
