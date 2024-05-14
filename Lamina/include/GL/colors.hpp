@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LM_COLORS
+#define LM_COLORS
 
 //										RED		GRN		BLU		ALPHA
 #define LM_COLOR_RED		lm::Color{	255,	0,		0,		255}
@@ -29,3 +30,4 @@ namespace lm
 	ColorF GetFloatColor(Color color);
 	Color Get8BitColor(ColorF color);
 }
+#endif // !LM_COLORS

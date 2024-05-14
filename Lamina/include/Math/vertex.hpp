@@ -1,4 +1,6 @@
-#pragma once
+#ifndef LM_VERTEX
+#define LM_VERTEX
+
 #include "../Lamina/include/Math/matrix.hpp"
 #include "../Lamina/include/Math/vector.hpp"
 #include <fstream>
@@ -73,3 +75,4 @@ namespace lm
 		std::vector<GLfloat> meshData;
 	};
 }
+#endif // !LM_VERTEX

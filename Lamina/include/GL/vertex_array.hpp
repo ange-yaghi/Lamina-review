@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LM_VERTEX_ARRAY
+#define LM_VERTEX_ARRAY
 
 #include "../Lamina/include/GL/colors.hpp"
 #include "../Lamina/include/GL/opengl.hpp"
@@ -16,7 +17,7 @@ namespace lm
 	{
 	public:
 		VertexArray() : window(nullptr), mesh(nullptr), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"), texture(nullptr),
-			color({255, 255, 255, 255})
+			color({255, 255, 255, 255}), camera(nullptr)
 		{
 			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
 			glGenVertexArrays(1, &VAO);
@@ -26,8 +27,19 @@ namespace lm
 			rotation.CreateVector({ 0, 0, 0 });
 		};
 		VertexArray(GLObject* object, lm::Window& _window) : window(&_window), mesh(object), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"), 
+			texture(nullptr), color({ 255, 255, 255, 255 }), camera(nullptr)
+		{
+			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
+			glGenVertexArrays(1, &VAO);
+			glGenBuffers(1, &VBO);
+			position.CreateVector({ 0, 0, 0 });
+			scale.CreateVector({ 1, 1, 1 });
+			rotation.CreateVector({ 0, 0, 0 });
+		};
+		VertexArray(GLObject* object, lm::Window& _window, lm::PivotCamera& _camera) : window(&_window), mesh(object), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"),
 			texture(nullptr), color({ 255, 255, 255, 255 })
 		{
+			camera = &_camera;
 			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
@@ -79,5 +91,7 @@ namespace lm
 		lm::vec3f rotation;
 
 		lm::Window* window;
+		lm::PivotCamera* camera;
 	};
 }
+#endif // !LM_VERTEX_ARRAY

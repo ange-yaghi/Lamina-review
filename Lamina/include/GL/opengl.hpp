@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LM_OPENGL
+#define LM_OPENGL
 
 #include <glad/glad.h>
 #include <string>
@@ -14,3 +15,4 @@ namespace lm
 		static GLuint CompileShader(std::string vertexShaderPath, std::string fragmentShaderPath);
 	};
 }
+#endif // !LM_OPENGL

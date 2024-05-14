@@ -22,7 +22,7 @@ void set_cursor(int x = 0, int y = 0)
 int main()
 {
 	if (!glfwInit()) return -1;
-	lm::Window window(lm::vec2i({800, 800}), "test window", LM_WINDOW_DEFAULT, 8);
+	lm::Window window(lm::vec2i({800, 800}), "Lamina draw demo", LM_WINDOW_DEFAULT, 8);
 	window.MakeContextCurrent();
 	int frameCounter = 0;
 	glfwSwapInterval(1);
@@ -30,8 +30,9 @@ int main()
 
 	lm::WavefrontObject object("Objects/testobj.obj");
 	lm::GLObject _object(object);
-	lm::VertexArray array(&_object, window);
-	lm::VertexArray array2(&_object, window);
+	lm::PivotCamera cam(lm::vec3f({ 0, 0, 0 }), lm::vec3f({ 0, 0, 0 }), 10, window);
+	lm::VertexArray array(&_object, window, cam);
+	lm::VertexArray array2(&_object, window, cam);
 	//lm::VertexArray arrays[100];
 	array.SetScale(1, 1, 1);
 	array.SetRotation(lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f));
@@ -41,7 +42,7 @@ int main()
 	array.SetTexture(texture);
 	array2.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
 	//for (int i = 0; i < 100; i++)
 	//{
 	//	arrays[i].initaiateArray(&_object, window);
@@ -55,12 +56,13 @@ int main()
 	//	arrays[i].SetRotation(lm::constants::DegToRad((float)rotx), lm::constants::DegToRad((float)roty), lm::constants::DegToRad((float)rotz));
 	//	arrays[i].SetTexture(texture);
 	//}
-	SetCursorPos(1, 0);
+	//SetCursorPos(1, 0);
 
-	float averateFrameTime = 0;
+	//float averateFrameTime = 0;
 
 	while (window.IsOpen())
 	{
+		cam.GetInput();
 		timer.Restart();
 		glfwPollEvents();
 		//int state_w = glfwGetKey(window.window, GLFW_KEY_W);
@@ -92,8 +94,7 @@ int main()
 		//if (state_g == GLFW_PRESS) array.SetPosition(array.GetPosition().x(), array.GetPosition().y(), array.GetPosition().z() + 0.01f);
 
 		window.Clear(lm::Color{ 50, 50, 50, 255 });
-		lm::ColorF color = { 1.0f, 1.0f, 1.0f, 1.0f };
-		array.SetColor(lm::Get8BitColor(color)); 
+		array.SetColor(lm::Color{ 255, 100, 100, 255 });
 		array.DrawArray();
 		array2.DrawArray();
 		//for (int i = 0; i < 100; i++)

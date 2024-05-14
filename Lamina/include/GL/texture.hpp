@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LM_TEXTURE
+#define LM_TEXTURE
 
 #include "../dependencies/STB/stb_image.h"
 #include "glad/glad.h"
@@ -48,3 +49,4 @@ namespace lm
 		GLuint texture;
 	};
 }
+#endif // !LM_TEXTURE

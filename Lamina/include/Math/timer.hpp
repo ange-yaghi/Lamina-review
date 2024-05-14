@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LM_TIMER
+#define LM_TIMER
 
 #include <chrono>
 #include <iostream>
@@ -48,3 +49,4 @@ namespace lm
 		std::chrono::time_point<std::chrono::steady_clock> startTime;
 	};
 }
+#endif // !LM_TIMER

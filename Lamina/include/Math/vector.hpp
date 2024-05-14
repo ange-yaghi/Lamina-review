@@ -1,4 +1,6 @@
-#pragma once
+#ifndef LM_VECTOR
+#define LM_VECTOR
+
 #include "../Lamina/include/Math/matrix.hpp"
 #include <glad/glad.h>
 #include <iostream>
@@ -256,6 +258,7 @@ namespace lm
 				return result;
 			}
 			else std::cout << "Incompatible vector size for addition\n";
+			return *this;
 		}
 
 		Vector operator* (const t_vector& scalar) {
@@ -444,3 +447,4 @@ namespace lm
 			});
 	}
 }
+#endif // !LM_VECTOR

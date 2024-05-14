@@ -1,6 +1,11 @@
-#pragma once
-#define PI		3.141592653589793238462643383279
-#define TAU		6.283185307179586476925286766559
+#ifndef LM_CONSTANTS
+#define LM_CONSTANTS
+
+#define PI			3.141592653589793238462643383279
+#define TAU			6.283185307179586476925286766559
+
+#define PI_FLOAT	(float)3.141592653589793238462643383279
+#define TAU_FLOAT	(float)6.283185307179586476925286766559
 
 namespace lm
 {
@@ -17,13 +22,6 @@ namespace lm
 		{
 			return angle * ((t_var)PI / 180);
 		}
-
-		//typedef RadToDeg<int> RadToDegi;
-		//typedef RadToDeg<float> RadToDegf;
-		//typedef RadToDeg<double> RadToDegd;
-
-		//typedef DegToRad<int> DegToRadi;
-		//typedef DegToRad<float> DegToRadf;
-		//typedef DegToRad<double> DegToRadd;
 	}
 }
+#endif // !LM_CONSTANTS

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LM_WINDOW
+#define LM_WINDOW
 
 #include "../Lamina/include/GL/colors.hpp"
 #include "../Lamina/include/Math/vertex.hpp"
@@ -69,3 +70,4 @@ namespace lm
 		void Display() { glfwSwapBuffers(window); }
 	};
 }
+#endif // !LM_WINDOW
