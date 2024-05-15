@@ -24,10 +24,10 @@ add_library("${ProjectName}"
 	Lamina/src/GL/opengl.cpp
 	Lamina/src/GL/texture.cpp
 	Lamina/src/GL/vertex_array.cpp
-	
 	Lamina/src/GL/camera.cpp
 	Lamina/src/misc_graphics/text.cpp
 	Lamina/src/misc_graphics/image.cpp
+	Lamina/src/user_interface/event.cpp
 	
 
 	#header files
@@ -43,6 +43,7 @@ add_library("${ProjectName}"
 	Lamina/include/GL/camera.hpp
 	Lamina/include/misc_graphics/text.hpp
 	Lamina/include/misc_graphics/image.hpp
+	Lamina/include/user_interface/event.hpp
 
 	#dependency headers
 	dependencies/STB/stb_image.h

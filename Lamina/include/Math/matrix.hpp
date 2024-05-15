@@ -121,7 +121,13 @@ namespace lm
 	typedef Matrix<float, 4, 3> mat4x2;
 	typedef Matrix<float, 4, 4> mat4x4;
 
-	//GL 3D math vector creation functions
+	/// <summary>
+	/// Create a GL translation matrix
+	/// </summary>
+	/// <param name="x"> - X coordinate</param>
+	/// <param name="y"> - Y coordinate</param>
+	/// <param name="z"> - Z coordinate</param>
+	/// <returns>4x4 translation matrix</returns>
 	inline mat4 CreateTranslationMatrix(float x, float y, float z)
 	{
 		return mat4(
@@ -142,6 +148,14 @@ namespace lm
 				{0, 0, 0, 1}
 			});
 	}
+
+	/// <summary>
+	/// Create a GL rotation matrix
+	/// </summary>
+	/// <param name="x"> - X angle</param>
+	/// <param name="y"> - Y angle</param>
+	/// <param name="z"> - Z angle</param>
+	/// <returns>4x4 rotation matrix</returns>
 	inline mat4 CreateRotationMatrix(float x, float y, float z)
 	{
 		mat4 rotationX( {
@@ -164,6 +178,17 @@ namespace lm
 			});
 		return rotationZ * rotationY * rotationX;
 	}
+
+	/// <summary>
+	/// Returns an orthographic projection GL matrix
+	/// </summary>
+	/// <param name="left"> - left bounding coordinate</param>
+	/// <param name="right"> - right bounding coordinate</param>
+	/// <param name="top"> - top bounding coordinate</param>
+	/// <param name="bottom"> - bottom bounding coordinate</param>
+	/// <param name="near"> - near bounding coordinate</param>
+	/// <param name="far"> - far bounding coordinate</param>
+	/// <returns>4x4 orthographic projection matrix</returns>
 	inline mat4 CreateOrthographicProjectionMatrix(float left, float right, float top, float bottom, float near, float far)
 	{
 		return mat4({
@@ -173,6 +198,15 @@ namespace lm
 				{0,	0, 0, 1}
 			});
 	}
+
+	/// <summary>
+	/// Create a perspective projection matrix
+	/// </summary>
+	/// <param name="fov"> - fielf of view</param>
+	/// <param name="aspect"> - aspect ratio of the frustum</param>
+	/// <param name="near"> - near bounding coordinate</param>
+	/// <param name="far"> - far bounding coordinate</param>
+	/// <returns>4x4 perspective projection matrix</returns>
 	inline mat4 CreatePerspectiveProjectionMatrix(float fov, float aspect, float near, float far)
 	{
 		return mat4({

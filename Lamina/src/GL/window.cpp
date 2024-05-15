@@ -1,6 +1,6 @@
 #include "../Lamina/include/GL/window.hpp"
 
-bool lm::Window::CreateWindow(lm::vec2i windowSize, std::string windowName, int windowHints, int multisamplingLevel)
+bool lm::Window::Create(lm::vec2i windowSize, std::string windowName, int windowHints, int multisamplingLevel)
 {
 	bool fullScreen = false;
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

@@ -35,9 +35,9 @@ namespace lm
 		GLFWwindow* window;
 
 		Window() : window(NULL) {};
-		Window(lm::vec2i windowSize, std::string windowName, int windowHint, int multisamplingLevel = 0) { CreateWindow(windowSize, windowName, windowHint, multisamplingLevel); }
+		Window(lm::vec2i windowSize, std::string windowName, int windowHint, int multisamplingLevel = 0) { Create(windowSize, windowName, windowHint, multisamplingLevel); }
 
-		bool CreateWindow(lm::vec2i windowSize, std::string windowName, int windowHints, int multisamplingLevel = 0);
+		bool Create(lm::vec2i windowSize, std::string windowName, int windowHints, int multisamplingLevel = 0);
 
 		lm::vec2i GetSize()
 		{

@@ -4,6 +4,7 @@
 #include "../Lamina/include/Math/vector.hpp"
 #include "../Lamina/include/GL/window.hpp"
 #include "../Lamina/include/Math/constants.hpp"
+#include "../Lamina/include/user_interface/event.hpp"
 
 namespace lm
 {
@@ -29,14 +30,27 @@ namespace lm
 	class PivotCamera
 	{
 	public:
-		PivotCamera() : target(lm::vec3f({ 0, 0, 0 })), position(lm::vec3f({ 0, 0, 0 })), radius(5), pitch(0), yaw(0), window(nullptr), pitchClamp(89.f), radiusClamp(lm::vec2f({5, 50})) {};
+		PivotCamera() : target(lm::vec3f({ 0, 0, 0 })), position(lm::vec3f({ 0, 0, 0 })), radius(5), pitch(0), yaw(0), window(nullptr), pitchClamp(89.f), radiusClamp(lm::vec2f({5, 50})), firstMouseMovement(true) {};
 		PivotCamera(lm::vec3f initialPosition, lm::vec3f initialTarget, float initialRadius, lm::Window& _window) :
-			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0), pitchClamp(89.f), radiusClamp(lm::vec2f({ 5, 50 })) {};
-		PivotCamera(lm::vec3f initialPosition, lm::vec3f initialTarget, float initialRadius, float _pitchClamp, lm::vec2f _radiusClamp, lm::Window& _window) : 
-			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0) 
+			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0), pitchClamp(89.f), radiusClamp(lm::vec2f({ 5.f, 50.f })),
+		firstMouseMovement(true)
 		{
-			if (_radiusClamp.x() > 0 && _radiusClamp.x() < _radiusClamp.y()) radiusClamp = _radiusClamp;
- 			if (_pitchClamp > 0 && _pitchClamp <= 90) pitchClamp = _pitchClamp;
+			glfwSetWindowUserPointer(this->window->window, this);
+			glfwSetScrollCallback(this->window->window, lm::PivotCamera::ScrollCallback);
+			glfwSetCursorPosCallback(this->window->window, lm::PivotCamera::CursorPosCallback);
+			UpdateCamera();
+		};
+		PivotCamera(lm::vec3f initialPosition, lm::vec3f initialTarget, float initialRadius, float _pitchClamp, lm::vec2f _radiusClamp, lm::Window& _window) : 
+			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0), firstMouseMovement(true) 
+		{
+			glfwSetWindowUserPointer(this->window->window, this);
+			glfwSetScrollCallback(this->window->window, lm::PivotCamera::ScrollCallback);
+			glfwSetCursorPosCallback(this->window->window, lm::PivotCamera::CursorPosCallback);
+			if (_radiusClamp.x() > 0.f && _radiusClamp.x() < _radiusClamp.y()) radiusClamp = _radiusClamp;
+			else radiusClamp = lm::vec2f({ 5.f, 50.f });
+			if (_pitchClamp > 0.f && _pitchClamp <= 90.f) pitchClamp = _pitchClamp;
+			else pitchClamp = 89.f;
+			UpdateCamera();
 		};
 
 		lm::mat4 GetCameraLookAtMatrix(){
@@ -45,35 +59,37 @@ namespace lm
 		}
 		void UpdateCamera()
 		{
-			position.x() = std::cos(lm::constants::DegToRad(yaw)) * std::cos(lm::constants::DegToRad(pitch)) * radius;
-			position.y() = std::sin(lm::constants::DegToRad(pitch)) * radius;
-			position.z() = std::sin(lm::constants::DegToRad(yaw)) * std::cos(lm::constants::DegToRad(pitch)) * radius;
+			this->position.x() = std::cos(lm::constants::DegToRad(yaw)) * std::cos(lm::constants::DegToRad(pitch)) * radius;
+			this->position.y() = std::sin(lm::constants::DegToRad(pitch)) * radius;
+			this->position.z() = std::sin(lm::constants::DegToRad(yaw)) * std::cos(lm::constants::DegToRad(pitch)) * radius;
 		}
-		void GetInput()
+		void GetScrollInput(int scroll)
 		{
-			if(window != nullptr)
+			if (scroll > 0 && this->radius >= this->radiusClamp.x()) this->radius -= 1.f;
+			if (scroll < 0 && this->radius <= this->radiusClamp.y()) this->radius += 1.f;
+			UpdateCamera();
+		}
+		void GetMousePosInput(lm::vec2d cursorPos)
+		{
+			std::cout << cursorPos.x() << " " << cursorPos.y() << "\n";
+			if (firstMouseMovement) 
 			{
-				if (glfwGetKey(window->window, GLFW_KEY_W) == GLFW_PRESS) {
-					if (pitch >= pitchClamp) pitch = pitchClamp;
-					else pitch += 1.f;
-				}
-				if (glfwGetKey(window->window, GLFW_KEY_S) == GLFW_PRESS) {
-					if (pitch <= -pitchClamp) pitch = -pitchClamp;
-					else pitch -= 1.f;
-				}
-				if (glfwGetKey(window->window, GLFW_KEY_A) == GLFW_PRESS) 
-					yaw -= 1.f;
-				if (glfwGetKey(window->window, GLFW_KEY_D) == GLFW_PRESS) 
-					yaw += 1.f;
-
-				if (glfwGetKey(window->window, GLFW_KEY_R) == GLFW_PRESS)
-					if (radius <= radiusClamp.x()) radius = radiusClamp.x();
-					else radius -= 0.1f;
-				if (glfwGetKey(window->window, GLFW_KEY_F) == GLFW_PRESS)
-					if (radius >= radiusClamp.y()) radius = radiusClamp.y();
-					else radius += 0.1f;
-				UpdateCamera();
+				lastMousePosition = cursorPos;
+				firstMouseMovement = false;
+				return;
 			}
+			if (lastMousePosition.x() - cursorPos.x() > 0) 
+				yaw += (lastMousePosition.x() - cursorPos.x());
+			if (lastMousePosition.x() - cursorPos.x() < 0) 
+				yaw += (lastMousePosition.x() - cursorPos.x());
+			if (lastMousePosition.y() - cursorPos.y() > 0) 
+				pitch += -(lastMousePosition.y() - cursorPos.y());
+			if (lastMousePosition.y() - cursorPos.y() < 0) 
+				pitch += -(lastMousePosition.y() - cursorPos.y());
+			lastMousePosition = cursorPos;
+			if (pitch >= pitchClamp) pitch = pitchClamp;
+			if (pitch <= -pitchClamp) pitch = -pitchClamp;
+			UpdateCamera();
 		}
 
 		void SetRadiusClamp(lm::vec2f _radiusClamp) { if (_radiusClamp.x() > 0 && _radiusClamp.x() < _radiusClamp.y()) radiusClamp = _radiusClamp; }
@@ -82,7 +98,6 @@ namespace lm
 		lm::vec3f target;
 		lm::vec3f position;
 		float radius;
-
 		float yaw;
 		float pitch;
 
@@ -90,6 +105,29 @@ namespace lm
 		float pitchClamp;
 
 		lm::Window* window;
+
+		//working variables
+		lm::vec2d lastMousePosition;
+		bool firstMouseMovement;
+
+		static void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+		{
+			lm::PivotCamera* thisCamera = static_cast<lm::PivotCamera*>(glfwGetWindowUserPointer(window));
+			if (thisCamera != nullptr)
+			{
+				thisCamera->GetScrollInput(yoffset);
+			}
+			/*if(yoffset > 0) */
+		}
+
+		static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+		{
+			lm::PivotCamera* thisCamera = static_cast<lm::PivotCamera*>(glfwGetWindowUserPointer(window));
+			if (thisCamera != nullptr && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+			{
+				thisCamera->GetMousePosInput(lm::vec2d({ xpos, ypos }));
+			}
+		}
 	};
 }
 #endif // !LM_CAMERA

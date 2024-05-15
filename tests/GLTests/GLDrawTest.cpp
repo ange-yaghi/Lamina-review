@@ -62,7 +62,7 @@ int main()
 
 	while (window.IsOpen())
 	{
-		cam.GetInput();
+		//cam.GetInput();
 		timer.Restart();
 		glfwPollEvents();
 		//int state_w = glfwGetKey(window.window, GLFW_KEY_W);
