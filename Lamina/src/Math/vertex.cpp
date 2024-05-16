@@ -2,6 +2,11 @@
 
 lm::WavefrontObject::WavefrontObject(std::string path)
 {
+	LoadStartPoint(path);
+}
+
+void lm::WavefrontObject::LoadStartPoint(std::string path)
+{
 	std::ifstream objectFile(path);
 	std::string buffer;
 	while (std::getline(objectFile, buffer))
@@ -123,10 +128,6 @@ void lm::GLObject::ParseObject()
 {
 	meshData.clear();
 	if (object == nullptr) return;
-
-	//std::array<GLuint, 3> vertexArrayBuffer;
-	//std::array<GLuint, 3> normalArrayBuffer;
-	//std::array<GLuint, 3> textureArrayBuffer;
 
 	for (int i = 0; i < object->faces.size(); i++)
 		for (int j = 0; j < object->faces[i].size(); j++)

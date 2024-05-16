@@ -19,7 +19,7 @@ add_library("${ProjectName}"
 	dependencies/glad/glad.c
 	Lamina/src/GL/window.cpp
 	Lamina/src/GL/colors.cpp
-	Lamina/src/Math/vector.cpp
+	
 	Lamina/src/Math/vertex.cpp
 	Lamina/src/GL/opengl.cpp
 	Lamina/src/GL/texture.cpp

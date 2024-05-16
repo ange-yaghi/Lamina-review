@@ -30,10 +30,11 @@ namespace lm
 	class PivotCamera
 	{
 	public:
-		PivotCamera() : target(lm::vec3f({ 0, 0, 0 })), position(lm::vec3f({ 0, 0, 0 })), radius(5), pitch(0), yaw(0), window(nullptr), pitchClamp(89.f), radiusClamp(lm::vec2f({5, 50})), firstMouseMovement(true) {};
+		PivotCamera() : target(lm::vec3f({ 0, 0, 0 })), position(lm::vec3f({ 0, 0, 0 })), radius(5), pitch(0), yaw(0), window(nullptr), pitchClamp(89.f), 
+			radiusClamp(lm::vec2f({5, 50})), firstMouseMovement(true), sensitivity(0.5f), scrollSensitivity(1.0f) {};
 		PivotCamera(lm::vec3f initialPosition, lm::vec3f initialTarget, float initialRadius, lm::Window& _window) :
 			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0), pitchClamp(89.f), radiusClamp(lm::vec2f({ 5.f, 50.f })),
-		firstMouseMovement(true)
+		firstMouseMovement(true), sensitivity(0.5f), scrollSensitivity(1.0f)
 		{
 			glfwSetWindowUserPointer(this->window->window, this);
 			glfwSetScrollCallback(this->window->window, lm::PivotCamera::ScrollCallback);
@@ -41,7 +42,7 @@ namespace lm
 			UpdateCamera();
 		};
 		PivotCamera(lm::vec3f initialPosition, lm::vec3f initialTarget, float initialRadius, float _pitchClamp, lm::vec2f _radiusClamp, lm::Window& _window) : 
-			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0), firstMouseMovement(true) 
+			target(initialTarget), position(initialPosition), radius(initialRadius), window(&_window), pitch(0), yaw(0), firstMouseMovement(true), sensitivity(0.5f), scrollSensitivity(1.0f)
 		{
 			glfwSetWindowUserPointer(this->window->window, this);
 			glfwSetScrollCallback(this->window->window, lm::PivotCamera::ScrollCallback);
@@ -65,13 +66,12 @@ namespace lm
 		}
 		void GetScrollInput(int scroll)
 		{
-			if (scroll > 0 && this->radius >= this->radiusClamp.x()) this->radius -= 1.f;
-			if (scroll < 0 && this->radius <= this->radiusClamp.y()) this->radius += 1.f;
+			if (scroll > 0 && this->radius >= this->radiusClamp.x()) this->radius -= 1.f * scrollSensitivity;
+			if (scroll < 0 && this->radius <= this->radiusClamp.y()) this->radius += 1.f * scrollSensitivity;
 			UpdateCamera();
 		}
 		void GetMousePosInput(lm::vec2d cursorPos)
 		{
-			std::cout << cursorPos.x() << " " << cursorPos.y() << "\n";
 			if (firstMouseMovement) 
 			{
 				lastMousePosition = cursorPos;
@@ -79,13 +79,13 @@ namespace lm
 				return;
 			}
 			if (lastMousePosition.x() - cursorPos.x() > 0) 
-				yaw += (lastMousePosition.x() - cursorPos.x());
+				yaw += ((float)lastMousePosition.x() - (float)cursorPos.x()) * sensitivity;
 			if (lastMousePosition.x() - cursorPos.x() < 0) 
-				yaw += (lastMousePosition.x() - cursorPos.x());
+				yaw += ((float)lastMousePosition.x() - (float)cursorPos.x()) * sensitivity;
 			if (lastMousePosition.y() - cursorPos.y() > 0) 
-				pitch += -(lastMousePosition.y() - cursorPos.y());
+				pitch += -((float)lastMousePosition.y() - (float)cursorPos.y()) * sensitivity;
 			if (lastMousePosition.y() - cursorPos.y() < 0) 
-				pitch += -(lastMousePosition.y() - cursorPos.y());
+				pitch += -((float)lastMousePosition.y() - (float)cursorPos.y()) * sensitivity;
 			lastMousePosition = cursorPos;
 			if (pitch >= pitchClamp) pitch = pitchClamp;
 			if (pitch <= -pitchClamp) pitch = -pitchClamp;
@@ -94,6 +94,13 @@ namespace lm
 
 		void SetRadiusClamp(lm::vec2f _radiusClamp) { if (_radiusClamp.x() > 0 && _radiusClamp.x() < _radiusClamp.y()) radiusClamp = _radiusClamp; }
 		void SetPitchClamp(float _pitchClamp) { if(_pitchClamp > 0 && _pitchClamp <= 90) pitchClamp = _pitchClamp; }
+		void SetSensitivity(float _sensitivity) { sensitivity = _sensitivity; }
+		void SetScrollSensitivity(float _scrollSensitivity) { scrollSensitivity = _scrollSensitivity; }
+
+		void SetLastMousePos(lm::vec2d cursorPos)
+		{
+			lastMousePosition = cursorPos;
+		}
 	private:
 		lm::vec3f target;
 		lm::vec3f position;
@@ -103,6 +110,8 @@ namespace lm
 
 		lm::vec2f radiusClamp;
 		float pitchClamp;
+		float sensitivity;
+		float scrollSensitivity;
 
 		lm::Window* window;
 
@@ -117,7 +126,6 @@ namespace lm
 			{
 				thisCamera->GetScrollInput(yoffset);
 			}
-			/*if(yoffset > 0) */
 		}
 
 		static void CursorPosCallback(GLFWwindow* window, double xpos, double ypos)
@@ -126,6 +134,10 @@ namespace lm
 			if (thisCamera != nullptr && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 			{
 				thisCamera->GetMousePosInput(lm::vec2d({ xpos, ypos }));
+			}
+			if (thisCamera != nullptr && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+			{
+				thisCamera->SetLastMousePos(lm::vec2d({ xpos, ypos }));
 			}
 		}
 	};

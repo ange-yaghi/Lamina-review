@@ -19,15 +19,12 @@ namespace lm
 			vertices(_vertices), normals(_normals), textureCoordinates(_textureCoordinates) {};
 		WavefrontObject(std::string path); //load from an .obj file
 
-		//void TranslateObject(float x, float y, float z);
-		//void ScaleObject(float x, float y, float z);
-		//void RotateObject(float angle, int plane);
-	//private:
 		std::vector<vec4d> vertices;
 		std::vector<vec3d> normals;
 		std::vector<vec2d> textureCoordinates;
 		std::vector<std::array<vec3u, 3>> faces;
 
+		void LoadStartPoint(std::string path);
 		void LoadFromOBJ(std::string objContent);
 	};
 
@@ -38,15 +35,6 @@ namespace lm
 		GLObject(WavefrontObject& _object) : object(&_object), vertices(_object.vertices), normals(_object.normals), textureCoordinates(_object.textureCoordinates) { ParseObject(); };
 
 		void ParseObject();
-		//void RuntimeParse();
-
-		//void TranslateObject(float x, float y, float z);
-		//void ScaleObject(float x, float y, float z);
-		//void RotateObject(float angle, int plane);
-
-		//inline void TranslateGLObject(float x, float y, float z) { TranslateObject(x, y, z); ParseObject(); }
-		//inline void ScaleGLObject(float x, float y, float z) { ScaleObject(x, y, z); ParseObject(); }
-		//inline void RotateGLObject(float angle, int plane) { RotateObject(angle, plane); ParseObject(); }
 
 		void ReloadObject()
 		{
@@ -62,7 +50,6 @@ namespace lm
 			object = &_object;
 			ReloadObject();
 			ParseObject();
-			//ReloadObject();
 		}
 
 		WavefrontObject* object;

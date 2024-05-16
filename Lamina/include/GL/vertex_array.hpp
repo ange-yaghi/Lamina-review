@@ -32,6 +32,18 @@ namespace lm
 			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
+
+			glBindVertexArray(VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			if (mesh->meshData.size() == 0) { std::cout << "failed to load object" << std::endl; return; }
+			glBufferData(GL_ARRAY_BUFFER, mesh->meshData.size() * sizeof(GLfloat), &mesh->meshData[0], GL_STATIC_DRAW);
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_FRONT);
+
 			position.CreateVector({ 0, 0, 0 });
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
@@ -43,6 +55,18 @@ namespace lm
 			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
+
+			glBindVertexArray(VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			if (mesh->meshData.size() == 0) { std::cout << "failed to load object" << std::endl; return; }
+			glBufferData(GL_ARRAY_BUFFER, mesh->meshData.size() * sizeof(GLfloat), &mesh->meshData[0], GL_STATIC_DRAW);
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_FRONT);
+
 			position.CreateVector({ 0, 0, 0 });
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
@@ -59,6 +83,16 @@ namespace lm
 			program = lm::GLRenderer::CompileShader(vertexShaderPath, fragmentShaderPath);
 			glGenVertexArrays(1, &VAO);
 			glGenBuffers(1, &VBO);
+
+			glBindVertexArray(VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			if (mesh->meshData.size() == 0) { std::cout << "failed to load object" << std::endl; return; }
+			glBufferData(GL_ARRAY_BUFFER, mesh->meshData.size() * sizeof(GLfloat), &mesh->meshData[0], GL_STATIC_DRAW);
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 			position.CreateVector({ 0, 0, 0 });
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
@@ -92,6 +126,8 @@ namespace lm
 
 		lm::Window* window;
 		lm::PivotCamera* camera;
+
+		lm::PivotCamera basicCamera;
 	};
 }
 #endif // !LM_VERTEX_ARRAY
