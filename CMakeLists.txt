@@ -2,13 +2,14 @@ cmake_minimum_required(VERSION 3.0.0)
 
 set(ProjectName "Lamina")
 
-project("${ProjectName}" VERSION 0.0.1)
-
 set(CMAKE_CXX_STANDARD 20)
+
+project("${ProjectName}" VERSION 0.0.1)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 find_package(OpenGL REQUIRED)
 
 #add_library(GLFW STATIC IMPORTED)
@@ -26,6 +27,7 @@ add_library("${ProjectName}"
 	Lamina/src/GL/vertex_array.cpp
 	Lamina/src/GL/camera.cpp
 	Lamina/src/misc_graphics/text.cpp
+	Lamina/src/misc_graphics/glyph.cpp
 	Lamina/src/misc_graphics/image.cpp
 	Lamina/src/user_interface/event.cpp
 	
@@ -43,6 +45,7 @@ add_library("${ProjectName}"
 	Lamina/include/GL/camera.hpp
 	Lamina/include/misc_graphics/text.hpp
 	Lamina/include/misc_graphics/image.hpp
+	Lamina/include/misc_graphics/glyph.hpp
 	Lamina/include/user_interface/event.hpp
 
 	#dependency headers

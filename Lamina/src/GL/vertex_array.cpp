@@ -3,15 +3,16 @@
 void lm::VertexArray::DrawArray()
 {
 	try {
-		if (window == nullptr) std::runtime_error error("Window not assigned to vertex array");
-		if (camera == nullptr) std::runtime_error error("Camera not assigned to vertex array");
+		if (window == nullptr) std::runtime_error error("Window not assigned to vertex array\n");
+		if (camera == nullptr) std::runtime_error error("Camera not assigned to vertex array\n");
 	}
 	catch (std::runtime_error& exception)
 	{
 		std::cout << exception.what() << std::endl;
+		throw;
 		return;
 	}
-	catch(...){}
+	catch (...) { throw; return; }
 
 	lm::ColorF glColor = lm::GetFloatColor(color);
 	lm::mat4 translationMatrix = lm::CreateTranslationMatrix(position.x(), position.y(), position.z());
@@ -22,6 +23,7 @@ void lm::VertexArray::DrawArray()
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glActiveTexture(GL_TEXTURE0);
 	glUseProgram(program);
 
 	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
@@ -40,7 +42,7 @@ void lm::VertexArray::DrawArray()
 	else glUniform1i(glGetUniformLocation(program, "textured"), GL_FALSE);
 
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(4*sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat)));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
 	glEnableVertexAttribArray(0);

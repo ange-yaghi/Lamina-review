@@ -26,6 +26,7 @@ namespace lm
 	public:
 		Texture2D() : height(0), width(0), channels(0), texture(0), textureData(nullptr) {};
 		Texture2D(std::string path);
+		Texture2D(unsigned char* data) : textureData(data) {};
 
 		int LoadFromFile(const char* path);
 
