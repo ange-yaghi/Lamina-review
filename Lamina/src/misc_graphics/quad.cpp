@@ -1,4 +1,4 @@
-#include "../Lamina/include/misc_graphics/glyph.hpp"
+#include "../Lamina/include/misc_graphics/quad.hpp"
 
 int lm::quad::TexturedQuad::InitiateGL()
 {

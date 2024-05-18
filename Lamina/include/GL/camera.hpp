@@ -124,7 +124,7 @@ namespace lm
 			lm::PivotCamera* thisCamera = static_cast<lm::PivotCamera*>(glfwGetWindowUserPointer(window));
 			if (thisCamera != nullptr)
 			{
-				thisCamera->GetScrollInput(yoffset);
+				thisCamera->GetScrollInput((int)yoffset);
 			}
 		}
 

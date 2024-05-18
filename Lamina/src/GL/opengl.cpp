@@ -2,6 +2,7 @@
 
 GLuint lm::GLRenderer::CompileShader(std::string vertexShaderPath, std::string fragmentShaderPath)
 {
+	if (!glfwInit()) return GL_FALSE;
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 

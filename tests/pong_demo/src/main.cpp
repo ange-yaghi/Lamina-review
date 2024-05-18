@@ -1,4 +1,4 @@
-#include <../Lamina/include/misc_graphics/glyph.hpp>
+#include <../Lamina/include/misc_graphics/quad.hpp>
 #include <../Lamina/include/Math/timer.hpp>
 #include <time.h>
 
@@ -7,10 +7,10 @@ class Ball
 public:
 	Ball(lm::quad::GL2DProgram& program, lm::Window& _window, lm::quad::TexturedQuad& _leftPlayer, lm::quad::TexturedQuad& _rightPlayer, float _velocity)
 	{
-		if (!glfwInit) return;
+		if (!glfwInit()) return;
 		ballObject = lm::quad::TexturedQuad("Textures/pong_demo_textures/white_circle.png", program, _window);
 		ballObject.SetScale(10, 10);
-		ballObject.SetPosition(_window.GetSize().x() / 2, _window.GetSize().y() / 2);
+		ballObject.SetPosition((float)_window.GetSize().x() / 2, (float)_window.GetSize().y() / 2);
 		ballObject.SetColor(lm::Color({ 255, 0, 0, 255 }));
 		leftPlayer = &_leftPlayer;
 		rightPlayer = &_rightPlayer;
@@ -36,10 +36,10 @@ public:
 			if (ballObject.GetPosition().x() + ballObject.GetScale().x() >= rightPlayer->GetPosition().x()) 
 			{
 				direction.x() = -direction.x();
-				float yDirRandomness = rand() % 100;
+				int yDirRandomness = rand() % 100;
 				bool positive = rand();
 				if (!positive) yDirRandomness = -yDirRandomness;
-				direction.y() = (-direction.y() + yDirRandomness / 1000) - (rightPlayer->GetPosition().y() - ballObject.GetPosition().y()) / window->GetSize().y();
+				direction.y() = (-direction.y() + (float)yDirRandomness / 100);
 				if (direction.y() >= 1) direction.y() = 1;
 				if (direction.y() <= -1) direction.y() = -1;
 			}
@@ -49,10 +49,10 @@ public:
 			if (ballObject.GetPosition().x() - ballObject.GetScale().x() <= leftPlayer->GetPosition().x())
 			{
 				direction.x() = -direction.x();
-				float yDirRandomness = rand() % 100;
+				int yDirRandomness = rand() % 100;
 				bool positive = rand();
 				if (!positive) yDirRandomness = -yDirRandomness;
-				direction.y() = (-direction.y() + yDirRandomness / 1000) - (rightPlayer->GetPosition().y() - ballObject.GetPosition().y()) / window->GetSize().y();
+				direction.y() = (-direction.y() + (float)yDirRandomness / 100);
 				if (direction.y() >= 1) direction.y() = 1;
 				if (direction.y() <= -1) direction.y() = -1;
 			}
@@ -75,7 +75,7 @@ public:
 int WinMain()
 {
 	glfwInit();
-	srand(time(0));
+	srand((unsigned int)time(0));
 	lm::Window window(lm::vec2i({ 800, 400 }), "Pong Demo", LM_WINDOW_NON_RESIZABLE, 8);
 	lm::quad::GL2DProgram program;
 
@@ -101,10 +101,7 @@ int WinMain()
 		if (glfwGetKey(window.window, GLFW_KEY_S) == GLFW_PRESS) leftPlayer.SetPosition(leftPlayer.GetPosition().x(), leftPlayer.GetPosition().y() + 3);
 		if (glfwGetKey(window.window, GLFW_KEY_UP) == GLFW_PRESS) rightPlayer.SetPosition(rightPlayer.GetPosition().x(), rightPlayer.GetPosition().y() - 3);
 		if (glfwGetKey(window.window, GLFW_KEY_DOWN) == GLFW_PRESS) rightPlayer.SetPosition(rightPlayer.GetPosition().x(), rightPlayer.GetPosition().y() + 3);
-		if (glfwGetKey(window.window, GLFW_KEY_R) == GLFW_PRESS)
-		{
-			ball = Ball(program, window, leftPlayer, rightPlayer, 2);
-		}
+		if (glfwGetKey(window.window, GLFW_KEY_R) == GLFW_PRESS) ball = Ball(program, window, leftPlayer, rightPlayer, 2);
 
 		if (leftPlayer.GetPosition().y() - leftPlayer.GetScale().y() / 2 <= 0) leftPlayer.SetPosition(leftPlayer.GetPosition().x(), 0 + leftPlayer.GetScale().y() / 2);
 		if (leftPlayer.GetPosition().y() + leftPlayer.GetScale().y() / 2 >= (float)window.GetSize().y()) leftPlayer.SetPosition(leftPlayer.GetPosition().x(), (float)window.GetSize().y() - leftPlayer.GetScale().y() / 2);

@@ -5,7 +5,7 @@
 #include <../Lamina/include/GL/vertex_array.hpp>
 #include <../Lamina/include/Math/constants.hpp>
 #include <../Lamina/include/Math/timer.hpp>
-#include <../Lamina/include/misc_graphics/glyph.hpp>
+#include <../Lamina/include/misc_graphics/quad.hpp>
 #include <chrono>
 #include <iostream>
 #include <Windows.h>
@@ -126,6 +126,8 @@ int main()
 	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
 
 	float averateFrameTime = 0;
+	float lowestFrameTime = INT_MAX;
+	float highestFrameTime = 0;
 	std::cout << "Initialisation time: " << timer.GetTime(LM_MILISECONDS) << "ms" << std::endl;
 	timer.Restart();
 	while (window.IsOpen())
@@ -137,7 +139,7 @@ int main()
 		lm::vec2i winSize = window.GetSize();
 		quad.SetPosition(0, 0);
 		array.SetColor(lm::Color{ 255, 255, 255, 255 });
-		quad.SetScale(winSize.x() / 4, winSize.x() / 4);
+		quad.SetScale((float)winSize.x() / 4, (float)winSize.x() / 4);
 		quad.SetOrigin(-quad.GetScale().x() / 2, -quad.GetScale().y() / 2);
 		Test1(array);
 		quad.DrawQuad();
@@ -148,8 +150,25 @@ int main()
 
 		if(frameCounter >= 10)
 		{
-			set_cursor(0, 2);
-			std::cout << averateFrameTime / frameCounter << "ms " << 1000 / (averateFrameTime / frameCounter) << " FPS " << "      " << std::endl;
+			if (glfwGetKey(window.window, GLFW_KEY_R) == GLFW_PRESS) {
+				highestFrameTime = 0; lowestFrameTime = INT_MAX;
+			}
+			set_cursor(0, 3);
+			std::cout << "Frame rate: " << 1000 / (averateFrameTime / frameCounter) << " FPS      ";
+			set_cursor(0, 4);
+			std::cout << "Average frame time: " << averateFrameTime / frameCounter << "ms     ";
+			if (averateFrameTime > highestFrameTime)
+			{
+				set_cursor(0, 5);
+				highestFrameTime = averateFrameTime;
+				std::cout << "Highest frame time: " << highestFrameTime / frameCounter << "       ";
+			}
+			if (averateFrameTime < lowestFrameTime)
+			{
+				set_cursor(0, 6);
+				lowestFrameTime = averateFrameTime;
+				std::cout << "Lowest frame time: " << lowestFrameTime / frameCounter << "       ";
+			}
 			averateFrameTime = 0;
 			frameCounter = 0;
 		}

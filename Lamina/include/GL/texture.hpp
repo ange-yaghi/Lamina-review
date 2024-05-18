@@ -26,9 +26,10 @@ namespace lm
 	public:
 		Texture2D() : height(0), width(0), channels(0), texture(0), textureData(nullptr) {};
 		Texture2D(std::string path);
-		Texture2D(unsigned char* data) : textureData(data) {};
+		Texture2D(unsigned char* data, int _height, int _width, int _channels) : textureData(data), height(_height), width(_width), channels(_channels) { LoadFromData(data, _height, _width, _channels); };
 
 		int LoadFromFile(const char* path);
+		int LoadFromData(unsigned char* data, int _height, int _width, int _channels);
 
 		void SetWrappingMethod(GLint method)
 		{
