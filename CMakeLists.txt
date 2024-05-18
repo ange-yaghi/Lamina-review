@@ -9,6 +9,7 @@ project("${ProjectName}" VERSION 0.0.1)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 find_package(OpenGL REQUIRED)
 
@@ -66,6 +67,27 @@ add_executable("${ProjectName}-GL-test"
 target_include_directories("${ProjectName}-GL-test" PRIVATE dependencies)
 target_link_libraries("${ProjectName}-GL-test" "${ProjectName}")
 add_custom_command(TARGET ${ProjectName}-GL-test POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${PROJECT_SOURCE_DIR}/Objects
+			${CMAKE_CURRENT_BINARY_DIR}/Objects
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${PROJECT_SOURCE_DIR}/Shaders
+			${CMAKE_CURRENT_BINARY_DIR}/Shaders
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${PROJECT_SOURCE_DIR}/Textures
+			${CMAKE_CURRENT_BINARY_DIR}/Textures
+)
+
+#pong demo
+add_executable("${ProjectName}-pong" WIN32
+	#source files
+	tests/pong_demo/src/main.cpp
+
+	#header files
+)
+target_include_directories("${ProjectName}-pong" PRIVATE dependencies)
+target_link_libraries("${ProjectName}-pong" "${ProjectName}")
+add_custom_command(TARGET ${ProjectName}-pong POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 			${PROJECT_SOURCE_DIR}/Objects
 			${CMAKE_CURRENT_BINARY_DIR}/Objects

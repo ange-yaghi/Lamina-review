@@ -23,11 +23,12 @@ namespace lm
 			-1.0,	-1.0,	0.0,	1.0,	0.0,	1.0
 		};
 
-		class GLGlyphProgram
+		class GL2DProgram
 		{
 		public:
-			explicit GLGlyphProgram(std::string vertShaderPath = "Shaders/quad_vert_shader.vert", std::string fragShaderPath = "Shaders/quad_frag_shader.frag")
+			explicit GL2DProgram(std::string vertShaderPath = "Shaders/quad_vert_shader.vert", std::string fragShaderPath = "Shaders/quad_frag_shader.frag")
 			{
+				if (!glfwInit) return;
 				program = lm::GLRenderer::CompileShader(vertShaderPath, fragShaderPath);
 			};
 			GLuint program;
@@ -37,14 +38,16 @@ namespace lm
 		{
 		public:
 			TexturedQuad() : position({ 0.f, 0.f }), origin({ 0.f, 0.f }), rotation(0.f), scale({ 1.f, 1.f }), window(nullptr) {
+				if (!glfwInit) return;
 				this->quad = &defaultQuad;
 				this->texture = lm::Texture2D();
-				program = nullptr;
 				glGenBuffers(1, &VBO);
 				glGenVertexArrays(1, &VAO);
+				program = nullptr;
 				color = lm::Color(255, 255, 255, 255);
 			}
-			TexturedQuad(std::string texturePath, GLGlyphProgram& _program, lm::Window& _window) : position({ 0.f, 0.f }), origin({ 0.f, 0.f }), scale({ 1.f, 1.f }), rotation(0.f), window(&_window) {
+			TexturedQuad(std::string texturePath, GL2DProgram& _program, lm::Window& _window) : position({ 0.f, 0.f }), origin({ 0.f, 0.f }), scale({ 1.f, 1.f }), rotation(0.f), window(&_window) {
+				if (!glfwInit) return;
 				this->quad = &defaultQuad;
 				this->texture = lm::Texture2D(texturePath);
 				program = &_program;
@@ -53,7 +56,8 @@ namespace lm
 				catch (std::exception& exception) { std::cout << exception.what(); throw; return; }
 				catch (...) { throw; return; }
 			}
-			TexturedQuad(unsigned char* textureData, GLGlyphProgram& _program, lm::Window& _window) : position({ 0.f, 0.f }), origin({ 0.f, 0.f }), rotation(0.f), scale({ 1.f, 1.f }), window(&_window) {
+			TexturedQuad(unsigned char* textureData, GL2DProgram& _program, lm::Window& _window) : position({ 0.f, 0.f }), origin({ 0.f, 0.f }), rotation(0.f), scale({ 1.f, 1.f }), window(&_window) {
+				if (!glfwInit) return;
 				this->quad = &defaultQuad;
 				this->texture = lm::Texture2D(textureData);
 				program = &_program;
@@ -98,7 +102,7 @@ namespace lm
 			lm::Window* window;
 
 		private:
-			GLGlyphProgram* program;
+			GL2DProgram* program;
 			GLuint VBO;
 			GLuint VAO;
 

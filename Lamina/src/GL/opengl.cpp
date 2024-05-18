@@ -28,6 +28,7 @@ GLuint lm::GLRenderer::CompileShader(std::string vertexShaderPath, std::string f
 		fragmentShaderCode = readBuffer.str();
 		fragmentCode.close();
 	}
+	else return GL_FALSE;
 
 	char const* sourcePtr = vertexShaderCode.c_str();
 	glShaderSource(vertexShader, 1, &sourcePtr, NULL);

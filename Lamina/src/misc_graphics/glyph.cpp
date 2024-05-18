@@ -7,6 +7,8 @@ int lm::quad::TexturedQuad::InitiateGL()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	if (sizeof(this->quad) == 0) return -1;
 	glBufferData(GL_ARRAY_BUFFER, this->quad->size() * sizeof(GLfloat), quad->data(), GL_STATIC_DRAW);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	return 1;
@@ -28,7 +30,7 @@ void lm::quad::TexturedQuad::DrawQuad()
 	catch (...) { throw; return; }
 
 	lm::vec2i windowSize = window->GetSize();
-	lm::mat4 translationMatrix = lm::CreateTranslationMatrix(((position.x() / windowSize.x()) * 2.f) - 1.f, ((-position.y() / windowSize.y()) * 2.f) + 1.f, 0.f);
+	lm::mat4 translationMatrix = lm::CreateTranslationMatrix((((position.x() - origin.x()) / windowSize.x()) * 2.f) - 1.f, (((-position.y() + origin.y()) / windowSize.y()) * 2.f) + 1.f, 0.f);
 	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(0.f, 0.f, rotation);
 	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x() / windowSize.x(), scale.y() / windowSize.y(), 1.f);
 

@@ -106,7 +106,7 @@ int main()
 	glfwSwapInterval(1);
 	lm::Timer timer;
 
-	lm::WavefrontObject object("Objects/testobj.obj");
+	lm::WavefrontObject object("Objects/sphere_test_obj.obj");
 	lm::Texture2D texture("Textures/test_texture.png");
 	lm::GLObject _object(object);
 	std::cout << "Loading time: " << timer.GetTime(LM_SECONDS) << "s" << std::endl;
@@ -122,13 +122,12 @@ int main()
 	array.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
 
+	lm::quad::GL2DProgram program;
+	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
+
 	float averateFrameTime = 0;
 	std::cout << "Initialisation time: " << timer.GetTime(LM_MILISECONDS) << "ms" << std::endl;
 	timer.Restart();
-
-	lm::quad::GLGlyphProgram program;
-	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
-
 	while (window.IsOpen())
 	{
 		timer.Restart();
@@ -136,13 +135,13 @@ int main()
 
 		window.Clear(lm::Color{ 50, 50, 50, 255 });
 		lm::vec2i winSize = window.GetSize();
-		quad.SetPosition(winSize.x() / 2, winSize.y() / 2);
+		quad.SetPosition(0, 0);
 		array.SetColor(lm::Color{ 255, 255, 255, 255 });
 		quad.SetScale(winSize.x() / 4, winSize.x() / 4);
-		quad.SetRotation(frameCounter);
-		//Test1(array);
-		array.DrawArray();
+		quad.SetOrigin(-quad.GetScale().x() / 2, -quad.GetScale().y() / 2);
+		Test1(array);
 		quad.DrawQuad();
+		//array.DrawArray();
 		window.Display();
 		
 		averateFrameTime += timer.GetTime(LM_MILISECONDS);
