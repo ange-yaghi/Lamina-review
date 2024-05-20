@@ -113,8 +113,30 @@ int main()
 	glfwSwapInterval(0);
 	lm::Timer timer;
 
-	lm::WavefrontObject object("Objects/sphere_test_obj.obj");
+	lm::quad::GL2DProgram program;
+	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
+
+	lm::WavefrontObject object("C:/Users/borbg/3D Objects/163k_triangulated_Mesh_Icosphere.obj");
+	int asyncCounter = 0;
+	//load objects asynchronously
+	while (!object.WaitForLoad() && window.IsOpen())
+	{
+		glfwPollEvents();
+		window.Clear(lm::Color(0, 0, 0, 255));
+		quad.SetScale(300, 300);
+		quad.SetRotation(asyncCounter / 60);
+		quad.SetPosition(window.GetSize().x() / 2, window.GetSize().y() / 2);
+		quad.DrawQuad();
+		window.Display();
+		asyncCounter++;
+	}
 	lm::WavefrontObject object2("Objects/testobj.obj");
+	while (!object2.WaitForLoad())
+	{
+		glfwPollEvents();
+		window.Clear(lm::Color(0, 0, 0, 255));
+		window.Display();
+	}
 	lm::Texture2D texture("Textures/test_texture.png");
 	lm::Texture2D texture2("Textures/textured_cube.png");
 	lm::GLObject _object(object);
@@ -136,14 +158,12 @@ int main()
 	array2.SetColor(lm::Color(255, 255, 0, 255));
 	array2.SetTexture(texture2);
 
-	lm::quad::GL2DProgram program;
-	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
-
 	std::vector<float> frameTimes;
 	float lowestFrameTime = INT_MAX;
 	float highestFrameTime = 0;
 	std::cout << "Initialisation time: " << timer.GetTime(LM_MILISECONDS) << "ms" << std::endl;
 	timer.Restart();
+	quad.SetRotation(0);
 	while (window.IsOpen())
 	{
 		timer.Restart();

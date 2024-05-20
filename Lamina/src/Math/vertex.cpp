@@ -3,12 +3,15 @@
 lm::WavefrontObject::WavefrontObject(std::string path)
 {
 	_futureData = _promisedData.get_future();;
-	//LoadFromOBJ(path);
+	loadThread = std::thread(std::bind(&lm::WavefrontObject::LoadFromOBJ, this, std::placeholders::_1, std::placeholders::_2), path, std::move(_promisedData));
+	loadThread.detach();
 }
 
-void lm::WavefrontObject::WaitForLoad()
+bool lm::WavefrontObject::WaitForLoad()
 {
-
+	if (!isLoadDone) return false;
+	data = _futureData.get();
+	return true;
 }
 
 void lm::WavefrontObject::LoadFromOBJ(std::string path, std::promise<ObjectData> promisedData)
@@ -124,6 +127,7 @@ void lm::WavefrontObject::LoadFromOBJ(std::string path, std::promise<ObjectData>
 	}
 	objectFile.close();
 	promisedData.set_value(returnObject);
+	isLoadDone = true;
 }
 
 void lm::GLObject::ParseObject()

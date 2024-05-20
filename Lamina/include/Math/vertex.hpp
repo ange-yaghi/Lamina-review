@@ -36,7 +36,7 @@ namespace lm
 		std::thread loadThread;
 
 		void LoadFromOBJ(std::string path, std::promise<ObjectData> promisedData);
-		void WaitForLoad();
+		bool WaitForLoad();
 	};
 
 	//gl compatible object
