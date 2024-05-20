@@ -15,10 +15,6 @@ void lm::VertexArray::DrawArray()
 	catch (...) { throw; return; }
 
 	lm::ColorF glColor = lm::GetFloatColor(color);
-	lm::mat4 translationMatrix = lm::CreateTranslationMatrix(position.x(), position.y(), position.z());
-	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x(), scale.y(), scale.z());
-	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(rotation.x(), rotation.y(), rotation.z());
-	lm::mat4 perspectiveMatrix = lm::CreatePerspectiveProjectionMatrix(lm::constants::RadToDeg(70.f), (float)window->GetSize().x() / (float)window->GetSize().y(), 1, 10000);
 	lm::mat4 view = camera->GetCameraLookAtMatrix();
 
 	glBindVertexArray(VAO);
@@ -26,12 +22,10 @@ void lm::VertexArray::DrawArray()
 	glActiveTexture(GL_TEXTURE0);
 	glUseProgram(program);
 
-	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
-	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_TRUE, &translationMatrix.data[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_TRUE, &scaleMatrix.data[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix"), 1, GL_TRUE, &rotationMatrix.data[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "viewMatrix"), 1, GL_TRUE, &view.data[0][0]);
+	lm::mat4 perspectiveMatrix = lm::CreatePerspectiveProjectionMatrix(lm::constants::RadToDeg(70.f), (float)window->GetSize().x() / (float)window->GetSize().y(), 1, 10000);
 	glUniformMatrix4fv(glGetUniformLocation(program, "projectionMatrix"), 1, GL_TRUE, &perspectiveMatrix.data[0][0]);
+	glUniform4f(glGetUniformLocation(program, "color"), glColor.r, glColor.g, glColor.b, glColor.a);
+	glUniformMatrix4fv(glGetUniformLocation(program, "viewMatrix"), 1, GL_TRUE, &view.data[0][0]);
 	if (texture != nullptr)
 	{
 		glActiveTexture(GL_TEXTURE0);
@@ -56,13 +50,26 @@ void lm::VertexArray::DrawArray()
 	glDisableVertexAttribArray(2);
 }
 
+void lm::VertexArray::SetScale(float x, float y, float z)
+{
+	glUseProgram(program);
+	scale.CreateVector({ std::clamp(x, 0.f, (float)INT_MAX), std::clamp(y, 0.f, (float)INT_MAX), std::clamp(z, 0.f, (float)INT_MAX) });
+	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x(), scale.y(), scale.z());
+	glUniformMatrix4fv(glGetUniformLocation(program, "scaleMatrix"), 1, GL_TRUE, &scaleMatrix.data[0][0]);
+}
+
 void lm::VertexArray::SetPosition(float x, float y, float z)
 {
+	glUseProgram(program);
 	position.CreateVector({ x, y, z });
+
+	lm::mat4 translationMatrix = lm::CreateTranslationMatrix(position.x(), position.y(), position.z());
+	glUniformMatrix4fv(glGetUniformLocation(program, "translationMatrix"), 1, GL_TRUE, &translationMatrix.data[0][0]);
 }
 
 void lm::VertexArray::SetRotation(float x, float y, float z)
 {
+	glUseProgram(program);
 	rotation.CreateVector({ x, y, z });
 	if (rotation.x() > (float)TAU) rotation.x() -= (float)TAU;
 	if (rotation.y() > (float)TAU) rotation.y() -= (float)TAU;
@@ -70,4 +77,6 @@ void lm::VertexArray::SetRotation(float x, float y, float z)
 	if (rotation.x() < 0) rotation.x() += (float)TAU;
 	if (rotation.y() < 0) rotation.y() += (float)TAU;
 	if (rotation.z() < 0) rotation.z() += (float)TAU;
+	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(rotation.x(), rotation.y(), rotation.z());
+	glUniformMatrix4fv(glGetUniformLocation(program, "rotationMatrix"), 1, GL_TRUE, &rotationMatrix.data[0][0]);
 }

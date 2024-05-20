@@ -8,39 +8,51 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <thread>
+#include <future>
 
 namespace lm
 {
-	class WavefrontObject
+	struct ObjectData
 	{
-	public:
-		WavefrontObject() {};
-		WavefrontObject(std::string _name, std::vector<vec4d> _vertices, std::vector<vec3d> _normals, std::vector<vec2d> _textureCoordinates, std::vector<vec3u[3]> _faces) :
-			vertices(_vertices), normals(_normals), textureCoordinates(_textureCoordinates) {};
-		WavefrontObject(std::string path); //load from an .obj file
-
 		std::vector<vec4d> vertices;
 		std::vector<vec3d> normals;
 		std::vector<vec2d> textureCoordinates;
 		std::vector<std::array<vec3u, 3>> faces;
-
-		void LoadStartPoint(std::string path);
-		void LoadFromOBJ(std::string objContent);
 	};
 
+	//class to load object from wavefront file
+	class WavefrontObject
+	{
+	public:
+		WavefrontObject() {};
+		WavefrontObject(std::string path); //load from an .obj file
+
+		lm::ObjectData data;
+
+		std::atomic_bool isLoadDone;
+		std::promise<ObjectData> _promisedData;
+		std::future<ObjectData> _futureData;
+		std::thread loadThread;
+
+		void LoadFromOBJ(std::string path, std::promise<ObjectData> promisedData);
+		void WaitForLoad();
+	};
+
+	//gl compatible object
 	class GLObject
 	{
 	public:
 		GLObject() : object(nullptr) {};
-		GLObject(WavefrontObject& _object) : object(&_object), vertices(_object.vertices), normals(_object.normals), textureCoordinates(_object.textureCoordinates) { ParseObject(); };
+		GLObject(WavefrontObject& _object) : object(&_object), vertices(_object.data.vertices), normals(_object.data.normals), textureCoordinates(_object.data.textureCoordinates) { ParseObject(); };
 
 		void ParseObject();
 
 		void ReloadObject()
 		{
-			vertices = object->vertices;
-			normals = object->normals;
-			textureCoordinates = object->textureCoordinates;
+			vertices = object->data.vertices;
+			normals = object->data.normals;
+			textureCoordinates = object->data.textureCoordinates;
 			ParseObject();
 			//RuntimeParse();
 		}

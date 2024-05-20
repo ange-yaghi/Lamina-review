@@ -65,8 +65,6 @@ namespace lm
 			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::cout << "Failed to load GLAD" << std::endl;
 		}
 
-		void DrawVertexArray(lm::GLObject& vertexArray);
-
 		void Display() { glfwSwapBuffers(window); }
 	};
 }

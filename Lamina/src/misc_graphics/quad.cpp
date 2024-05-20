@@ -34,7 +34,6 @@ void lm::quad::TexturedQuad::DrawQuad()
 	lm::mat4 rotationMatrix = lm::CreateRotationMatrix(0.f, 0.f, rotation);
 	lm::mat4 scaleMatrix = lm::CreateScaleMatrix(scale.x() / windowSize.x(), scale.y() / windowSize.y(), 1.f);
 
-	window->MakeContextCurrent();
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glActiveTexture(GL_TEXTURE0);

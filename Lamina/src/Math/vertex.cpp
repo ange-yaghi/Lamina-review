@@ -2,126 +2,128 @@
 
 lm::WavefrontObject::WavefrontObject(std::string path)
 {
-	LoadStartPoint(path);
+	_futureData = _promisedData.get_future();;
+	//LoadFromOBJ(path);
 }
 
-void lm::WavefrontObject::LoadStartPoint(std::string path)
+void lm::WavefrontObject::WaitForLoad()
 {
+
+}
+
+void lm::WavefrontObject::LoadFromOBJ(std::string path, std::promise<ObjectData> promisedData)
+{
+	lm::ObjectData returnObject;
 	std::ifstream objectFile(path);
-	std::string buffer;
-	while (std::getline(objectFile, buffer))
+	std::string objContent;
+	while (std::getline(objectFile, objContent))
 	{
-		LoadFromOBJ(buffer);
-		buffer.clear();
+		std::string buffer;
+		int pos = 0;
+		while (!isspace(objContent[pos]) && pos < objContent.size())
+		{
+			buffer += objContent[pos];
+			pos++;
+		}
+		pos++;
+
+		if (buffer == "v")
+		{
+			buffer.clear();
+			std::array<float, 3> coordinates;
+			for (int i = 0; i < coordinates.size(); i++)
+			{
+				while (!isspace(objContent[pos]) && pos < objContent.size())
+				{
+					buffer += objContent[pos];
+					pos++;
+				}
+				coordinates[i] = std::stof(buffer);
+				buffer.clear();
+				pos++;
+			}
+
+			vec4d vertex;
+			vertex.CreateVector({ coordinates[0], coordinates[1], coordinates[2], 1 });
+			returnObject.vertices.push_back(vertex);
+		}
+		else if (buffer == "vn")
+		{
+			buffer.clear();
+			std::array<float, 3> coordinates;
+			for (int i = 0; i < coordinates.size(); i++)
+			{
+				while (!isspace(objContent[pos]) && pos < objContent.size())
+				{
+					buffer += objContent[pos];
+					pos++;
+				}
+				coordinates[i] = std::stof(buffer);
+				buffer.clear();
+				pos++;
+			}
+
+			vec3d normal;
+			normal.CreateVector({ coordinates[0], coordinates[1], coordinates[2] });
+			returnObject.normals.push_back(normal);
+		}
+		else if (buffer == "vt")
+		{
+			buffer.clear();
+			std::array<float, 2> coordinates;
+			for (int i = 0; i < coordinates.size(); i++)
+			{
+				while (!isspace(objContent[pos]) && pos < objContent.size())
+				{
+					buffer += objContent[pos];
+					pos++;
+				}
+				coordinates[i] = std::stof(buffer);
+				buffer.clear();
+				pos++;
+			}
+
+			vec2d textureCoordinate;
+			textureCoordinate.CreateVector({ coordinates[0], coordinates[1] });
+			returnObject.textureCoordinates.push_back(textureCoordinate);
+		}
+		else if (buffer == "f")
+		{
+			buffer.clear();
+			std::array<vec3u, 3> trv;
+			for (int i = 0; i < trv.size(); i++)
+			{
+				while (!isspace(objContent[pos]) && pos < objContent.size())
+				{
+					buffer += objContent[pos];
+					pos++;
+				}
+
+				buffer += '/';
+				std::string trBuffer;
+				int trNum = 0;
+				for (int j = 0; j < buffer.size(); j++)
+				{
+					if (isdigit(buffer[j])) trBuffer += buffer[j];
+					else
+					{
+						trv[i].data[trNum] = std::stoi(trBuffer);
+						trBuffer.clear();
+						trNum++;
+					}
+				}
+
+				trNum = 0;
+				buffer.clear();
+				pos++;
+			}
+			//tr.CreateVector(trv);
+			returnObject.faces.push_back(trv);
+		}
+		objContent.clear();
 	}
 	objectFile.close();
-}
-
-void lm::WavefrontObject::LoadFromOBJ(std::string objContent)
-{
-	std::string buffer;
-	int pos = 0;
-	while (!isspace(objContent[pos]) && pos < objContent.size())
-	{
-		buffer += objContent[pos];
-		pos++;
-	}
-	
-	pos++;
-
-	if (buffer == "v")
-	{
-		buffer.clear();
-		std::array<float, 3> coordinates;
-		for(int i = 0; i < coordinates.size(); i++)
-		{
-			while (!isspace(objContent[pos]) && pos < objContent.size())
-			{
-				buffer += objContent[pos];
-				pos++;
-			}
-			coordinates[i] = std::stof(buffer);
-			buffer.clear();
-			pos++;
-		}
-		
-		vec4d vertex;
-		vertex.CreateVector({ coordinates[0], coordinates[1], coordinates[2], 1});
-		vertices.push_back(vertex);
-	}
-	else if (buffer == "vn")
-	{
-		buffer.clear();
-		std::array<float, 3> coordinates;
-		for (int i = 0; i < coordinates.size(); i++)
-		{
-			while (!isspace(objContent[pos]) && pos < objContent.size())
-			{
-				buffer += objContent[pos];
-				pos++;
-			}
-			coordinates[i] = std::stof(buffer);
-			buffer.clear();
-			pos++;
-		}
-
-		vec3d normal;
-		normal.CreateVector({ coordinates[0], coordinates[1], coordinates[2]});
-		normals.push_back(normal);
-	}
-	else if (buffer == "vt")
-	{
-		buffer.clear();
-		std::array<float, 2> coordinates;
-		for (int i = 0; i < coordinates.size(); i++)
-		{
-			while (!isspace(objContent[pos]) && pos < objContent.size())
-			{
-				buffer += objContent[pos];
-				pos++;
-			}
-			coordinates[i] = std::stof(buffer);
-			buffer.clear();
-			pos++;
-		}
-
-		vec2d textureCoordinate;
-		textureCoordinate.CreateVector({ coordinates[0], coordinates[1]});
-		textureCoordinates.push_back(textureCoordinate);
-	}
-	else if (buffer == "f")
-	{
-		buffer.clear();
-		std::array<vec3u, 3> trv;
-		for (int i = 0; i < trv.size(); i++)
-		{
-			while (!isspace(objContent[pos]) && pos < objContent.size())
-			{
-				buffer += objContent[pos];
-				pos++;
-			}
-
-			buffer += '/';
-			std::string trBuffer;
-			int trNum = 0;
-			for (int j = 0; j < buffer.size(); j++)
-			{
-				if (isdigit(buffer[j])) trBuffer += buffer[j];
-				else
-				{
-					trv[i].data[trNum] = std::stoi(trBuffer);
-					trBuffer.clear();
-					trNum++;
-				}
-			}
-
-			trNum = 0;
-			buffer.clear();
-			pos++;
-		}
-		//tr.CreateVector(trv);
-		faces.push_back(trv);
-	}
+	promisedData.set_value(returnObject);
 }
 
 void lm::GLObject::ParseObject()
@@ -129,9 +131,9 @@ void lm::GLObject::ParseObject()
 	meshData.clear();
 	if (object == nullptr) return;
 
-	for (int i = 0; i < object->faces.size(); i++)
-		for (int j = 0; j < object->faces[i].size(); j++)
-			for (int k = 0; k < object->faces[i][j].data.size(); k++) indeces.push_back(object->faces[i][j].data[k]);
+	for (int i = 0; i < object->data.faces.size(); i++)
+		for (int j = 0; j < object->data.faces[i].size(); j++)
+			for (int k = 0; k < object->data.faces[i][j].data.size(); k++) indeces.push_back(object->data.faces[i][j].data[k]);
 
 	unsigned int numberOfObjects = (unsigned int) indeces.size();
 	for (unsigned int i = 0; i < numberOfObjects; i += 3)
