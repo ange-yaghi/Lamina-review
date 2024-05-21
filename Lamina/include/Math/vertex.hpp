@@ -19,6 +19,14 @@ namespace lm
 		std::vector<vec3d> normals;
 		std::vector<vec2d> textureCoordinates;
 		std::vector<std::array<vec3u, 3>> faces;
+
+		//void Clear()
+		//{
+		//	vertices.clear();
+		//	normals.clear();
+		//	textureCoordinates.clear();
+		//	faces.clear();
+		//}
 	};
 
 	//class to load object from wavefront file
@@ -29,6 +37,7 @@ namespace lm
 		WavefrontObject(std::string path); //load from an .obj file
 
 		lm::ObjectData data;
+		std::string _path;
 
 		std::atomic_bool isLoadDone;
 		std::promise<ObjectData> _promisedData;
@@ -65,8 +74,8 @@ namespace lm
 		}
 
 		WavefrontObject* object;
-		std::vector<GLuint> indeces;
 
+		std::vector<GLuint> indeces;
 		std::vector<vec4d> vertices;
 		std::vector<vec3d> normals;
 		std::vector<vec2d> textureCoordinates;

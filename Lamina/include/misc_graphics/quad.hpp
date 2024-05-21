@@ -47,7 +47,7 @@ namespace lm
 				this->quad = &defaultQuad;
 				this->texture = lm::Texture2D(texturePath);
 				program = &_program;
-				color = lm::Color(255, 255, 255, 255);
+				color = lm::Color( 255, 255, 255, 255 );
 				try { if (InitiateGL() > 0) std::exception exception("Failed to iniate OpenGL for textured quad\n"); }
 				catch (std::exception& exception) { std::cout << exception.what(); glfwTerminate(); throw; }
 				catch (...) { glfwTerminate(); throw; }

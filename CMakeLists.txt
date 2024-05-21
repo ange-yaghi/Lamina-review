@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 
 set(ProjectName "Lamina")
 
-project("${ProjectName}" VERSION 0.0.1)
+project("${ProjectName}" VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 20)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -12,15 +12,10 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 find_package(OpenGL REQUIRED)
 
-#add_library(GLFW STATIC IMPORTED)
-#set_target_properties(GLFW PROPERTIES IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/dependencies/GLFW/lib/glfw3.lib")
-
 add_library("${ProjectName}"
 	#source files
-	dependencies/glad/glad.c
 	Lamina/src/GL/window.cpp
-	Lamina/src/GL/colors.cpp
-	
+	Lamina/src/GL/colors.cpp	
 	Lamina/src/Math/vertex.cpp
 	Lamina/src/GL/opengl.cpp
 	Lamina/src/GL/texture.cpp
@@ -49,6 +44,7 @@ add_library("${ProjectName}"
 	Lamina/include/user_interface/event.hpp
 
 	#dependency headers
+	dependencies/glad/glad.c
 	dependencies/STB/stb_image.h
 	dependencies/STB/stb_truetype.h
 	dependencies/STB/stb_rect_pack.h
@@ -109,7 +105,7 @@ target_include_directories("${ProjectName}-main" PRIVATE dependencies)
 target_link_libraries("${ProjectName}-main" "${ProjectName}")
 #set_source_files_properties(src/main.cpp PROPERTIES COMPILE_OPTIONS "-Wall; -Wextra")
 add_custom_command(
-	TARGET ${ProjectName}-main PRE_BUILD
+	TARGET ${ProjectName}-main POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
 			${PROJECT_SOURCE_DIR}/Objects
 			${CMAKE_CURRENT_BINARY_DIR}/Objects

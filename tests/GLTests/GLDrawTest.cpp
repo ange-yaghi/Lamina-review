@@ -116,7 +116,7 @@ int main()
 	lm::quad::GL2DProgram program;
 	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
 
-	lm::WavefrontObject object("C:/Users/borbg/3D Objects/163k_triangulated_Mesh_Icosphere.obj");
+	lm::WavefrontObject object("Objects/testobj.obj");
 	int asyncCounter = 0;
 	//load objects asynchronously
 	while (!object.WaitForLoad() && window.IsOpen())
@@ -175,6 +175,7 @@ int main()
 		array.SetColor(lm::Color{ 255, 255, 255, 255 });
 		quad.SetScale((float)winSize.x() / 4, (float)winSize.x() / 4);
 		quad.SetOrigin(-quad.GetScale().x() / 2, -quad.GetScale().y() / 2);
+		//array.DrawArray();
 		Test1(array);
 		array2.DrawArray();
 		quad.DrawQuad();

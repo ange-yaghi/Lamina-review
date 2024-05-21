@@ -31,7 +31,7 @@ public:
 	{
 		ballObject.SetPosition(ballObject.GetPosition().x() + (velocity * direction.x()), ballObject.GetPosition().y() + (velocity * direction.y()));
 
-		if (ballObject.GetPosition().y() <= rightPlayer->GetPosition().y() + rightPlayer->GetScale().y() && ballObject.GetPosition().y() >= rightPlayer->GetPosition().y() - rightPlayer->GetScale().y())
+		if (ballObject.GetPosition().y() <= rightPlayer->GetPosition().y() + rightPlayer->GetScale().y() / 2 && ballObject.GetPosition().y() >= rightPlayer->GetPosition().y() - rightPlayer->GetScale().y() / 2)
 		{
 			if (ballObject.GetPosition().x() + ballObject.GetScale().x() >= rightPlayer->GetPosition().x()) 
 			{
@@ -44,7 +44,7 @@ public:
 				if (direction.y() <= -1) direction.y() = -1;
 			}
 		}
-		if (ballObject.GetPosition().y() <= leftPlayer->GetPosition().y() + leftPlayer->GetScale().y() && ballObject.GetPosition().y() >= leftPlayer->GetPosition().y() - leftPlayer->GetScale().y())
+		if (ballObject.GetPosition().y() <= leftPlayer->GetPosition().y() + leftPlayer->GetScale().y() / 2 && ballObject.GetPosition().y() >= leftPlayer->GetPosition().y() - leftPlayer->GetScale().y() / 2)
 		{
 			if (ballObject.GetPosition().x() - ballObject.GetScale().x() <= leftPlayer->GetPosition().x())
 			{
@@ -74,7 +74,7 @@ public:
 
 int WinMain()
 {
-	glfwInit();
+	if(!glfwInit()) return -1;
 	srand((unsigned int)time(0));
 	lm::Window window(lm::vec2i({ 800, 400 }), "Pong Demo", LM_WINDOW_NON_RESIZABLE, 8);
 	lm::quad::GL2DProgram program;

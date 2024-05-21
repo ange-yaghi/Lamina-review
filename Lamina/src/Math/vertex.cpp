@@ -1,6 +1,6 @@
 #include "../Lamina/include/Math/vertex.hpp"
 
-lm::WavefrontObject::WavefrontObject(std::string path)
+lm::WavefrontObject::WavefrontObject(std::string path) : _path(path)
 {
 	_futureData = _promisedData.get_future();;
 	loadThread = std::thread(std::bind(&lm::WavefrontObject::LoadFromOBJ, this, std::placeholders::_1, std::placeholders::_2), path, std::move(_promisedData));
