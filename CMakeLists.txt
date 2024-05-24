@@ -24,6 +24,7 @@ add_library("${ProjectName}"
 	Lamina/src/misc_graphics/text.cpp
 	Lamina/src/misc_graphics/quad.cpp
 	Lamina/src/misc_graphics/image.cpp
+	Lamina/src/misc_graphics/glyph.cpp
 	Lamina/src/user_interface/event.cpp
 	
 
@@ -41,6 +42,7 @@ add_library("${ProjectName}"
 	Lamina/include/misc_graphics/text.hpp
 	Lamina/include/misc_graphics/image.hpp
 	Lamina/include/misc_graphics/quad.hpp
+	Lamina/include/misc_graphics/glyph.hpp
 	Lamina/include/user_interface/event.hpp
 
 	#dependency headers

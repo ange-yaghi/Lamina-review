@@ -26,7 +26,7 @@ namespace lm
 			scale.CreateVector({ 1, 1, 1 });
 			rotation.CreateVector({ 0, 0, 0 });
 		};
-		VertexArray(GLObject* object, lm::Window& _window, lm::PivotCamera& _camera) : window(&_window), mesh(object), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"),
+		VertexArray(WavefrontObject* object, lm::Window& _window, lm::PivotCamera& _camera) : window(&_window), mesh(object), vertexShaderPath("Shaders/VertexArrayVertexShader.vert"), fragmentShaderPath("Shaders/VertexArrayFragmentShader.frag"),
 			texture(nullptr), color({ 255, 255, 255, 255 })
 		{
 			camera = &_camera;
@@ -49,6 +49,12 @@ namespace lm
 			SetScale(1, 1, 1);
 			SetRotation(0, 0, 0);
 		};
+		~VertexArray()
+		{
+			glDeleteVertexArrays(1, &VAO);
+			glDeleteBuffers(1, &VBO);
+			glDeleteProgram(program);
+		}
 
 		void DrawArray();
 		void SetScale(float x, float y, float z);
@@ -62,7 +68,7 @@ namespace lm
 		lm::vec3f& GetPosition() { return position; }
 		lm::vec3f& GetScale() { return scale; }
  	private:
-		GLObject* mesh;
+		WavefrontObject* mesh;
 		GLuint program;
 		GLuint VAO; //vertex array object
 		GLuint VBO; //vertex buffer object

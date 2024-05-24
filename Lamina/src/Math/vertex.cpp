@@ -130,28 +130,56 @@ void lm::WavefrontObject::LoadFromOBJ(std::string path, std::promise<ObjectData>
 	isLoadDone = true;
 }
 
-void lm::GLObject::ParseObject()
+//void lm::GLObject::ParseObject()
+//{
+//	meshData.clear();
+//	if (object == nullptr) return;
+//
+//	for (int i = 0; i < object->data.faces.size(); i++)
+//		for (int j = 0; j < object->data.faces[i].size(); j++)
+//			for (int k = 0; k < object->data.faces[i][j].data.size(); k++) indeces.push_back(object->data.faces[i][j].data[k]);
+//
+//	unsigned int numberOfObjects = (unsigned int) indeces.size();
+//	for (unsigned int i = 0; i < numberOfObjects; i += 3)
+//	{
+//		meshData.push_back((GLfloat)vertices[indeces[i] - 1].x());
+//		meshData.push_back((GLfloat)vertices[indeces[i] - 1].y());
+//		meshData.push_back((GLfloat)vertices[indeces[i] - 1].z());
+//		meshData.push_back((GLfloat)vertices[indeces[i] - 1].w());
+//
+//		meshData.push_back((GLfloat)textureCoordinates[indeces[i + 1] - 1].x());
+//		meshData.push_back((GLfloat)textureCoordinates[indeces[i + 1] - 1].y());
+//
+//		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].x());
+//		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].y());
+//		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].z());
+//	}
+//}
+
+void lm::WavefrontObject::ParseObject()
 {
 	meshData.clear();
-	if (object == nullptr) return;
+	if (!data.IsDataValid()) return;
 
-	for (int i = 0; i < object->data.faces.size(); i++)
-		for (int j = 0; j < object->data.faces[i].size(); j++)
-			for (int k = 0; k < object->data.faces[i][j].data.size(); k++) indeces.push_back(object->data.faces[i][j].data[k]);
+	std::vector<GLuint> indeces;
 
-	unsigned int numberOfObjects = (unsigned int) indeces.size();
+	for (int i = 0; i < data.faces.size(); i++)
+		for (int j = 0; j < data.faces[i].size(); j++)
+			for (int k = 0; k < data.faces[i][j].data.size(); k++) indeces.push_back(data.faces[i][j].data[k]);
+
+	unsigned int numberOfObjects = (unsigned int)indeces.size();
 	for (unsigned int i = 0; i < numberOfObjects; i += 3)
 	{
-		meshData.push_back((GLfloat)vertices[indeces[i] - 1].x());
-		meshData.push_back((GLfloat)vertices[indeces[i] - 1].y());
-		meshData.push_back((GLfloat)vertices[indeces[i] - 1].z());
-		meshData.push_back((GLfloat)vertices[indeces[i] - 1].w());
+		meshData.push_back((GLfloat)data.vertices[indeces[i] - 1].x());
+		meshData.push_back((GLfloat)data.vertices[indeces[i] - 1].y());
+		meshData.push_back((GLfloat)data.vertices[indeces[i] - 1].z());
+		meshData.push_back((GLfloat)data.vertices[indeces[i] - 1].w());
 
-		meshData.push_back((GLfloat)textureCoordinates[indeces[i + 1] - 1].x());
-		meshData.push_back((GLfloat)textureCoordinates[indeces[i + 1] - 1].y());
+		meshData.push_back((GLfloat)data.textureCoordinates[indeces[i + 1] - 1].x());
+		meshData.push_back((GLfloat)data.textureCoordinates[indeces[i + 1] - 1].y());
 
-		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].x());
-		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].y());
-		meshData.push_back((GLfloat)normals[indeces[i + 2] -1].z());
+		meshData.push_back((GLfloat)data.normals[indeces[i + 2] - 1].x());
+		meshData.push_back((GLfloat)data.normals[indeces[i + 2] - 1].y());
+		meshData.push_back((GLfloat)data.normals[indeces[i + 2] - 1].z());
 	}
 }

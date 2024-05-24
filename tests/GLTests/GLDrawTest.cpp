@@ -117,6 +117,7 @@ int main()
 	lm::quad::TexturedQuad quad("Textures/RGBA_test_texture.png", program, window);
 
 	lm::WavefrontObject object("Objects/testobj.obj");
+	//lm::WavefrontObject object("C:/Users/borbg/3D Objects/163k_triangulated_Mesh_Icosphere.obj");
 	int asyncCounter = 0;
 	//load objects asynchronously
 	while (!object.WaitForLoad() && window.IsOpen())
@@ -124,42 +125,31 @@ int main()
 		glfwPollEvents();
 		window.Clear(lm::Color(0, 0, 0, 255));
 		quad.SetScale(300, 300);
-		quad.SetRotation(asyncCounter / 60);
-		quad.SetPosition(window.GetSize().x() / 2, window.GetSize().y() / 2);
+		quad.SetRotation((float)asyncCounter / 60);
+		quad.SetPosition((float)window.GetSize().x() / 2, (float)window.GetSize().y() / 2);
 		quad.DrawQuad();
 		window.Display();
 		asyncCounter++;
 	}
-	lm::WavefrontObject object2("Objects/testobj.obj");
-	while (!object2.WaitForLoad())
-	{
-		glfwPollEvents();
-		window.Clear(lm::Color(0, 0, 0, 255));
-		window.Display();
-	}
+
 	lm::Texture2D texture("Textures/test_texture.png");
-	lm::Texture2D texture2("Textures/textured_cube.png");
-	lm::GLObject _object(object);
-	lm::GLObject _object2(object2);
+	object.ParseObject();
 	std::cout << "Loading time: " << timer.GetTime(LM_SECONDS) << "s" << std::endl;
 	timer.Restart();
 
 	lm::PivotCamera cam(lm::vec3f({ 0, 0, 0 }), lm::vec3f({ 0, 0, 0 }), 10, window);
 	cam.SetRadiusClamp(lm::vec2f({ 2, 50 }));
-	lm::VertexArray array(&_object, window, cam);
+	lm::VertexArray array(&object, window, cam);
+	object.DeleteUnprocessedData();
+	//object.DeleteObject();
 	//lm::VertexArray arrays[100];
 	array.SetScale(1, 1, 1);
 	array.SetRotation(lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f), lm::constants::DegToRad(0.f));
 	array.SetTexture(texture);
 	lm::vec3f rotation = array.GetRotation();
 
-	lm::VertexArray array2(&_object2, window, cam);
-	array2.SetPosition(5, 0, 0);
-	array2.SetColor(lm::Color(255, 255, 0, 255));
-	array2.SetTexture(texture2);
-
 	std::vector<float> frameTimes;
-	float lowestFrameTime = INT_MAX;
+	float lowestFrameTime = FLT_MAX;
 	float highestFrameTime = 0;
 	std::cout << "Initialisation time: " << timer.GetTime(LM_MILISECONDS) << "ms" << std::endl;
 	timer.Restart();
@@ -177,7 +167,6 @@ int main()
 		quad.SetOrigin(-quad.GetScale().x() / 2, -quad.GetScale().y() / 2);
 		//array.DrawArray();
 		Test1(array);
-		array2.DrawArray();
 		quad.DrawQuad();
 		//array.DrawArray();
 		window.Display();
@@ -187,7 +176,7 @@ int main()
 		if(frameCounter >= 100)
 		{
 			if (glfwGetKey(window.window, GLFW_KEY_R) == GLFW_PRESS) {
-				highestFrameTime = 0; lowestFrameTime = INT_MAX;
+				highestFrameTime = 0; lowestFrameTime = FLT_MAX;
 			}
 			float avFrameTime = 0;
 			for (int i = 0; i < frameTimes.size(); i++) avFrameTime += frameTimes[i];
